@@ -27,6 +27,12 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "extra": {
+      "eas": {
+        "projectId": "e12677aa-d6e0-4f3d-8cc0-31d8a7290cf4"
+      }
+    },
+    "owner": "shoukr",
     "plugins": [
       "expo-router"
     ]
