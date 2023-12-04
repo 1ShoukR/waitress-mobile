@@ -5,6 +5,7 @@ import { TextInput, Button, Title } from 'react-native-paper';
 import styles from '../styles/SignIn/signIn.styles';
 // import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants';
+import Waiter from '../assets/Waiter.svg';
 import PressableButton from './PressableButton';
 // import { doLogin } from '../redux/thunks';
 const SignIn = () => {
@@ -38,11 +39,16 @@ const SignIn = () => {
 
 	return (
 		<View style={styles.container}>
-			<Title style={styles.branding}>Waitress</Title>
+			<View style={styles.headerContainer}>
+				<Title style={styles.branding}>Waitress</Title>
+				<View style={styles.brandingContainer}>
+					<Waiter width={90} height={80} />
+				</View>
+			</View>
 			<Title style={styles.title}>Login</Title>
 			<View style={styles.inputContainer}>
 				<TextInput
-					label='email'
+					label="email"
 					value={email}
 					onChangeText={(text) => setEmail(text)}
 					mode="outlined"
@@ -53,7 +59,7 @@ const SignIn = () => {
 					keyboardType="email-address"
 				/>
 				<TextInput
-					label='Password'
+					label="Password"
 					value={password}
 					onChangeText={(text) => setPassword(text)}
 					secureTextEntry
@@ -67,7 +73,7 @@ const SignIn = () => {
 					returnKeyType="go"
 				/>
 			</View>
-			<PressableButton title='sign in'  fontSize={18} theme="primary" loadingDelay={1000} />
+			<PressableButton title="sign in" fontSize={18} theme="primary" loadingDelay={1000} />
 		</View>
 	);
 };

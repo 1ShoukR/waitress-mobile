@@ -15,9 +15,21 @@ const styles = StyleSheet.create({
 		marginBottom: SIZES.xxLarge,
 		paddingTop: 16,
 		textAlign: 'center',
+		top: 17
+	},
+	headerContainer: {
+		flexDirection: 'row', // Aligns children side by side
+		alignItems: 'center', // Vertically centers the items
+		justifyContent: 'flex-start', // Aligns items to the start of the container
+		marginBottom: SIZES.xxLarge,
+		marginLeft: 90,
+	},
+	brandingContainer: {
+		justifyContent: 'center', // Centers the title vertically
+		marginRight: 20
 	},
 	title: {
-		color: COLORS.secondary,
+		color: COLORS.primary,
 		fontSize: SIZES.xLarge,
 		fontWeight: 600,
 		marginBottom: SIZES.medium,
