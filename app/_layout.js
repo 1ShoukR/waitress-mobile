@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { View, Pressable } from 'react-native';
 // import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MD2LightTheme, PaperProvider } from 'react-native-paper';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { Button } from 'react-native';
 // import store from '../redux/store';
 import * as SplashScreen from 'expo-splash-screen';
 // import { getLocales } from 'expo-localization';
@@ -53,17 +54,25 @@ const Layout = () => {
 
     return (
 			// <Provider store={store}>
-				<SafeAreaProvider>
-					<PaperProvider theme={theme}>
-						<View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-							<Stack>
-								{/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
-								{/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
-								{/* <Stack.Screen name="tasks/[id]/noteModal" options={{ presentation: 'modal', headerTitle: '' }} /> */}
-							</Stack>
-						</View>
-					</PaperProvider>
-				</SafeAreaProvider>
+			<SafeAreaProvider>
+				<PaperProvider theme={theme}>
+					<View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+						<Stack>
+							<Stack.Screen name="index"  />
+							<Stack.Screen
+								name="signUp"
+								options={{
+									presentation: 'modal',
+									gestureEnabled: false,
+								}}
+							/>
+							{/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
+							{/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+							{/* <Stack.Screen name="tasks/[id]/noteModal" options={{ presentation: 'modal', headerTitle: '' }} /> */}
+						</Stack>
+					</View>
+				</PaperProvider>
+			</SafeAreaProvider>
 			// </Provider>
 		);
 
