@@ -66,7 +66,7 @@ const Layout = () => {
 									gestureEnabled: false,
 								}}
 							/>
-							{/* <Stack.Screen name="index" options={{ headerShown: false }} /> */}
+							<Stack.Screen name="createAccount" options={{ headerShown: false }} />
 							{/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
 							{/* <Stack.Screen name="tasks/[id]/noteModal" options={{ presentation: 'modal', headerTitle: '' }} /> */}
 						</Stack>
