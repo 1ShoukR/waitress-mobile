@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 import { TextInput, Button, Title } from 'react-native-paper';
 import styles from '../styles/SignIn/signIn.styles';
 // import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,6 @@ const SignIn = () => {
 	const [password, setPassword] = useState('');
 
 	//Expo Router Navigation
-	const router = useRouter();
 
 	// // Redux Hooks
 	// const dispatch = useDispatch();
@@ -78,6 +77,7 @@ const SignIn = () => {
 			<View style={{flex: 1, flexDirection: 'row'}}>
 				<Text style={styles.footerText}>Don't have an account?</Text>
 				<Pressable
+				onPress={() =>router.push('/createAccount')}
 					style={({ pressed }) => [
 						{
 							backgroundColor: pressed ? 'rgb(210, 230, 255)' : 'white',
