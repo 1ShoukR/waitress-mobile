@@ -32,7 +32,7 @@ if that is the case, then they will not be able to access their account/see prev
 const App = () => {
 	const router = useRouter()
 	return (
-		<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: 'white' }}>
+		<>
 			<Stack.Screen
 				options={{
 					headerShown: true,
@@ -42,7 +42,7 @@ const App = () => {
 				}}
 			/>
 			<View style={{ flex: 1, padding: 16 }}>
-				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 500 }}>
 					<Button icon="account" mode="outlined" onPress={() => router.push('/signUp')} style={styles.button} labelStyle={styles.buttonLabel} contentStyle={{flexDirection: 'row-reverse'}}>
 						Sign In
 					</Button>
@@ -51,7 +51,7 @@ const App = () => {
 					</Button>
 				</View>
 			</View>
-		</ScrollView>
+		</>
 	);
 };
 export default App;
