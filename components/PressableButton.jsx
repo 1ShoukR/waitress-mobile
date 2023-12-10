@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { COLORS } from '../constants';
 
 //TODO: Make button style more customizable
-const PressableButton = ({ title, onPress, fontSize, status, icon, theme, appendIcon, disabled, loadingDelay }) => {
+const PressableButton = ({ title, onPress, fontSize, status, icon, theme, appendIcon, disabled, loadingDelay, shadowStyle }) => {
 	const [themeName, setThemeColor] = useState(COLORS[theme] ? theme : 'primary');
 	const [color, setColor] = useState(disabled ? COLORS.gray200 : COLORS[themeName]);
 	const [pressedColor, setPressedColor] = useState(disabled ? COLORS.gray200 : COLORS[themeName + 'Dark']);
@@ -14,6 +14,10 @@ const PressableButton = ({ title, onPress, fontSize, status, icon, theme, append
 	const [hasIcon, setHasIcon] = useState(icon ? true : false);
 	const [isLoading, setIsLoading] = useState(null);
 	const [delay, setDelay] = useState(loadingDelay || 0);
+	const buttonStyle = {
+			marginBottom: 16,
+			...shadowStyle, // Apply the shadow style
+		};
 
 	useEffect(() => {
 		setColor(disabled ? COLORS.gray200 : COLORS[themeName]);
@@ -42,7 +46,7 @@ const PressableButton = ({ title, onPress, fontSize, status, icon, theme, append
 			rippleColor={pressedColor}
 			icon={hasIcon ? icon : null}
 			loading={isLoading ? true : false}
-			style={{ marginBottom: 16 }}
+			style={buttonStyle}
 			contentStyle={{ height: 42 + textSize, flexDirection: appendIcon ? 'row-reverse' : 'row' }}
 			labelStyle={{ fontSize: textSize, fontWeight: 'bold' }}
 			onPress={onPress}
