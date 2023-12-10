@@ -9,12 +9,17 @@ the webapp style/color scheme.
 */
 
 const COLORS = {
-	primary: '#D23D2B', // Warm Red
-	secondary: '#8C9A5E', // Olive Green
-	success: '#4CAE50', // Fresh Green
-	info: '#FFC107', // Golden Yellow
-	danger: '#C62828', // Deep Red
-	warning: '#FFA726', // Orange
+	primary: '#EC5E5B', // Vibrant Pinkish Red
+	primaryLight1: '#EF7874', // Lighter Shade of Primary
+	primaryLight2: '#F2918F', // Even Lighter Shade of Primary
+	primaryLight3: '#F5AAAA', // Much Lighter Shade of Primary
+	primaryLight4: '#F8C3C5', // Very Light Pink of Primary
+	primaryLight5: '#FBDDE0', // Near-White Pink of Primary
+	secondary: '#669999', // Muted Teal
+	success: '#6B8E23', // Subdued Olive Green
+	info: '#3B83BD', // Moderate Blue
+	danger: '#C73E37', // Deeper Shade of Primary
+	warning: '#CC704D', // Burnt Orange
 
 	gray100: '#F5F3EF', // Light Cream Beige
 	gray200: '#E8E0DA', // Warm Light Gray
@@ -26,12 +31,12 @@ const COLORS = {
 	gray800: '#58524A', // Almost Black Warm Gray
 	gray900: '#403C34', // Very Dark Warm Gray
 
-	status1: '#4CAE50', // Status Fresh Green
-	status2: '#FFC107', // Status Golden Yellow
-	status3: '#D23D2B', // Status Warm Red
-	status4: '#FFA726', // Status Orange
-	status5: '#C62828', // Status Deep Red
-	status6: '#8C9A5E', // Status Olive Green
+	status1: '#6B8E23', // Subdued Olive Green
+	status2: '#3B83BD', // Moderate Blue
+	status3: '#EC5E5B', // Vibrant Pinkish Red
+	status4: '#CC704D', // Burnt Orange
+	status5: '#C73E37', // Deeper Shade of Primary
+	status6: '#669999', // Muted Teal
 	tags: '#A0988E', // Equal to gray500
 
 	// Convenient aliases for theme colors
@@ -44,23 +49,23 @@ const COLORS = {
 	gray: '#B8B0A6', // Equal to gray400
 
 	// Convenient definitions for commonly used variations of theme colors
-	primaryDark: '#A53020', // Darker Shade of Warm Red
-	primaryLight: '#FFF5E5', // Light Cream
-	secondaryDark: '#6B7B47', // Dark Olive
-	secondaryBackground: '#8C9A5E33', // Light Olive Green
-	successDark: '#3E8E41', // Dark Fresh Green
-	successBackground: '#4CAE5033', // Fresh Green Light
-	successBadgeDark: '#357A38', // Darker Fresh Green
-	successBadgeBackground: '#4CAE5026', // Fresh Green Lighter
-	infoDark: '#CC9A06', // Dark Golden Yellow
-	infoBackground: '#FFC10733', // Light Golden Yellow
-	dangerDark: '#B21F1F', // Darker Deep Red
-	dangerBackground: '#C6282833', // Light Deep Red
-	warningDark: '#CC7A25', // Darker Orange
-	warningBackground: '#FFA72633', // Light Orange
-	draggableHoverBackground: '#FFF5E5', // Equal to primaryLight
-	draggableHoverIcon: '#A53020', // Equal to primaryDark
-	linkText: '#FFC107', // Equal to info
+	primaryDark: '#BF4E49', // Darker Shade of Vibrant Pinkish Red
+	primaryLight: '#FFE5E2', // Light Pink (already existing)
+	secondaryDark: '#507070', // Dark Muted Teal
+	secondaryBackground: '#66999933', // Light Muted Teal
+	successDark: '#597017', // Dark Subdued Olive
+	successBackground: '#6B8E2333', // Light Subdued Olive
+	successBadgeDark: '#4D621A', // Darker Subdued Olive
+	successBadgeBackground: '#6B8E2326', // Lighter Subdued Olive
+	infoDark: '#3271A6', // Dark Moderate Blue
+	infoBackground: '#3B83BD33', // Light Moderate Blue
+	dangerDark: '#A6332A', // Darker Deeper Shade of Primary
+	dangerBackground: '#C73E3733', // Light Deeper Shade of Primary
+	warningDark: '#A65A3B', // Darker Burnt Orange
+	warningBackground: '#CC704D33', // Light Burnt Orange
+	draggableHoverBackground: '#FFE5E2', // Equal to primaryLight
+	draggableHoverIcon: '#BF4E49', // Equal to primaryDark
+	linkText: '#3B83BD', // Equal to info
 	mutedText: '#A0988E', // Equal to gray500
 	inputPlaceholder: '#B8B0A6', // Equal to gray400
 	cardBorder: '#E8E0DA', // Equal to gray200
