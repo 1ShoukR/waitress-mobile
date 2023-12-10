@@ -13,6 +13,7 @@ import React from 'react';
 import { View, ScrollView, LogBox, StyleSheet } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Button } from 'react-native-paper';
+import { COLORS } from '../constants';
 import SignIn from '../components/SignIn';
 
 LogBox.ignoreAllLogs(); // Ignore all log notifications for testing/demo purposes
@@ -35,18 +36,17 @@ const App = () => {
 		<>
 			<Stack.Screen
 				options={{
-					headerShown: true,
+					headerShown: false,
 					headerTitle: '',
-					headerRight: () => <Button onPress={() => router.push('/signUp')} title="Sign Up" />,
 					headerShadowVisible: false,
 				}}
 			/>
-			<View style={{ flex: 1, padding: 16 }}>
+			<View style={{ flex: 1, padding: 16, backgroundColor: COLORS.primary }}>
 				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 500 }}>
-					<Button icon="account" mode="outlined" onPress={() => router.push('/signUp')} style={styles.button} labelStyle={styles.buttonLabel} contentStyle={{flexDirection: 'row-reverse'}}>
+					<Button rippleColor='transparent' icon="account" mode="outlined" onPress={() => router.push('/signUp')} style={[styles.button, {borderColor: 'white', }]} labelStyle={styles.signInButtonLabel} contentStyle={{flexDirection: 'row-reverse'}}>
 						Sign In
 					</Button>
-					<Button icon="near-me" title="Search Nearby" mode="outlined" onPress={() => console.log('Search Nearby Pressed')} style={styles.button} labelStyle={styles.buttonLabel} contentStyle={{flexDirection: 'row-reverse'}} >
+					<Button rippleColor='transparent' icon="near-me" title="Search Nearby" mode="outlined" onPress={() => console.log('Search Nearby Pressed')} style={[styles.button, {backgroundColor: COLORS.primaryDark, borderColor: COLORS.status3}]} labelStyle={styles.searchNearbyButtonLabel} contentStyle={{flexDirection: 'row-reverse'}} >
 						Search Nearby
 					</Button>
 				</View>
@@ -65,7 +65,12 @@ const styles = StyleSheet.create({
 		marginVertical: 10, // Space between buttons
 		// Add other styling as needed
 	},
-	buttonLabel: {
-		fontSize: 16, // Adjust font size as needed
+	signInButtonLabel: {
+		fontSize: 17,
+		color: COLORS.lightWhite // Adjust font size as needed
+	},
+	searchNearbyButtonLabel: {
+		fontSize: 17,
+		color: COLORS.lightWhite // Adjust font size as needed
 	},
 });
