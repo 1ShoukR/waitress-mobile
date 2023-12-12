@@ -21,7 +21,7 @@ const SignIn = () => {
 
 	// Local Functions
 	const handleLogin = useCallback(() => {
-		dispatch(doLogin({ email: email, password: password }));
+		dispatch(doLogin({ email: email, password: password, user_agent: 'mobile' }));
 	}, [email, password, dispatch]);
 
 	useEffect(() => {
@@ -29,7 +29,10 @@ const SignIn = () => {
 			// TODO: Implement form validation
 			alert('Login failed. Please try again.');
 		} else if (authStatus === 'succeeded') {
-			router.push('/home');
+			router.back()
+			setTimeout(() =>{
+				router.push('/home/');
+			}, 300)
 			setEmail('');
 			setPassword('');
 		}
@@ -79,7 +82,7 @@ const SignIn = () => {
 					returnKeyType="go"
 				/>
 			</View>
-			<PressableButton onPress={() => console.log('sign in')} title="sign in" fontSize={18} theme="primary" loadingDelay={1000} shadowStyle={{shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.4,shadowRadius: 2.41,elevation: 2}} />
+			<PressableButton onPress={handleLogin} title="sign in" fontSize={18} theme="primary" loadingDelay={1000} shadowStyle={{shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.4,shadowRadius: 2.41,elevation: 2}} />
 			<View style={{ flex: 1, flexDirection: 'row' }}>
 				<Text style={styles.footerText}>Don't have an account?</Text>
 				<Pressable
