@@ -8,7 +8,7 @@ import { Stack, useRouter } from 'expo-router';
 import { Button } from 'react-native';
 import store from '../redux/store';
 import * as SplashScreen from 'expo-splash-screen';
-// import { getLocales } from 'expo-localization';
+
 
 
 SplashScreen.preventAutoHideAsync();
@@ -58,7 +58,7 @@ const Layout = () => {
 					<PaperProvider theme={theme}>
 						<View style={{ flex: 1 }} onLayout={onLayoutRootView}>
 							<Stack>
-								<Stack.Screen name="index"  />
+								<Stack.Screen name="index" />
 								<Stack.Screen
 									name="signUp"
 									options={{
@@ -67,7 +67,8 @@ const Layout = () => {
 									}}
 								/>
 								<Stack.Screen name="account/create" options={{ headerShown: false }} />
-								{/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} /> */}
+								{/* <Stack.Screen name="home/(tabs)/home/index" options={{ headerShown: false, }} /> */}
+								<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 								{/* <Stack.Screen name="tasks/[id]/noteModal" options={{ presentation: 'modal', headerTitle: '' }} /> */}
 							</Stack>
 						</View>
