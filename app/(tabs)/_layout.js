@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import { Tabs, useRouter } from 'expo-router';
 import { IconButton, Menu } from 'react-native-paper';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { setLastTab } from '../../redux/authSlice';
 // import { prepareReload } from '../../redux/horsesSlice';
 import { COLORS } from '../../constants';
 
@@ -22,6 +23,11 @@ const TabLayout = () => {
 	// 	router.push('/');
 	// 	dispatch(prepareReload());
 	// };
+	const handleTabChange = (tabName) => {
+			dispatch(setLastTab(tabName));
+		};
+
+		
 
 	return (
 		<Tabs
