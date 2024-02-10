@@ -40,7 +40,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^3.0.0",
     "remote-redux-devtools": "^0.5.16",
-    "expo-device": "~5.4.0"
+    "expo-device": "~5.4.0",
+    "expo-location": "~16.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
