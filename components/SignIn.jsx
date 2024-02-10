@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { TextInput, Button, Title } from 'react-native-paper';
 import styles from '../styles/SignIn/signIn.styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants';
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.png';
 import PressableButton from './PressableButton';
 import { doLogin } from '../redux/thunk';
 import * as Device from 'expo-device';
@@ -22,7 +22,8 @@ const SignIn = () => {
 
 	// Local Functions
 	const handleLogin = useCallback(() => {
-		dispatch(doLogin({ email: email, password: password, user_agent: Device.osName}));
+		console.log('email', email);
+		dispatch(doLogin({ email: email, password: password, user_agent: Device.osName }));
 	}, [email, password, dispatch]);
 
 	useEffect(() => {
@@ -30,10 +31,10 @@ const SignIn = () => {
 			// TODO: Implement form validation
 			alert('Login failed. Please try again.');
 		} else if (authStatus === 'succeeded') {
-			router.back()
-			setTimeout(() =>{
+			router.back();
+			setTimeout(() => {
 				router.push('/HomeTab');
-			}, 300)
+			}, 300);
 			setEmail('');
 			setPassword('');
 		}
@@ -41,8 +42,8 @@ const SignIn = () => {
 	const navigateToCreateAccount = () => {
 		router.back();
 		setTimeout(() => {
-			router.push('/account/create');
-		}, 100); 
+			router.push('/account/CreateAccountScreen');
+		}, 100);
 	};
 
 	return (
@@ -57,7 +58,7 @@ const SignIn = () => {
 			<View style={styles.inputContainer}>
 				<TextInput
 					label="Email"
-					placeholder='Enter your email'
+					placeholder="Enter your email"
 					value={email}
 					onChangeText={(text) => setEmail(text)}
 					mode="flat"
@@ -70,7 +71,7 @@ const SignIn = () => {
 				<TextInput
 					label="Password"
 					value={password}
-					placeholder='Enter your password'
+					placeholder="Enter your password"
 					onChangeText={(text) => setPassword(text)}
 					secureTextEntry
 					right={<TextInput.Icon name="eye" />}
@@ -83,7 +84,14 @@ const SignIn = () => {
 					returnKeyType="go"
 				/>
 			</View>
-			<PressableButton onPress={handleLogin} title="sign in" fontSize={18} theme="primary" loadingDelay={1000} shadowStyle={{shadowOffset: { width: 0, height: 2 },shadowOpacity: 0.4,shadowRadius: 2.41,elevation: 2}} />
+			<PressableButton
+				onPress={handleLogin}
+				title="sign in"
+				fontSize={18}
+				theme="primary"
+				loadingDelay={1000}
+				shadowStyle={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 2.41, elevation: 2 }}
+			/>
 			<View style={{ flex: 1, flexDirection: 'row' }}>
 				<Text style={styles.footerText}>Don't have an account?</Text>
 				<Pressable
@@ -102,5 +110,4 @@ const SignIn = () => {
 	);
 };
 
-
-export default SignIn
+export default SignIn;
