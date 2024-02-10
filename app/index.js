@@ -43,7 +43,7 @@ const App = () => {
 			/>
 			<View style={{ flex: 1, padding: 16, backgroundColor: COLORS.primary }}>
 				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 500 }}>
-					<Button rippleColor='transparent' icon="account" mode="outlined" onPress={() => router.push('/signUp')} style={[styles.button, {borderColor: 'white', }]} labelStyle={styles.signInButtonLabel} contentStyle={{flexDirection: 'row-reverse'}}>
+					<Button rippleColor='transparent' icon="account" mode="outlined" onPress={() => router.push('/SignupScreen')} style={[styles.button, {borderColor: 'white', }]} labelStyle={styles.signInButtonLabel} contentStyle={{flexDirection: 'row-reverse'}}>
 						Sign In
 					</Button>
 					<Button rippleColor='transparent' icon="near-me" title="Search Nearby" mode="outlined" onPress={() => console.log('Search Nearby Pressed')} style={[styles.button, {backgroundColor: COLORS.primaryDark, borderColor: COLORS.status3}]} labelStyle={styles.searchNearbyButtonLabel} contentStyle={{flexDirection: 'row-reverse'}} >

@@ -38,18 +38,26 @@ const TabLayout = () => {
 				// ),
 			}}>
 			<Tabs.Screen
-				name="home"
+				name="HomeTab"
 				options={{
 					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Home</Text>,
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'home' : 'home-outline'} />,
 				}}
 			/>
 			<Tabs.Screen
-				name="browse"
+				name="BrowseTab"
 				options={{
 					title: '',
 					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Browse</Text>,
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'store-search' : 'store-search-outline'} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="SettingsTab"
+				options={{
+					title: '',
+					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Settings</Text>,
+					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'cog' : 'cog-outline'} />,
 				}}
 			/>
 			{/* {isAdmin ? (

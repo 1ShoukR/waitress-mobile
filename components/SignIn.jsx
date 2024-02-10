@@ -8,6 +8,7 @@ import { COLORS } from '../constants';
 import logo from '../assets/logo.png'
 import PressableButton from './PressableButton';
 import { doLogin } from '../redux/thunk';
+import * as Device from 'expo-device';
 const SignIn = () => {
 	//useState Hooks
 	const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const SignIn = () => {
 
 	// Local Functions
 	const handleLogin = useCallback(() => {
-		dispatch(doLogin({ email: email, password: password, user_agent: 'mobile' }));
+		dispatch(doLogin({ email: email, password: password, user_agent: Device.osName}));
 	}, [email, password, dispatch]);
 
 	useEffect(() => {
@@ -31,7 +32,7 @@ const SignIn = () => {
 		} else if (authStatus === 'succeeded') {
 			router.back()
 			setTimeout(() =>{
-				router.push('/home');
+				router.push('/HomeTab');
 			}, 300)
 			setEmail('');
 			setPassword('');
