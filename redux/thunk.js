@@ -23,3 +23,12 @@ export const createUserAccountThunk = createAsyncThunk('user/createUserAccountTh
 	const data = await client.post('/user/create', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } })
 	return data
 });
+
+
+export const getLocalRestaurants = createAsyncThunk('restaurant/getLocal', async (requestData) => {
+	const formData = new FormData()
+	formData.append('latitude', requestData.latitude);
+	formData.append('longitude', requestData.longitude);
+	const data = await client.post('/restaurant/local', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	return data
+})
