@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authSlice from './authSlice';
+import restaurantSlice from './restaurantSlice';
 
 // Import your slices (reducers) here
 // For example, if you have a userSlice, you would import it like this:
@@ -7,7 +8,8 @@ import authSlice from './authSlice';
 
 const store = configureStore({
 	reducer: {
-		auth: authSlice
+		auth: authSlice,
+		restaurant: restaurantSlice
 		// Add your slices (reducers) here
 		// For example: user: userReducer,
 	},
