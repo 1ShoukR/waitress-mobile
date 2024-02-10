@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { getLocalRestaurants } from './thunk';
 
 const initialState = {
-	restaurants: [],
+	localRestaurants: [],
 	status: 'idle', 
 	error: null,
 };
@@ -12,7 +12,7 @@ const restaurantSlice = createSlice({
 	initialState,
 	reducers: {
 		resetState: (state) => {
-			state.restaurants = [];
+			state.localRestaurants = [];
 			state.status = 'idle';
 			state.error = null;
 		},
@@ -25,7 +25,7 @@ const restaurantSlice = createSlice({
 			})
 			.addCase(getLocalRestaurants.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.restaurants = action.payload;
+				state.localRestaurants = action.payload;
 			})
 			.addCase(getLocalRestaurants.rejected, (state, action) => {
 				state.status = 'failed';
