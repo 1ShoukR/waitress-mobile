@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import React from 'react'
+import { COLORS } from '../constants';
 
 const CategoriesComponent = ({foodCategories}) => {
   return (
@@ -25,6 +26,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 		marginBottom: 10,
+		color: COLORS.white
 	},
 	genreWrapper: {
 		flexDirection: 'row',
