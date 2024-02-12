@@ -5,6 +5,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleInfo, faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { COLORS, FONT, SIZES } from '../constants/theme';
+import Platter from '../assets/platter.svg'
 const HomepageButtons = () => {
 	return (
 		<View style={styles.columnsContainer}>
@@ -12,19 +13,20 @@ const HomepageButtons = () => {
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Book a Table</Text>
-						<Image style={{ height: 30, width: 30, left: 24, color: COLORS.white }} source={utensiles} />
+						{/* <Image style={{ height: 30, width: 30, left: 24, color: COLORS.white }} source={utensiles} /> */}
+						<Platter style={{left: 27}} height={26} width={26} />
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={[styles.buttonText, { fontSize: '14' }]}>Favorite Restaurants</Text>
-						<Fontisto style={{left: 11, color: COLORS.white}} name="favorite" size={24} color="black" />
+						<Fontisto style={{ left: 11, color: COLORS.white }} name="favorite" size={24} color="black" />
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Your Orders</Text>
-						<FontAwesomeIcon style={{ left: 24, color: COLORS.white }} size={22} icon={faReceipt} />
+						<FontAwesomeIcon style={{ left: 34, color: COLORS.white }} size={22} icon={faReceipt} />
 					</View>
 				</TouchableOpacity>
 			</View>
@@ -32,19 +34,19 @@ const HomepageButtons = () => {
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Support</Text>
-						<FontAwesomeIcon style={{ left: 24, color: COLORS.white }} size={22} icon={faCircleInfo} />
+						<FontAwesomeIcon style={{ left: 42, color: COLORS.white }} size={22} icon={faCircleInfo} />
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Account</Text>
-						<MaterialCommunityIcons style={{ left: 24 , color: COLORS.white}} name="account" size={25} color="black" />
+						<MaterialCommunityIcons style={{ left: 42, color: COLORS.white }} name="account" size={25} color="black" />
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Set Address</Text>
-						<AntDesign style={{ left: 16, color: COLORS.white }} name="enviromento" size={25} color="black" />
+						<AntDesign style={{ left: 32, color: COLORS.white }} name="enviromento" size={25} color="black" />
 					</View>
 				</TouchableOpacity>
 			</View>
