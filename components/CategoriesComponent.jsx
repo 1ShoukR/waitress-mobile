@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 	genre: {
 		margin: 5,
 		padding: 5,
-		backgroundColor: '#eee',
+		color: '#eee',
 		borderRadius: 5,
 	},
 });
