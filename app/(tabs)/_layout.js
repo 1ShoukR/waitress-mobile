@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, View } from 'react-native';
-import { Tabs, useRouter } from 'expo-router';
+import { Tabs, useRouter, Stack } from 'expo-router';
 import { IconButton, Menu } from 'react-native-paper';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { setLastTab } from '../../redux/authSlice';
@@ -32,8 +32,11 @@ const TabLayout = () => {
 	return (
 		<Tabs
 			screenOptions={{
+				tabBarStyle: {
+					backgroundColor: '#121212'
+				}, 
 				tabBarActiveTintColor: COLORS.primary,
-				tabBarInactiveTintColor: COLORS.dark,
+				tabBarInactiveTintColor: COLORS.white,
 				// headerLeft: () => (
 				// 	<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
 				// 		{/* <Menu visible={visible} onDismiss={closeMenu} anchor={<IconButton icon="account-circle" iconColor={COLORS.gray800} size={32} onPress={openMenu} />}>
