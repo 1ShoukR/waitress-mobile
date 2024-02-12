@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLocalRestaurants } from '../redux/thunk';
 import HomepageButtons from './HomepageButtons';
 import CategoriesComponent from './CategoriesComponent';
+import TopRestaurantsComponent from './TopRestaurantsComponent';
+import LocalRestaurantsComponent from './LocalRestaurantsComponent';
 import { COLORS } from '../constants';
 
 const HomePageComponent = () => {
@@ -48,24 +50,8 @@ const HomePageComponent = () => {
 			<View style={styles.categoryContainer}>
 				<CategoriesComponent foodCategories={foodCategories} />
 			</View>
-
-			<View style={{ marginBottom: 20 }}>
-				<Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Restaurants</Text>
-				{topRestaurants.map((restaurant, index) => (
-					<Text key={index} style={{ marginVertical: 5, padding: 10, color:COLORS.white, borderRadius: 5 }}>
-						{restaurant}
-					</Text>
-				))}
-			</View>
-
-			<View>
-				<Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Local Restaurants</Text>
-				{localRestaurants?.localRestaurants?.data?.map((restaurant, index) => (
-					<Text key={index} style={{ marginVertical: 5, padding: 10, color:COLORS.white, borderRadius: 5 }}>
-						{restaurant?.name}
-					</Text>
-				))}
-			</View>
+				<TopRestaurantsComponent topRestaurants={topRestaurants} />
+				<LocalRestaurantsComponent localRestaurants={localRestaurants}/>
 		</View>
 	);
 };
