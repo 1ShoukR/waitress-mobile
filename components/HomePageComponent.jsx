@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getLocalRestaurants } from '../redux/thunk';
 import HomepageButtons from './HomepageButtons';
 import CategoriesComponent from './CategoriesComponent';
+import { COLORS } from '../constants';
 
 const HomePageComponent = () => {
 	const [searchQuery, setSearchQuery] = React.useState('');
@@ -51,7 +52,7 @@ const HomePageComponent = () => {
 			<View style={{ marginBottom: 20 }}>
 				<Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Restaurants</Text>
 				{topRestaurants.map((restaurant, index) => (
-					<Text key={index} style={{ marginVertical: 5, padding: 10, backgroundColor: '#f0f0f0', borderRadius: 5 }}>
+					<Text key={index} style={{ marginVertical: 5, padding: 10, color:COLORS.white, borderRadius: 5 }}>
 						{restaurant}
 					</Text>
 				))}
@@ -60,7 +61,7 @@ const HomePageComponent = () => {
 			<View>
 				<Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Local Restaurants</Text>
 				{localRestaurants?.localRestaurants?.data?.map((restaurant, index) => (
-					<Text key={index} style={{ marginVertical: 5, padding: 10, backgroundColor: '#f0f0f0', borderRadius: 5 }}>
+					<Text key={index} style={{ marginVertical: 5, padding: 10, color:COLORS.white, borderRadius: 5 }}>
 						{restaurant?.name}
 					</Text>
 				))}
@@ -98,8 +99,8 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		marginBottom: 0,
 		width: 180,
-		borderWidth: 1, 
-		borderColor: 'black', 
+		borderWidth: 1,
+		borderColor: 'black',
 	},
 });
 
