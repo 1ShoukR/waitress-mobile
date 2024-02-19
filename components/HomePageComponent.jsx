@@ -47,11 +47,9 @@ const HomePageComponent = () => {
 	return (
 		<View style={styles.container}>
 			<HomepageButtons />
-			<View style={styles.categoryContainer}>
-				<CategoriesComponent foodCategories={foodCategories} />
-			</View>
-				<TopRestaurantsComponent topRestaurants={topRestaurants} />
-				<LocalRestaurantsComponent localRestaurants={localRestaurants}/>
+			<CategoriesComponent foodCategories={foodCategories} />
+			<TopRestaurantsComponent topRestaurants={topRestaurants} />
+			<LocalRestaurantsComponent localRestaurants={localRestaurants}/>
 		</View>
 	);
 };
