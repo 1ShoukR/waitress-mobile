@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Tabs, useRouter, Stack } from 'expo-router';
 import { IconButton, Menu } from 'react-native-paper';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -67,6 +67,15 @@ const TabLayout = () => {
 					title: '',
 					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Settings</Text>,
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'cog' : 'cog-outline'} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="booking"
+				options={{
+					href: null,
+					headerShown: true,
+					headerTitle: 'Book a Restaurant',
+					headerLeft: () => <TouchableOpacity  style={{left: 10}}><MaterialCommunityIcons size={28} name='arrow-left' /></TouchableOpacity>
 				}}
 			/>
 			{/* {isAdmin ? (
