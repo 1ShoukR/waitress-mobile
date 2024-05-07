@@ -23,7 +23,7 @@ const SignIn = () => {
 	// Local Functions
 	const handleLogin = useCallback(() => {
 		console.log('email', email);
-		dispatch(doLogin({ email: email, password: password, user_agent: Device.osName }));
+		dispatch(doLogin({ email: email, password: password, userAgent: Device.osName }));
 	}, [email, password, dispatch]);
 
 	useEffect(() => {
