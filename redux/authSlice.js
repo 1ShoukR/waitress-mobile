@@ -62,15 +62,15 @@ const authSlice = createSlice({
 				const payload = action.payload;
 				if (payload && payload.token && payload.user) {
 					state.apiToken = payload.token;
-					state.userId = payload.user.user_id;
-					state.firstName = payload.user.first_name;
-					state.lastName = payload.user.last_name;
+					state.userId = payload.user.userId;
+					state.firstName = payload.user.firstName;
+					state.lastName = payload.user.lastName;
 					state.email = payload.user.email;
 					state.userType = payload.user.type;
-					state.authType = payload.user.auth_type;
+					state.authType = payload.user.authType;
 					state.status = 'succeeded';
-					state.latitude = payload.user.latitude
-					state.longitude = payload.user.longitude
+					state.latitude = payload.user.latitude;
+					state.longitude = payload.user.longitude;
 					console.log('teaaaaaa')
 					// Add additional logic if needed for authgroup based on userType or authType
 				} else {
