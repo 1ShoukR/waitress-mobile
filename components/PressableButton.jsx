@@ -40,7 +40,7 @@ const PressableButton = ({ title, onPress, fontSize, status, icon, theme, append
 	return (
 		<Button
 			mode="contained"
-			buttonColor={color}
+			buttonColor={'#FF6B6B'}
 			textColor={textColor}
 			uppercase={false}
 			rippleColor={pressedColor}
