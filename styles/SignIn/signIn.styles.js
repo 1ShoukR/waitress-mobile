@@ -29,10 +29,14 @@ const styles = StyleSheet.create({
 		marginRight: 20
 	},
 	title: {
-		color: COLORS.primary,
+		color: COLORS.white,
 		fontSize: SIZES.xLarge,
 		fontWeight: 600,
 		marginBottom: SIZES.medium,
+	},
+	footerText: {
+		fontWeight: 'bold',
+		
 	},
 	inputContainer: {
 		marginBottom: SIZES.medium,
