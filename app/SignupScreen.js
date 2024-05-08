@@ -12,25 +12,28 @@ const signUp = () => {
     const isPresented = router.canGoBack();
 	
     return (
-			<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: COLORS.primary }}>
+			<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#2A2C3B' }}>
 				<Stack.Screen
 					options={{
 						headerShown: true,
 						headerTitle: 'Sign In',
+						headerTitleStyle: {
+							color: 'white',
+						},
 						headerShadowVisible: false,
 						headerStyle: {
-							backgroundColor: COLORS.primary
+							backgroundColor: '#2A2C3B',
 						},
 						headerLeft: () => (
 							<Pressable
 								style={({ pressed }) => [
 									{
-										backgroundColor: pressed ? 'rgb(210, 230, 255)' : COLORS.primary,
+										backgroundColor: pressed ? 'rgb(210, 230, 255)' : '#2A2C3B',
 										padding: 10,
 									},
 								]}
 								onPress={() => router.back()}>
-								<FontAwesomeIcon icon={faX} />
+								<FontAwesomeIcon color="white" icon={faX} />
 							</Pressable>
 						),
 					}}
