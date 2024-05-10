@@ -34,7 +34,7 @@ const SignIn = () => {
 		} else if (authStatus === 'succeeded') {
 			router.back();
 			setTimeout(() => {
-				router.push('/HomeTab');
+				router.push('/home/HomeTab');
 			}, 300);
 			setEmail('');
 			setPassword('');
