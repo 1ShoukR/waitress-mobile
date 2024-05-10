@@ -32,19 +32,13 @@ const SignIn = () => {
 			// TODO: Implement form validation
 			alert('Login failed. Please try again.');
 		} else if (authStatus === 'succeeded') {
-			router.back();
-			setTimeout(() => {
 				router.push('/home/HomeTab');
-			}, 300);
 			setEmail('');
 			setPassword('');
 		}
 	}, [authStatus]);
 	const navigateToCreateAccount = () => {
-		router.back();
-		setTimeout(() => {
 			router.push('/account/CreateAccountScreen');
-		}, 100);
 	};
 
 	return (

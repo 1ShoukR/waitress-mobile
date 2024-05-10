@@ -22,7 +22,7 @@ const HomepageButtons = () => {
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
-						<Text style={[styles.buttonText, { fontSize: '14' }]}>Favorite Restaurants</Text>
+						<Text style={[styles.buttonText, { fontSize: '14' }]}>Favorites</Text>
 						<Fontisto style={{ left: 11, color: COLORS.white }} name="favorite" size={24} color="black" />
 					</View>
 				</TouchableOpacity>
