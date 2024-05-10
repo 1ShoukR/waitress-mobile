@@ -6,13 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleInfo, faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { COLORS, FONT, SIZES } from '../constants/theme';
 import Platter from '../assets/platter.svg'
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 const HomepageButtons = () => {
-	const router = useRouter()
+	// const router = useRouter()
 	return (
 		<View style={styles.columnsContainer}>
 			<View style={styles.column}>
-				<TouchableOpacity onPress={() => router.push('/booking/BookingScreen')} style={styles.button}>
+				<TouchableOpacity onPress={() => router.push('/home/BookingScreen')} style={styles.button}>
 					<View style={styles.buttonContent}>
 						
 						<Text style={styles.buttonText}>Book a Table</Text>
