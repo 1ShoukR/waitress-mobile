@@ -47,14 +47,15 @@ const TabLayout = () => {
 				// ),
 			}}>
 			<Tabs.Screen
-				name="HomeTab"
+				name="home"
 				options={{
+					headerShown: false,
 					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Home</Text>,
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'home' : 'home-outline'} />,
 				}}
 			/>
 			<Tabs.Screen
-				name="BrowseTab"
+				name="browse"
 				options={{
 					title: '',
 					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Browse</Text>,
@@ -62,14 +63,14 @@ const TabLayout = () => {
 				}}
 			/>
 			<Tabs.Screen
-				name="SettingsTab"
+				name="settings/SettingsTab"
 				options={{
 					title: '',
 					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Settings</Text>,
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'cog' : 'cog-outline'} />,
 				}}
 			/>
-			<Tabs.Screen
+			{/* <Tabs.Screen
 				name="booking"
 				options={{
 					href: null,
@@ -77,7 +78,7 @@ const TabLayout = () => {
 					headerTitle: 'Book a Restaurant',
 					headerLeft: () => <TouchableOpacity  style={{left: 10}}><MaterialCommunityIcons size={28} name='arrow-left' /></TouchableOpacity>
 				}}
-			/>
+			/> */}
 			{/* {isAdmin ? (
 				<Tabs.Screen
 					name="breezes"

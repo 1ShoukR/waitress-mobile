@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, View, Text } from 'react-native';
-import { COLORS } from '../../constants';
+import { COLORS } from '../../../constants';
 import { Tabs, Stack } from 'expo-router';
-import HomePageComponent from '../../components/HomePageComponent';
+import HomePageComponent from '../../../components/HomePageComponent';
 
 
 
