@@ -23,6 +23,7 @@ const theme = {
 };
 
 const Layout = () => {
+
     const [fontsLoaded] = useFonts({
     'BarlowSemiCondensed-Black': require('../assets/fonts/BarlowSemiCondensed-Black.ttf'),
     'BarlowSemiCondensed-BlackItalic': require('../assets/fonts/BarlowSemiCondensed-BlackItalic.ttf'),
@@ -59,7 +60,7 @@ const Layout = () => {
 						<View style={{ flex: 1 }} onLayout={onLayoutRootView}>
 							<Stack>
 								<Stack.Screen name="index" />
-								<Stack.Screen name="SignupScreen" options={{presentation: 'modal',gestureEnabled: false,}}/>
+								<Stack.Screen name="SignupScreen" options={{gestureEnabled: false,}}/>
 								{/* <Stack.Screen name="home/(tabs)/home/index" options={{ headerShown: false, }} /> */}
 								<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 								{/* <Stack.Screen name="tasks/[id]/noteModal" options={{ presentation: 'modal', headerTitle: '' }} /> */}
