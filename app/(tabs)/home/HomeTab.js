@@ -5,6 +5,8 @@ import { Tabs, Stack } from 'expo-router';
 import HomePageComponent from '../../../components/HomePageComponent';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import { client } from '../../../api/client';
+import { useSelector } from 'react-redux';
 
 const HomeIndex = () => {
 	const [refreshing, setRefreshing] = useState(false);
@@ -13,6 +15,7 @@ const HomeIndex = () => {
 	const [showAddressInput, setShowAddressInput] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const opacityAnim = useRef(new Animated.Value(1)).current;
+	const user = useSelector((state) => state?.auth);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -45,6 +48,13 @@ const HomeIndex = () => {
 			let results = await Location.geocodeAsync(userAddress);
 			if (results.length > 0) {
 				console.log('Location found:', results[0]);
+				let formData = new FormData();
+				formData.append('address', userAddress);
+				formData.append('latitude', results[0].latitude);
+				formData.append('longitude', results[0].longitude);
+				formData.append('userId', user.userId);
+				const response = await client.post('/api/users/update-user-location', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+				console.log('Response:', response);
 				setUserLocation(results[0]); // Assuming the first result is the desired one
 				setShowAddressInput(false);
 				setIsLoaded(false); // Stop loading
