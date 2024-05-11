@@ -15,41 +15,29 @@ const HomepageButtons = () => {
 				<TouchableOpacity onPress={() => router.push('/home/BookingScreen')} style={styles.button}>
 					<View style={styles.buttonContent}>
 						
-						<Text style={styles.buttonText}>Book a Table</Text>
+						<Text style={styles.buttonText}>Reserve a Table</Text>
 						{/* <Image style={{ height: 30, width: 30, left: 24, color: COLORS.white }} source={utensiles} /> */}
-						<Platter style={{left: 27}} height={26} width={26} />
+						<Platter style={{left: 15}} height={26} width={26} />
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
-						<Text style={[styles.buttonText, { fontSize: '14' }]}>Favorites</Text>
-						<Fontisto style={{ left: 11, color: COLORS.white }} name="favorite" size={24} color="black" />
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.button}>
-					<View style={styles.buttonContent}>
-						<Text style={styles.buttonText}>Your Orders</Text>
-						<FontAwesomeIcon style={{ left: 34, color: COLORS.white }} size={22} icon={faReceipt} />
+						<Text style={[styles.buttonText, { fontSize: '14', marginRight: 20 }]}>Favorites</Text>
+						<Fontisto style={{ left: 28, color: COLORS.white }} name="favorite" size={24} color="black" />
 					</View>
 				</TouchableOpacity>
 			</View>
 			<View style={styles.column}>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
+						<Text style={styles.buttonText}>Your Orders</Text>
+						<FontAwesomeIcon style={{ left: 34, color: COLORS.white }} size={22} icon={faReceipt} />
+					</View>
+				</TouchableOpacity>
+				<TouchableOpacity style={styles.button}>
+					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Support</Text>
 						<FontAwesomeIcon style={{ left: 42, color: COLORS.white }} size={22} icon={faCircleInfo} />
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.button}>
-					<View style={styles.buttonContent}>
-						<Text style={styles.buttonText}>Account</Text>
-						<MaterialCommunityIcons style={{ left: 42, color: COLORS.white }} name="account" size={25} color="black" />
-					</View>
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.button}>
-					<View style={styles.buttonContent}>
-						<Text style={styles.buttonText}>Set Address</Text>
-						<AntDesign style={{ left: 32, color: COLORS.white }} name="enviromento" size={25} color="black" />
 					</View>
 				</TouchableOpacity>
 			</View>
