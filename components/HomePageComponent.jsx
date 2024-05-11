@@ -46,6 +46,9 @@ const HomePageComponent = () => {
 
 	return (
 		<View style={styles.container}>
+			<View style={{flex: 1, justifyContent: 'center', alignItems: "center", marginBottom: 20, marginTop: -30}}>
+				<Text style={{ fontSize: 25, fontWeight: 'bold', color: COLORS.primary, }}>Waitress</Text>
+			</View>
 			<HomepageButtons />
 			<CategoriesComponent foodCategories={foodCategories} />
 			<TopRestaurantsComponent topRestaurants={topRestaurants} />
