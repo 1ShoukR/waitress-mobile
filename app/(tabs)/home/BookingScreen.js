@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, SafeAreaView, Button } from 'react-native';
+import { View, Text, SafeAreaView, Button, StyleSheet } from 'react-native';
 import { Stack, useNavigation } from 'expo-router';
+// import AccountScreenUserHeader from '../../../components/AccountScreenUserHeader';
 
 
 
@@ -9,13 +10,20 @@ const BookingScreen = () => {
     const navigation = useNavigation()
     return (
         <>
-        <View>
-            <Text>Booking Screen</Text>
+        <View style={styles.container}>
+            {/* <AccountScreenUserHeader />  */}
         </View>
         </>
     )
 
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
 
 export default BookingScreen
