@@ -64,9 +64,15 @@ const TabLayout = () => {
 			<Tabs.Screen
 				name="account"
 				options={{
-					title: '',
+					headerStyle: {
+						backgroundColor: '#2A2C3B',
+					},
+					title: 'Account',
+					headerTitleStyle: {
+						color: COLORS.white,
+					},
 					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Account</Text>,
-					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'cog' : 'cog-outline'} />,
+					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
 				}}
 			/>
 			{/* <Tabs.Screen
