@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, SafeAreaView, Button } from 'react-native';
-import { Stack } from 'expo-router';
+import { Stack, useNavigation } from 'expo-router';
 
 
 
 
 const BookingScreen = () => {
+    const navigation = useNavigation()
     return (
         <>
         <View>

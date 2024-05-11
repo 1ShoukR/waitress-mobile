@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, } from 'react-native';
 import { Tabs, useRouter, Stack } from 'expo-router';
-import { IconButton, Menu } from 'react-native-paper';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { setLastTab } from '../../redux/authSlice';
 // import { prepareReload } from '../../redux/horsesSlice';
@@ -63,10 +62,10 @@ const TabLayout = () => {
 				}}
 			/>
 			<Tabs.Screen
-				name="settings/SettingsTab"
+				name="account"
 				options={{
 					title: '',
-					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Settings</Text>,
+					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Account</Text>,
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'cog' : 'cog-outline'} />,
 				}}
 			/>
