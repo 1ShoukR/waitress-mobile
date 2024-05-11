@@ -59,7 +59,7 @@ const AccountScreenComponent = () => {
 			<Section title="Payment" onPress={() => console.log('Navigate to Payment')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 			<Section title="Waitress+" onPress={() => console.log('Navigate to Waitress+')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 			<Section title="Gift Cards" onPress={() => console.log('Navigate to Gift Cards')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
-			<Section title="Push Notifications" onPress={() => console.log('Navigate to Push Notifications')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
+			<Section title="Notifications" onPress={() => console.log('Navigate to Notifications')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 			<Section title="Linked Accounts" onPress={() => console.log('Navigate to Linked Accounts')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 			<Section title="Support" onPress={() => console.log('Navigate to Support')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 		</View>
