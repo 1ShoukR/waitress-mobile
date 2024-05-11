@@ -38,6 +38,8 @@ const HomeIndex = () => {
 	};
 
 	const handleAddressSubmit = async () => {
+		// In the future, we will hit a route to update the user's location in the database.
+		// We will update their address string, as well as their lat and long coordinates.
 		setIsLoaded(true); // Start loading
 		if (userAddress) {
 			let results = await Location.geocodeAsync(userAddress);
