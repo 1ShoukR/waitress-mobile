@@ -34,6 +34,7 @@ const authSlice = createSlice({
 			state.authType = null;
 			state.longitude = null;
 			state.latitude = null;
+			state.createdAt = null;
 		},
 		setLastTab: (state, action) => {
 			state.lastTab = action.payload
@@ -71,6 +72,7 @@ const authSlice = createSlice({
 					state.status = 'succeeded';
 					state.latitude = payload.user.latitude;
 					state.longitude = payload.user.longitude;
+					state.createdAt = payload.user.createdAt;
 					console.log('teaaaaaa')
 					// Add additional logic if needed for authgroup based on userType or authType
 				} else {
