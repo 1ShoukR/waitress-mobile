@@ -83,8 +83,8 @@ const HomeIndex = () => {
 										{isLoaded ? (
 											<ActivityIndicator size="small" color={COLORS.primary} />
 										) : (
-											<Text style={{ color: COLORS.white, fontStyle: 'italic', fontSize: 11 }}>
-												{userLocation ? `Lat: ${userLocation.latitude}, Long: ${userLocation.longitude}` : 'No address has been set.'}
+											<Text style={userLocation && userAddress ? [{ color: COLORS.white, fontStyle: 'italic', fontSize: 14, marginRight: 10 }] : [{ color: COLORS.white, fontStyle: 'italic', fontSize: 11, marginRight: 2 }]}>
+												{userLocation && userAddress ? `${userAddress}` : 'No address has been set.'}
 											</Text>
 										)}
 										<AntDesign name="enviromento" size={25} color={COLORS.white} />
