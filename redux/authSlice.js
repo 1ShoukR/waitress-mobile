@@ -2,7 +2,7 @@
  * Auth slice
  */
 import { createSlice } from '@reduxjs/toolkit';
-import { doLogin } from './thunk';
+import { doLogin, updateUserLocation } from './thunk';
 
 const initialState = {
 	apiToken: null,
@@ -12,80 +12,76 @@ const initialState = {
 	lastName: null,
 	email: null,
 	userType: null,
-	status: 'idle',
+	loginStatus: 'idle', // Renamed from status to loginStatus for clarity
+	updateLocationStatus: 'idle', // Added separate status for location updates
 	error: null,
 	lastTab: 'HomeTab',
 	latitude: null,
-	longitude: null
+	longitude: null,
+	address: null,
 };
 
 const authSlice = createSlice({
-    name: 'auth',
+	name: 'auth',
 	initialState,
 	reducers: {
-        loggedOut: (state) => {
-			state.status = 'idle';
-			state.apiToken = null;
-			state.userId = null;
-			state.firstName = null;
-			state.lastName = null;
-			state.email = null;
-			state.userType = null;
-			state.authType = null;
-			state.longitude = null;
-			state.latitude = null;
-			state.createdAt = null;
+		loggedOut: (state) => {
+			// Reset all fields appropriately
+			Object.assign(state, initialState);
 		},
 		setLastTab: (state, action) => {
-			state.lastTab = action.payload
-		}
-        /*
-        In theory, this is how we will determine what 
-        tab is active when we switch between tabs.
-        That way we can make sure the user stays on the 
-        same tab when they refresh the page.
-        -------------------------------------------------
-        someTabButton: (state) => {
-                state.lastTab = 'some tab name';
-            },
-            someTabButton: (state) => {
-                    state.lastTab = 'some tab name';
-                },
-         */
+			state.lastTab = action.payload;
+		},
 	},
 	extraReducers(builder) {
 		builder
-			.addCase(doLogin.pending, (state, action) => {
-				console.log('loading')
-				state.status = 'loading';
+			.addCase(doLogin.pending, (state) => {
+				state.loginStatus = 'loading';
 			})
 			.addCase(doLogin.fulfilled, (state, action) => {
 				const payload = action.payload;
-				if (payload && payload.token && payload.user) {
+				if (payload && payload.token) {
+					// Update login-related fields
 					state.apiToken = payload.token;
 					state.userId = payload.user.userId;
 					state.firstName = payload.user.firstName;
 					state.lastName = payload.user.lastName;
 					state.email = payload.user.email;
-					state.userType = payload.user.type;
 					state.authType = payload.user.authType;
-					state.status = 'succeeded';
 					state.latitude = payload.user.latitude;
 					state.longitude = payload.user.longitude;
-					state.createdAt = payload.user.createdAt;
-					console.log('teaaaaaa')
-					// Add additional logic if needed for authgroup based on userType or authType
+					state.address = payload.user.address;
+					state.userType = payload.user.authType;
+					state.loginStatus = 'succeeded';
 				} else {
-					state.status = 'failed';
+					state.loginStatus = 'failed';
 					state.error = 'Login failed. Please try again.';
-					console.log('NOOOO')
 				}
 			})
 			.addCase(doLogin.rejected, (state, action) => {
-				state.status = 'failed';
+				state.loginStatus = 'failed';
 				state.error = action.error.message;
-				console.error(action.error.message)
 			})
+			.addCase(updateUserLocation.pending, (state) => {
+				state.updateLocationStatus = 'loading';
+			})
+			.addCase(updateUserLocation.fulfilled, (state, action) => {
+				const payload = action.payload;
+				if (payload && payload.latitude) {
+					// Update location-related fields
+					state.latitude = payload.latitude;
+					state.longitude = payload.longitude;
+					state.address = payload.address;
+					state.updateLocationStatus = 'succeeded';
+				} else {
+					state.updateLocationStatus = 'failed';
+					state.error = 'Update location failed. Please try again.';
+				}
+			})
+			.addCase(updateUserLocation.rejected, (state, action) => {
+				state.updateLocationStatus = 'failed';
+				state.error = action.error.message;
+			});
 	},
 });
 
