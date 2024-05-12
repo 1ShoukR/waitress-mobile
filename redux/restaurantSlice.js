@@ -3,7 +3,7 @@ import { getLocalRestaurants } from './thunk';
 
 const initialState = {
 	localRestaurants: [],
-	status: 'idle', 
+	status: 'idle',
 	error: null,
 };
 
@@ -21,7 +21,7 @@ const restaurantSlice = createSlice({
 		builder
 			.addCase(getLocalRestaurants.pending, (state) => {
 				state.status = 'loading';
-				state.error = null; 
+				state.error = null;
 			})
 			.addCase(getLocalRestaurants.fulfilled, (state, action) => {
 				state.status = 'succeeded';
@@ -29,7 +29,7 @@ const restaurantSlice = createSlice({
 			})
 			.addCase(getLocalRestaurants.rejected, (state, action) => {
 				state.status = 'failed';
-				state.error = action.error.message; 
+				state.error = action.error.message;
 			});
 	},
 });
