@@ -19,7 +19,6 @@ const HomePageComponent = () => {
 	const fadeAnim = new Animated.Value(1); // Initial opacity value
 	const user = useSelector((state) => state?.auth);
 	const dispatch = useDispatch()
-	console.log('user', user);
 	const localRestaurants = useSelector((state) => state?.restaurant)
 	console.log('local restaurant', localRestaurants?.localRestaurants?.data);
 
