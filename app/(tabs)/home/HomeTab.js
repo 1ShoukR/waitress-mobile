@@ -6,16 +6,20 @@ import HomePageComponent from '../../../components/HomePageComponent';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { client } from '../../../api/client';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserLocation } from '../../../redux/thunk';
 
 const HomeIndex = () => {
 	const [refreshing, setRefreshing] = useState(false);
-	const [userLocation, setUserLocation] = useState(null);
-	const [userAddress, setUserAddress] = useState('');
+	const user = useSelector((state) => state?.auth);
+	const [userLocation, setUserLocation] = useState(user && user.latitude && user.longitude ? { latitude: user.latitude, longitude: user.longitude } : null);
+	const [userAddress, setUserAddress] = useState(user && user.address ? user.address : '');
 	const [showAddressInput, setShowAddressInput] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const opacityAnim = useRef(new Animated.Value(1)).current;
-	const user = useSelector((state) => state?.auth);
+	const dispatch = useDispatch();
+	console.log("userLocation", userLocation);
+	console.log("userAddress", userAddress);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
@@ -40,30 +44,25 @@ const HomeIndex = () => {
 		});
 	};
 
-	const handleAddressSubmit = async () => {
-		// In the future, we will hit a route to update the user's location in the database.
-		// We will update their address string, as well as their lat and long coordinates.
-		setIsLoaded(true); // Start loading
-		if (userAddress) {
-			let results = await Location.geocodeAsync(userAddress);
-			if (results.length > 0) {
-				console.log('Location found:', results[0]);
-				let formData = new FormData();
-				formData.append('address', userAddress);
-				formData.append('latitude', results[0].latitude);
-				formData.append('longitude', results[0].longitude);
-				formData.append('userId', user.userId);
-				const response = await client.post('/api/users/update-user-location', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-				console.log('Response:', response);
-				setUserLocation(results[0]); // Assuming the first result is the desired one
-				setShowAddressInput(false);
-				setIsLoaded(false); // Stop loading
-			} else {
-				console.log('No locations found for the address:', userAddress);
-				setIsLoaded(false); // Stop loading
-			}
-		}
-	};
+const handleAddressSubmit = async () => {
+    if (userAddress) {
+        let results = await Location.geocodeAsync(userAddress);
+        if (results.length > 0) {
+            dispatch(updateUserLocation({
+                latitude: results[0].latitude,
+                longitude: results[0].longitude,
+                userId: user.userId,
+                address: userAddress
+            }));
+            setUserLocation({ latitude: results[0].latitude, longitude: results[0].longitude });
+            setUserAddress(userAddress); 
+            setShowAddressInput(false);
+        } else {
+            console.log('No locations found for the address:', userAddress);
+            // Handling of loading state should be within Redux if the thunk fails
+        }
+    }
+};
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: '#2A2C3B' }}>
@@ -78,14 +77,25 @@ const HomeIndex = () => {
 								{showAddressInput ? (
 									<>
 										<TextInput
-											style={{ height: 40, borderColor: 'gray', borderWidth: 1, color: COLORS.white, width: 200 }}
+											style={{
+												height: 40,
+												borderColor: 'gray',
+												borderWidth: 1,
+												color: COLORS.white,
+												width: 200,
+												borderRadius: 20,
+												padding: 10,
+											}}
 											onChangeText={setUserAddress}
 											value={userAddress}
 											placeholder="Enter Address"
 											placeholderTextColor="grey"
+											selectionColor={COLORS.primary}
+											autoCorrect={false}
+											autoCapitalize="none"
 										/>
-										<TouchableOpacity style={{ backgroundColor: COLORS.primary, padding: 10, borderRadius: 5, marginLeft: 5 }} onPress={handleAddressSubmit}>
-											<Ionicons name="checkmark" size={24} color="black" />
+										<TouchableOpacity style={{ borderRadius: 5, marginLeft: 5 }} onPress={handleAddressSubmit}>
+											<Ionicons name="checkmark" size={26} color="black" />
 										</TouchableOpacity>
 									</>
 								) : (
@@ -93,7 +103,12 @@ const HomeIndex = () => {
 										{isLoaded ? (
 											<ActivityIndicator size="small" color={COLORS.primary} />
 										) : (
-											<Text style={userLocation && userAddress ? [{ color: COLORS.white, fontStyle: 'italic', fontSize: 14, marginRight: 10 }] : [{ color: COLORS.white, fontStyle: 'italic', fontSize: 11, marginRight: 2 }]}>
+											<Text
+												style={
+													userLocation && userAddress
+														? [{ color: COLORS.white, fontStyle: 'italic', fontSize: 14, marginRight: 10 }]
+														: [{ color: COLORS.white, fontStyle: 'italic', fontSize: 11, marginRight: 2 }]
+												}>
 												{userLocation && userAddress ? `${userAddress}` : 'No address has been set.'}
 											</Text>
 										)}
