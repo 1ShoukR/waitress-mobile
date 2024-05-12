@@ -19,7 +19,8 @@ const SignIn = () => {
 
 	// // Redux Hooks
 	const dispatch = useDispatch();
-	const authStatus = useSelector((state) => state?.auth?.status);
+	const authStatus = useSelector((state) => state?.auth?.loginStatus);
+	const userEmail = useSelector((state) => state?.auth?.email);
 
 	// Local Functions
 	const handleLogin = useCallback(() => {
@@ -27,16 +28,15 @@ const SignIn = () => {
 		dispatch(doLogin({ email: email, password: password, userAgent: Device.osName }));
 	}, [email, password, dispatch]);
 
-	useEffect(() => {
-		if (authStatus === 'failed') {
-			// TODO: Implement form validation
-			alert('Login failed. Please try again.');
-		} else if (authStatus === 'succeeded') {
-				router.push('/home/HomeTab');
-			setEmail('');
-			setPassword('');
-		}
-	}, [authStatus]);
+useEffect(() => {
+	if (authStatus === 'failed') {
+		alert('Login failed. Please try again.');
+	} else if (authStatus === 'succeeded') {
+		router.push('/home/HomeTab');
+		setEmail('');
+		setPassword('');
+	}
+}, [authStatus, userEmail]);
 	const navigateToCreateAccount = () => {
 			router.push('/account/CreateAccountScreen');
 	};
