@@ -26,10 +26,12 @@ export const createUserAccountThunk = createAsyncThunk('user/createUserAccountTh
 
 
 export const getLocalRestaurants = createAsyncThunk('restaurant/getLocal', async (requestData) => {
+	console.log('requestData', requestData)
 	const formData = new FormData()
 	formData.append('latitude', requestData.latitude);
 	formData.append('longitude', requestData.longitude);
-	const data = await client.post('/restaurant/local', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	formData.append('apiToken', requestData.apiToken);
+	const data = await client.post('/api/restaurant/local', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data
 })
 
