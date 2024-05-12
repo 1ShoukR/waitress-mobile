@@ -3,13 +3,21 @@ import { RefreshControl, SafeAreaView, ScrollView, View, Text, StyleSheet, Touch
 import { COLORS } from '../../../constants';
 import { Tabs } from 'expo-router';
 import AccountScreenComponent from '../../../components/AccountScreenComponent';
+import { useDispatch } from 'react-redux';
+import { loggedOut } from '../../../redux/authSlice';
+import { router } from 'expo-router';
 
 const AccountScreen = () => {
+	const dispatch = useDispatch();
+	const handleLogout = () => {
+		dispatch(loggedOut())
+		router.push('/')
+	}
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<ScrollView style={styles.scrollView} refreshControl={<RefreshControl refreshing={false} onRefresh={() => console.log('Refreshed!')} />}>
 				<AccountScreenComponent />
-				<TouchableOpacity>
+				<TouchableOpacity onPress={handleLogout}>
 					<View style={styles.logoutButton}>
 						<Text style={{fontWeight: 'bold'}}>Log Out</Text>
 					</View>
