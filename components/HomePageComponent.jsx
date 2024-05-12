@@ -9,6 +9,7 @@ import CategoriesComponent from './CategoriesComponent';
 import TopRestaurantsComponent from './TopRestaurantsComponent';
 import LocalRestaurantsComponent from './LocalRestaurantsComponent';
 import { COLORS } from '../constants';
+import { client } from '../api/client';
 
 const HomePageComponent = () => {
 	const [searchQuery, setSearchQuery] = React.useState('');
@@ -20,7 +21,8 @@ const HomePageComponent = () => {
 	const user = useSelector((state) => state?.auth);
 	const dispatch = useDispatch()
 	const localRestaurants = useSelector((state) => state?.restaurant)
-	console.log('local restaurant', localRestaurants?.localRestaurants?.data);
+	const apiToken = useSelector((state) => state?.auth?.apiToken);
+	console.log('local restaurant', localRestaurants?.localRestaurants);
 
 	const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
 	const topRestaurants = ['Restaurant A', 'Restaurant B', 'Restaurant C'];
@@ -37,7 +39,7 @@ const HomePageComponent = () => {
 	}, [searchQuery, foodCategories, topRestaurants]);
 
 	React.useEffect(() => {
-		dispatch(getLocalRestaurants({ latitude: user.latitude, longitude: user.longitude }));
+		dispatch(getLocalRestaurants({ latitude: user.latitude, longitude: user.longitude, apiToken: apiToken }));
 	}, [user.latitude, user.longitude, dispatch]);
 
 	const onChangeSearch = (query) => setSearchQuery(query);
