@@ -32,3 +32,15 @@ export const getLocalRestaurants = createAsyncThunk('restaurant/getLocal', async
 	const data = await client.post('/restaurant/local', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data
 })
+
+
+export const updateUserLocation = createAsyncThunk('user/updateUserLocation', async (requestData) => {
+	const formData = new FormData();
+	console.log('requestData', requestData)
+	formData.append('latitude', requestData.latitude);
+	formData.append('longitude', requestData.longitude);
+	formData.append('userId', requestData.userId);
+	formData.append('address', requestData.address);
+	const data = await client.post('/api/users/update-user-location', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	return data;
+});
