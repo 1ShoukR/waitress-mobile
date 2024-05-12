@@ -19,6 +19,7 @@ const initialState = {
 	latitude: null,
 	longitude: null,
 	address: null,
+	createdAt: null,
 };
 
 const authSlice = createSlice({
@@ -52,6 +53,7 @@ const authSlice = createSlice({
 					state.longitude = payload.user.longitude;
 					state.address = payload.user.address;
 					state.userType = payload.user.authType;
+					state.createdAt = payload.user.createdAt;
 					state.loginStatus = 'succeeded';
 				} else {
 					state.loginStatus = 'failed';
