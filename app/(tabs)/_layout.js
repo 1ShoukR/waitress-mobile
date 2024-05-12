@@ -12,7 +12,7 @@ const TabLayout = () => {
 	const dispatch = useDispatch();
 
 	const authType = useSelector((state) => state.auth.authType);
-	const [isAdmin, setIsAdmind] = useState(authType === 'admin' || authType === 'manager' || authType === 'owner' ? true : false);
+	const [isAdmin, setIsAdmind] = useState(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev' ? true : false);
 	const [visible, setVisible] = useState(false);
 	const openMenu = () => setVisible(true);
 	const closeMenu = () => setVisible(false);
@@ -75,6 +75,22 @@ const TabLayout = () => {
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
 				}}
 			/>
+			{isAdmin ? (
+				<Tabs.Screen
+					name="admin"
+					options={{
+						headerStyle: {
+							backgroundColor: '#2A2C3B',
+						},
+						title: 'Admin',
+						headerTitleStyle: {
+							color: COLORS.white,
+						},
+						tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Admin</Text>,
+						tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
+					}}
+				/>
+			): null}
 			{/* <Tabs.Screen
 				name="booking"
 				options={{
