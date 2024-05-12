@@ -82,7 +82,7 @@ useEffect(() => {
 			</View>
 			<PressableButton
 				onPress={handleLogin}
-				title="sign in"
+				title="Sign in"
 				fontSize={18}
 				theme="danger"
 				loadingDelay={1000}
