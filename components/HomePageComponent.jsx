@@ -22,7 +22,6 @@ const HomePageComponent = () => {
 	const dispatch = useDispatch()
 	const localRestaurants = useSelector((state) => state?.restaurant)
 	const apiToken = useSelector((state) => state?.auth?.apiToken);
-	console.log('local restaurant', localRestaurants?.localRestaurants);
 
 	const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
 	const topRestaurants = ['Restaurant A', 'Restaurant B', 'Restaurant C'];
