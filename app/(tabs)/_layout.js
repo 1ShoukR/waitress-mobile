@@ -32,8 +32,8 @@ const TabLayout = () => {
 		<Tabs
 			screenOptions={{
 				tabBarStyle: {
-					backgroundColor: '#121212'
-				}, 
+					backgroundColor: '#121212',
+				},
 				tabBarActiveTintColor: COLORS.primary,
 				tabBarInactiveTintColor: COLORS.white,
 				// headerLeft: () => (
@@ -77,7 +77,7 @@ const TabLayout = () => {
 			/>
 			{isAdmin ? (
 				<Tabs.Screen
-					name="admin"
+					name="admin/AdminTab"
 					options={{
 						headerStyle: {
 							backgroundColor: '#2A2C3B',
@@ -90,7 +90,7 @@ const TabLayout = () => {
 						tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
 					}}
 				/>
-			): null}
+			) : null}
 			{/* <Tabs.Screen
 				name="booking"
 				options={{
