@@ -1,32 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text, } from 'react-native';
-import { Tabs, useRouter, Stack } from 'expo-router';
+import { Text } from 'react-native';
+import { Tabs, useRouter, Stack, useNavigation } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { setLastTab } from '../../redux/authSlice';
-// import { prepareReload } from '../../redux/horsesSlice';
 import { COLORS } from '../../constants';
+import { setShowAccountTabBackButton } from '../../redux/routesSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const TabLayout = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 
 	const authType = useSelector((state) => state.auth.authType);
-	const [isAdmin, setIsAdmind] = useState(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev' ? true : false);
+	const [isAdmin, setIsAdmin] = useState(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev' ? true : false);
 	const [visible, setVisible] = useState(false);
 	const openMenu = () => setVisible(true);
 	const closeMenu = () => setVisible(false);
+	const setTabHeaderButtonAccountScreen = useSelector((state) => state?.routes?.showAccountTabBackButton);
 
-
-	// const onLogout = () => {
-	// 	router.push('/');
-	// 	dispatch(prepareReload());
-	// };
 	const handleTabChange = (tabName) => {
-			dispatch(setLastTab(tabName));
-		};
+		dispatch(setLastTab(tabName));
+	};
 
-		
+	// Animated value for fading
+	const [fadeAnim] = useState(new Animated.Value(0));
+
+	useEffect(() => {
+		if (setTabHeaderButtonAccountScreen) {
+			Animated.timing(fadeAnim, {
+				toValue: 1,
+				duration: 500, // Duration of the fade-in
+				useNativeDriver: true,
+			}).start();
+		} else {
+			fadeAnim.setValue(0); // Reset the animation value when not showing
+		}
+	}, [setTabHeaderButtonAccountScreen]);
 
 	return (
 		<Tabs
@@ -36,20 +48,22 @@ const TabLayout = () => {
 				},
 				tabBarActiveTintColor: COLORS.primary,
 				tabBarInactiveTintColor: COLORS.white,
-				// headerLeft: () => (
-				// 	<View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-				// 		{/* <Menu visible={visible} onDismiss={closeMenu} anchor={<IconButton icon="account-circle" iconColor={COLORS.gray800} size={32} onPress={openMenu} />}>
-				//             <Menu.Item style={{ backgroundColor: COLORS.primaryLight }} onPress={onLogout} leadingIcon="logout" title="Log out" disabled={false}/>
-				//         </Menu> */}
-				// 		<IconButton icon="logout" iconColor={COLORS.gray800} size={32} onPress={onLogout} />
-				// 	</View>
-				// ),
 			}}>
 			<Tabs.Screen
 				name="home"
 				options={{
 					headerShown: false,
-					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Home</Text>,
+					tabBarLabel: ({ focused, color }) => (
+						<Text
+							style={{
+								fontSize: 12,
+								color: color,
+								marginTop: -8,
+								fontWeight: focused ? 'bold' : 'regular',
+							}}>
+							Home
+						</Text>
+					),
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'home' : 'home-outline'} />,
 				}}
 			/>
@@ -57,7 +71,17 @@ const TabLayout = () => {
 				name="browse"
 				options={{
 					title: '',
-					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Browse</Text>,
+					tabBarLabel: ({ focused, color }) => (
+						<Text
+							style={{
+								fontSize: 12,
+								color: color,
+								marginTop: -8,
+								fontWeight: focused ? 'bold' : 'regular',
+							}}>
+							Browse
+						</Text>
+					),
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'store-search' : 'store-search-outline'} />,
 				}}
 			/>
@@ -68,10 +92,38 @@ const TabLayout = () => {
 						backgroundColor: '#2A2C3B',
 					},
 					title: 'Account',
+					headerShown: true,
 					headerTitleStyle: {
 						color: COLORS.white,
 					},
-					tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Account</Text>,
+					headerLeft: () => {
+						if (setTabHeaderButtonAccountScreen) {
+							return (
+								<Animated.View style={{ opacity: fadeAnim }}>
+									<TouchableOpacity
+										onPress={() => {
+											dispatch(setShowAccountTabBackButton(false));
+											router.back();
+										}}>
+										<FontAwesomeIcon style={{ marginLeft: 15, padding: 10 }} size={29} color={COLORS.white} icon={faArrowLeft} />
+									</TouchableOpacity>
+								</Animated.View>
+							);
+						} else {
+							return null;
+						}
+					},
+					tabBarLabel: ({ focused, color }) => (
+						<Text
+							style={{
+								fontSize: 12,
+								color: color,
+								marginTop: -8,
+								fontWeight: focused ? 'bold' : 'regular',
+							}}>
+							Account
+						</Text>
+					),
 					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
 				}}
 			/>
@@ -86,37 +138,21 @@ const TabLayout = () => {
 						headerTitleStyle: {
 							color: COLORS.white,
 						},
-						tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>Admin</Text>,
+						tabBarLabel: ({ focused, color }) => (
+							<Text
+								style={{
+									fontSize: 12,
+									color: color,
+									marginTop: -8,
+									fontWeight: focused ? 'bold' : 'regular',
+								}}>
+								Admin
+							</Text>
+						),
 						tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
 					}}
 				/>
 			) : null}
-			{/* <Tabs.Screen
-				name="booking"
-				options={{
-					href: null,
-					headerShown: true,
-					headerTitle: 'Book a Restaurant',
-					headerLeft: () => <TouchableOpacity  style={{left: 10}}><MaterialCommunityIcons size={28} name='arrow-left' /></TouchableOpacity>
-				}}
-			/> */}
-			{/* {isAdmin ? (
-				<Tabs.Screen
-					name="breezes"
-					options={{
-						title: 'Breezes',
-						tabBarLabel: ({ focused, color }) => <Text style={{ fontSize: 12, color: color, marginTop: -8, fontWeight: focused ? 'bold' : 'regular' }}>{t('common:breezes')}</Text>,
-						tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'timer' : 'timer-outline'} />,
-					}}
-				/>
-			) : (
-				<Tabs.Screen
-					name="breezes"
-					options={{
-						href: null,
-					}}
-				/>
-			)} */}
 		</Tabs>
 	);
 };
