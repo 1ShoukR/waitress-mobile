@@ -11,6 +11,13 @@ const AccountLayout = () => {
 							headerShown: false,
 						}}
 					/>
+					<Stack.Screen
+						name="EditAccount"
+						options={{
+							title: "Edit Account",
+							headerShown: false,
+						}}
+					/>
 				</Stack>
 			</>
 		);
