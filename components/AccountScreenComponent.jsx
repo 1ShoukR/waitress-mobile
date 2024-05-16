@@ -1,11 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { router } from 'expo-router';
+import { setShowAccountTabBackButton } from '../redux/routesSlice';
 
 const AccountScreenComponent = () => {
+	const dispatch = useDispatch()
+	const [memberSince, setMemberSince] = React.useState('');
+	const handleTabScreenHeaderButton = () => {
+		dispatch(setShowAccountTabBackButton(true))
+
+	}
+	React.useEffect(() => {
+		if (user) {
+			setMemberSince(timeSinceCreatedAt(user?.createdAt));
+		}
+	}, [user]);
 	const Divider = () => <View style={styles.divider} />; // New Divider component
 
 	const Section = ({ title, onPress, rightComponent }) => (
@@ -21,12 +34,6 @@ const AccountScreenComponent = () => {
         </>
 	);
 
-	const [memberSince, setMemberSince] = React.useState('');
-	React.useEffect(() => {
-		if (user) {
-			setMemberSince(timeSinceCreatedAt(user.createdAt));
-		}
-	}, [user]);
 
 	const timeSinceCreatedAt = (createdAt) => {
 		const createdAtDate = new Date(createdAt);
@@ -55,7 +62,10 @@ const AccountScreenComponent = () => {
 				<Text style={styles.memberSince}>Member Since {memberSince}</Text>
 			</View>
 			<Divider />
-			<Section title="Edit Account" onPress={() => console.log('Navigate to Edit Account')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
+			<Section title="Edit Account" onPress={() => {
+				handleTabScreenHeaderButton()
+				router.push('/account/EditAccount');
+			}} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 			<Section title="Payment" onPress={() => console.log('Navigate to Payment')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 			<Section title="Waitress+" onPress={() => console.log('Navigate to Waitress+')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
 			<Section title="Gift Cards" onPress={() => console.log('Navigate to Gift Cards')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
