@@ -16,6 +16,7 @@ const HomeIndex = () => {
 	const [userAddress, setUserAddress] = useState(user && user.address ? user.address : '');
 	const [showAddressInput, setShowAddressInput] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
+	const reduxUser = useSelector((state) => state?.auth);
 	const opacityAnim = useRef(new Animated.Value(1)).current;
 	const dispatch = useDispatch();
 	console.log("userLocation", userLocation);
@@ -109,7 +110,7 @@ const handleAddressSubmit = async () => {
 														? [{ color: COLORS.white, fontStyle: 'italic', fontSize: 14, marginRight: 10 }]
 														: [{ color: COLORS.white, fontStyle: 'italic', fontSize: 11, marginRight: 2 }]
 												}>
-												{userLocation && userAddress ? `${userAddress}` : 'No address has been set.'}
+												{userLocation && userAddress ? `${userAddress}` : reduxUser ? `${reduxUser.address}`  : 'No address has been set.'}
 											</Text>
 										)}
 										<AntDesign name="enviromento" size={25} color={COLORS.white} />
