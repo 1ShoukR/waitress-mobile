@@ -12,7 +12,7 @@ const HomeLayout = () => {
 				<Stack>
 					<Stack.Screen name="BookingScreen" options={{ 
                         headerStyle: {
-                            backgroundColor: '#2A2C3B'
+                            backgroundColor: COLORS.primary
                             }, 
                             headerTitleStyle: {
                                 color: COLORS.white

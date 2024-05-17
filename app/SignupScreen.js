@@ -1,18 +1,16 @@
 import React from 'react';
-import { View, ScrollView, LogBox, Button, Text, Pressable } from 'react-native';
+import { View, ScrollView,  Pressable } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faX } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faX } from '@fortawesome/free-solid-svg-icons';
 import { Stack, router } from 'expo-router';
-import { Provider } from 'react-redux';
 import SignIn from '../components/SignIn';
-import store from '../redux/store';
 import { COLORS } from '../constants';
 
 const signUp = () => {
     const isPresented = router.canGoBack();
 	
     return (
-			<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#2A2C3B' }}>
+			<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: COLORS.primary }}>
 				<Stack.Screen
 					options={{
 						headerShown: true,
@@ -22,18 +20,18 @@ const signUp = () => {
 						},
 						headerShadowVisible: false,
 						headerStyle: {
-							backgroundColor: '#2A2C3B',
+							backgroundColor: COLORS.primary,
 						},
 						headerLeft: () => (
 							<Pressable
 								style={({ pressed }) => [
 									{
-										backgroundColor: pressed ? 'rgb(210, 230, 255)' : '#2A2C3B',
+										backgroundColor: COLORS.primary,
 										padding: 10,
 									},
 								]}
 								onPress={() => router.back()}>
-								<FontAwesomeIcon color="white" icon={faX} />
+								<FontAwesomeIcon color="white" icon={faArrowLeft} />
 							</Pressable>
 						),
 					}}

@@ -89,7 +89,7 @@ const TabLayout = () => {
 				name="account"
 				options={{
 					headerStyle: {
-						backgroundColor: '#2A2C3B',
+						backgroundColor: COLORS.primary,
 					},
 					title: 'Account',
 					headerShown: true,
@@ -132,7 +132,7 @@ const TabLayout = () => {
 					name="admin/AdminTab"
 					options={{
 						headerStyle: {
-							backgroundColor: '#2A2C3B',
+							backgroundColor: COLORS.primary,
 						},
 						title: 'Admin',
 						headerTitleStyle: {

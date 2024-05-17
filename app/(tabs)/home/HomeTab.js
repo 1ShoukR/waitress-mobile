@@ -65,12 +65,12 @@ const handleAddressSubmit = async () => {
 };
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: '#2A2C3B' }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
 			<Tabs.Screen
 				options={{
 					headerShown: true,
 					title: '',
-					headerBackground: () => <View style={{ backgroundColor: '#2A2C3B', height: 100 }} />,
+					headerBackground: () => <View style={{ backgroundColor: COLORS.primary, height: 100 }} />,
 					headerRight: () => (
 						<TouchableOpacity onPress={toggleInput}>
 							<Animated.View style={{ flexDirection: 'row', alignItems: 'center', opacity: opacityAnim }}>
@@ -120,7 +120,7 @@ const handleAddressSubmit = async () => {
 					),
 				}}
 			/>
-			<ScrollView style={{ backgroundColor: '#2A2C3B' }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+			<ScrollView style={{ backgroundColor: COLORS.primary }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 				<View style={{ flex: 1, paddingVertical: 32, paddingHorizontal: 16 }}>
 					<HomePageComponent refreshing={refreshing} />
 				</View>

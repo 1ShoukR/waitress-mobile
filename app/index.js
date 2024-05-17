@@ -41,7 +41,7 @@ const App = () => {
 					headerShadowVisible: false,
 				}}
 			/>
-			<View style={{ flex: 1, padding: 16, backgroundColor: '#2A2C3B' }}>
+			<View style={{ flex: 1, padding: 16, backgroundColor: COLORS.primary }}>
 				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 500 }}>
 					<Button rippleColor='transparent' icon="account" mode="outlined" onPress={() => router.push('/SignupScreen')} style={[styles.button, {borderColor: 'white', }]} labelStyle={styles.signInButtonLabel} contentStyle={{flexDirection: 'row-reverse'}}>
 						Sign In
