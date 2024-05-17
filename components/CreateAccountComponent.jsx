@@ -8,6 +8,59 @@ import { useDispatch } from 'react-redux';
 import * as Location from 'expo-location';
 import { createUserAccountThunk } from '../redux/thunk';
 
+const stateInitials = [
+	'AL',
+	'AK',
+	'AZ',
+	'AR',
+	'CA',
+	'CO',
+	'CT',
+	'DE',
+	'FL',
+	'GA',
+	'HI',
+	'ID',
+	'IL',
+	'IN',
+	'IA',
+	'KS',
+	'KY',
+	'LA',
+	'ME',
+	'MD',
+	'MA',
+	'MI',
+	'MN',
+	'MS',
+	'MO',
+	'MT',
+	'NE',
+	'NV',
+	'NH',
+	'NJ',
+	'NM',
+	'NY',
+	'NC',
+	'ND',
+	'OH',
+	'OK',
+	'OR',
+	'PA',
+	'RI',
+	'SC',
+	'SD',
+	'TN',
+	'TX',
+	'UT',
+	'VT',
+	'VA',
+	'WA',
+	'WV',
+	'WI',
+	'WY',
+];
+
 const CreateAccountComponent = () => {
 	const dispatch = useDispatch();
 	const [firstName, setFirstName] = React.useState('');
@@ -27,6 +80,7 @@ const CreateAccountComponent = () => {
 	const [addressForm, setAddressForm] = React.useState(false);
 	const [passwordError, setPasswordError] = React.useState('');
 	const [emailError, setEmailError] = React.useState('');
+	const [stateError, setStateError] = React.useState('');
 
 	const goNextForm = () => {
 		setNextForm(true);
@@ -72,6 +126,15 @@ const CreateAccountComponent = () => {
 		return true;
 	};
 
+	const validateState = (state) => {
+		if (!stateInitials.includes(state.toUpperCase())) {
+			setStateError('Please enter a valid state abbreviation.');
+			return false;
+		}
+		setStateError('');
+		return true;
+	};
+
 	const goAddressForm = () => {
 		if (!validateEmail(email)) {
 			return;
@@ -89,34 +152,40 @@ const CreateAccountComponent = () => {
 		setAddressForm(true);
 	};
 
-	const handleSubmit = async () => {
-		console.log(firstName);
-		console.log(lastName);
-		console.log(email);
-		console.log(password);
-		console.log(userAddress);
-		if (userAddress) {
-			let results = await Location.geocodeAsync(userAddress.address);
-			console.log('results', results);
-			if (results.length > 0) {
-				setUserAddress({ ...userAddress, latitude: results[0].latitude, longitude: results[0].longitude })
-				dispatch(createUserAccountThunk({
-						firstName: firstName,
-						lastName: lastName,
-						email: email,
-						password: password,
-						userType: 'customer',
-						userAddress: userAddress,
-					}));
-			} else {
-				setPasswordError('Please enter a valid address');
-			}
-		}
-	};
+const handleSubmit = async () => {
+	console.log(firstName);
+	console.log(lastName);
+	console.log(email);
+	console.log(password);
+	console.log(userAddress);
+	if (!validateState(userAddress.state)) {
+		return;
+	}
+	let results = await Location.geocodeAsync(userAddress.address);
+	console.log('results', results);
+	if (results.length > 0) {
+		const updatedUserAddress = {
+			...userAddress,
+			latitude: results[0].latitude,
+			longitude: results[0].longitude,
+		};
+		dispatch(createUserAccountThunk({
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				password: password,
+				userType: 'customer',
+				userAddress: updatedUserAddress,
+			}));
+		setUserAddress(updatedUserAddress);
+	} else {
+		setPasswordError('Please enter a valid address');
+	}
+};
 
 	return (
 		<ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingBottom: 200 }}>
-				<KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={2} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} >
+			<KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={2} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 				<View style={{ flex: 1, justifyContent: 'center' }}>
 					{!nextForm ? (
 						<View style={styles.inputContainer}>
@@ -205,8 +274,11 @@ const CreateAccountComponent = () => {
 							<TextInput
 								label="State"
 								value={userAddress.state}
-								placeholder="Enter your state"
-								onChangeText={(text) => setUserAddress({ ...userAddress, state: text })}
+								placeholder="Enter your state initials (e.g., NY)"
+								onChangeText={(text) => {
+									setUserAddress({ ...userAddress, state: text });
+									validateState(text);
+								}}
 								mode="flat"
 								activeOutlineColor={COLORS.primary}
 								outlineColor={COLORS.gray800}
@@ -214,6 +286,7 @@ const CreateAccountComponent = () => {
 								style={[styles.input, { width: 400 }]}
 								returnKeyType="go"
 							/>
+							{stateError ? <Text style={{ color: 'red', marginBottom: 10 }}>{stateError}</Text> : null}
 							<TextInput
 								label="Zip Code"
 								value={userAddress.zip}
@@ -230,8 +303,8 @@ const CreateAccountComponent = () => {
 						</View>
 					)}
 				</View>
-		</KeyboardAvoidingView>
-			</ScrollView>
+			</KeyboardAvoidingView>
+		</ScrollView>
 	);
 };
 
