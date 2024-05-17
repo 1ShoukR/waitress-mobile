@@ -13,13 +13,13 @@ export const doLogin = createAsyncThunk('auth/doLogin', async (requestData) => {
 	return data;
 });
 
-export const createUserAccountThunk = createAsyncThunk('user/createUserAccountThunk', async (requestData) => {
-	const formData = new FormData()
-	formData.append('firstName', requestData.firstName)
-	formData.append('lastName', requestData.lastName)
-	formData.append('email', requestData.email)
-	formData.append('userType', requestData.userType)
-	formData.append('password', requestData.password)
+export const createUserAccountThunk = createAsyncThunk('auth/createUserAccountThunk', async (requestData) => {
+	const formData = new FormData();
+	formData.append('firstName', requestData.firstName);
+	formData.append('lastName', requestData.lastName);
+	formData.append('email', requestData.email);
+	formData.append('userType', requestData.userType);
+	formData.append('password', requestData.password);
 	formData.append('latitude', requestData.userAddress.latitude);
 	formData.append('longitude', requestData.userAddress.longitude);
 	formData.append('address', requestData.userAddress.address);
@@ -27,7 +27,8 @@ export const createUserAccountThunk = createAsyncThunk('user/createUserAccountTh
 	formData.append('state', requestData.userAddress.state);
 	formData.append('zip', requestData.userAddress.zip);
 	const data = await client.post('/api/users/create', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	return data
+	console.log('data', data)
+	return data;
 });
 
 
