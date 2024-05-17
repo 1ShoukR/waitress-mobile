@@ -15,11 +15,12 @@ export const doLogin = createAsyncThunk('auth/doLogin', async (requestData) => {
 
 export const createUserAccountThunk = createAsyncThunk('user/createUserAccountThunk', async (requestData) => {
 	const formData = new FormData()
-	formData.append('first_name', requestData.firstName)
-	formData.append('last_name', requestData.lastName)
+	formData.append('firstName', requestData.firstName)
+	formData.append('lastName', requestData.lastName)
 	formData.append('email', requestData.email)
-	formData.append('user_type', requestData.userType)
+	formData.append('userType', requestData.userType)
 	formData.append('password', requestData.password)
+	formData.append('userAddress', requestData.userAddress)
 	const data = await client.post('/user/create', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } })
 	return data
 });

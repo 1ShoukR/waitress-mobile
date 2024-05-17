@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View, Pressable, Image } from 'react-native';
+import {  Text, View, Pressable,  } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { router } from 'expo-router';
-import { TextInput, Button, Title } from 'react-native-paper';
+import { TextInput, Title } from 'react-native-paper';
 import styles from '../styles/SignIn/signIn.styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants';
-import logo from '../assets/logo.png';
 import SvgVersion from '../assets/svgVersion.svg';
 import PressableButton from './PressableButton';
 import { doLogin } from '../redux/thunk';
@@ -42,12 +41,11 @@ useEffect(() => {
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: '#2A2C3B' }]}>
+		<View style={[styles.container, { backgroundColor: COLORS.primary }]}>
 			<View style={styles.headerContainer}>
 				<Title style={styles.branding}>Waitress</Title>
 				<View style={styles.brandingContainer}>
 					<SvgVersion style={{ top: 10, marginLeft: -5 }} />
-					{/* <Image style={{ width: 35, height: 35, top: 10, marginLeft: 5 }} source={svgVersion} /> */}
 				</View>
 			</View>
 			<Title style={styles.title}>Login</Title>
@@ -72,6 +70,7 @@ useEffect(() => {
 					secureTextEntry
 					right={<TextInput.Icon name="eye" />}
 					mode="flat"
+					autoCapitalize='none'
 					activeOutlineColor={COLORS.primary}
 					outlineColor={COLORS.gray800}
 					textColor={COLORS.tertiary}

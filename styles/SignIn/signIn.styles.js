@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 	},
 	footerText: {
 		fontWeight: 'bold',
-		
+		color: COLORS.white,
 	},
 	inputContainer: {
 		marginBottom: SIZES.medium,
