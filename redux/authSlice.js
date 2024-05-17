@@ -2,7 +2,7 @@
  * Auth slice
  */
 import { createSlice } from '@reduxjs/toolkit';
-import { doLogin, updateUserLocation } from './thunk';
+import { createUserAccountThunk, doLogin, updateUserLocation } from './thunk';
 
 const initialState = {
 	apiToken: null,
@@ -83,7 +83,40 @@ const authSlice = createSlice({
 			.addCase(updateUserLocation.rejected, (state, action) => {
 				state.updateLocationStatus = 'failed';
 				state.error = action.error.message;
-			});
+			})
+			.addCase(createUserAccountThunk.pending, (state) => { 
+				state.loginStatus = 'loading';
+			})
+			.addCase(createUserAccountThunk.fulfilled, (state, action) => {
+				const payload = action.payload;
+				if (payload && payload.token) {
+                    state.apiToken = payload.token;
+                    state.userId = payload.user.UserID;
+                    state.firstName = payload.user.Entity.FirstName;
+                    state.lastName = payload.user.Entity.LastName;
+                    state.email = payload.user.Email;
+                    state.authType = payload.user.AuthType;
+                    state.latitude = payload.user.Latitude;
+                    state.longitude = payload.user.Longitude;
+                    state.address = payload.user.Address;
+                    state.userType = payload.user.AuthType;
+                    state.createdAt = payload.user.Entity.CreatedAt;
+                    state.updatedAt = payload.user.Entity.UpdatedAt;
+                    state.accessRevoked = payload.user.AccessRevoked;
+                    state.profileImage = payload.user.ProfileImage;
+                    state.ratings = payload.user.Ratings;
+                    state.reservations = payload.user.Reservations;
+                    state.loginStatus = 'succeeded';
+				} else {
+					state.loginStatus = 'failed';
+					state.error = 'Login failed. Please try again.';
+				}
+			})
+			.addCase(createUserAccountThunk.rejected, (state, action) => {
+				state.loginStatus = 'failed';
+				state.error = action.error.message;
+			})
+
 	},
 });
 
