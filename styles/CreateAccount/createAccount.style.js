@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
 	brandingContainer: {
 		justifyContent: 'center', // Centers the title vertically
 		marginRight: 20,
+		paddingRight: 20,
+		paddingLeft: 5,
+		paddingBottom: 10,
 	},
 	title: {
 		color: COLORS.primary,

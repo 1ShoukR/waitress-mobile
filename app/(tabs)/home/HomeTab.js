@@ -16,6 +16,7 @@ const HomeIndex = () => {
 	const [userAddress, setUserAddress] = useState(user && user.address ? user.address : '');
 	const [showAddressInput, setShowAddressInput] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
+	const reduxUser = useSelector((state) => state?.auth);
 	const opacityAnim = useRef(new Animated.Value(1)).current;
 	const dispatch = useDispatch();
 	console.log("userLocation", userLocation);
@@ -65,12 +66,12 @@ const handleAddressSubmit = async () => {
 };
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: '#2A2C3B' }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
 			<Tabs.Screen
 				options={{
 					headerShown: true,
 					title: '',
-					headerBackground: () => <View style={{ backgroundColor: '#2A2C3B', height: 100 }} />,
+					headerBackground: () => <View style={{ backgroundColor: COLORS.primary, height: 100 }} />,
 					headerRight: () => (
 						<TouchableOpacity onPress={toggleInput}>
 							<Animated.View style={{ flexDirection: 'row', alignItems: 'center', opacity: opacityAnim }}>
@@ -109,7 +110,7 @@ const handleAddressSubmit = async () => {
 														? [{ color: COLORS.white, fontStyle: 'italic', fontSize: 14, marginRight: 10 }]
 														: [{ color: COLORS.white, fontStyle: 'italic', fontSize: 11, marginRight: 2 }]
 												}>
-												{userLocation && userAddress ? `${userAddress}` : 'No address has been set.'}
+												{userLocation && userAddress ? `${userAddress}` : reduxUser ? `${reduxUser.address}`  : 'No address has been set.'}
 											</Text>
 										)}
 										<AntDesign name="enviromento" size={25} color={COLORS.white} />
@@ -120,7 +121,7 @@ const handleAddressSubmit = async () => {
 					),
 				}}
 			/>
-			<ScrollView style={{ backgroundColor: '#2A2C3B' }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+			<ScrollView style={{ backgroundColor: COLORS.primary }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 				<View style={{ flex: 1, paddingVertical: 32, paddingHorizontal: 16 }}>
 					<HomePageComponent refreshing={refreshing} />
 				</View>

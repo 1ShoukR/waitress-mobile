@@ -9,13 +9,13 @@ the webapp style/color scheme.
 */
 
 const COLORS = {
-	primary: '#EC5E5B', // Vibrant Pinkish Red
+	primary: '#2A2C3B', // Vibrant Pinkish Red
 	primaryLight1: '#EF7874', // Lighter Shade of Primary
 	primaryLight2: '#F2918F', // Even Lighter Shade of Primary
 	primaryLight3: '#F5AAAA', // Much Lighter Shade of Primary
 	primaryLight4: '#F8C3C5', // Very Light Pink of Primary
 	primaryLight5: '#FBDDE0', // Near-White Pink of Primary
-	secondary: '#669999', // Muted Teal
+	secondary: '#EC5E5B', // Muted Teal
 	success: '#6B8E23', // Subdued Olive Green
 	info: '#3B83BD', // Moderate Blue
 	danger: '#C73E37', // Deeper Shade of Primary
