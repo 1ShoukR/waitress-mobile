@@ -4,9 +4,10 @@ import { COLORS } from '../constants';
 import styles from '../styles/CreateAccount/createAccount.style';
 import React from 'react';
 import PressableButton from './PressableButton';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import { createUserAccountThunk } from '../redux/thunk';
+import { router } from 'expo-router';
 
 const stateInitials = [
 	'AL',
@@ -177,6 +178,10 @@ const handleSubmit = async () => {
 				userType: 'customer',
 				userAddress: updatedUserAddress,
 			}));
+		const userObject = useSelector((state) => state?.auth);
+		if (userObject && userObject.userId) {
+			router.push('/home/HomeTab');
+		}
 		setUserAddress(updatedUserAddress);
 	} else {
 		setPasswordError('Please enter a valid address');
