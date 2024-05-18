@@ -42,6 +42,12 @@ export const getLocalRestaurants = createAsyncThunk('restaurant/getLocal', async
 	return data
 })
 
+export const getTopRestaurants = createAsyncThunk('restaurant/getTopRestaurants', async (requestData) => {
+	const formData = new FormData();
+	formData.append('apiToken', requestData.apiToken);
+	const data = await client.post('/api/restaurant/top10restaurants/', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	return data;
+});
 
 export const updateUserLocation = createAsyncThunk('user/updateUserLocation', async (requestData) => {
 	const formData = new FormData();
