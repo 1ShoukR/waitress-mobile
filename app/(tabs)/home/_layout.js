@@ -38,7 +38,9 @@ const HomeLayout = () => {
                             headerShown: true, title: 'Put Restaurant Name here', 
                             headerLeft: () => {
                                 return (
-                                    <TouchableOpacity  onPress={() => router.back()}>
+                                    <TouchableOpacity  onPress={() => {
+                                        router.back();
+                                    }}>
                                         <View>
                                             <FontAwesomeIcon style={{ padding: 10 }} size={25} color={COLORS.white} icon={faArrowLeft} />
                                         </View>
