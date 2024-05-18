@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getLocalRestaurants, getTopRestaurants } from './thunk';
+import { getLocalRestaurants, getSingleRestaurant, getTopRestaurants } from './thunk';
 
 const initialState = {
 	localRestaurants: [],
 	topRestaurants: [],
+	singleRestaurant: null,
 	status: 'idle',
 	error: null,
 };
@@ -41,6 +42,18 @@ const restaurantSlice = createSlice({
 				state.topRestaurants = action.payload;
 			})
 			.addCase(getTopRestaurants.rejected, (state, action) => {
+				state.status = 'failed';
+				state.error = action.error.message;
+			})
+			.addCase(getSingleRestaurant.pending, (state) => {
+				state.status = 'loading';
+				state.error = null;
+			})
+			.addCase(getSingleRestaurant.fulfilled, (state, action) => {
+				state.status = 'succeeded';
+				state.singleRestaurant = action.payload;
+			})
+			.addCase(getSingleRestaurant.rejected, (state, action) => {
 				state.status = 'failed';
 				state.error = action.error.message;
 			});
