@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { COLORS } from '../../../constants';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -38,9 +38,9 @@ const HomeLayout = () => {
                             headerShown: true, title: 'Put Restaurant Name here', 
                             headerLeft: () => {
                                 return (
-                                    <TouchableOpacity>
+                                    <TouchableOpacity  onPress={() => router.back()}>
                                         <View>
-                                            <FontAwesomeIcon icon={faArrowLeft} color={COLORS.white} />
+                                            <FontAwesomeIcon style={{ padding: 10 }} size={25} color={COLORS.white} icon={faArrowLeft} />
                                         </View>
                                     </TouchableOpacity>
                                 )
