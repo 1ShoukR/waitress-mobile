@@ -28,6 +28,24 @@ const HomeLayout = () => {
                                 )
                             }
                             }} />
+                    <Stack.Screen name="restaurant/[restaurantId]" options={{ 
+                        headerStyle: {
+                            backgroundColor: COLORS.primary
+                            }, 
+                            headerTitleStyle: {
+                                color: COLORS.white
+                                },
+                            headerShown: true, title: 'Put Restaurant Name here', 
+                            headerLeft: () => {
+                                return (
+                                    <TouchableOpacity>
+                                        <View>
+                                            <FontAwesomeIcon icon={faArrowLeft} color={COLORS.white} />
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            }
+                            }} />
 				</Stack>
 			</>
 		);
