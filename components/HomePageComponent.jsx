@@ -3,7 +3,7 @@ import React from 'react';
 import { Searchbar, Divider } from 'react-native-paper';
 import SearchListComponent from './SearchListComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLocalRestaurants } from '../redux/thunk';
+import { getLocalRestaurants, getTopRestaurants } from '../redux/thunk';
 import HomepageButtons from './HomepageButtons';
 import CategoriesComponent from './CategoriesComponent';
 import TopRestaurantsComponent from './TopRestaurantsComponent';
@@ -12,37 +12,20 @@ import { COLORS } from '../constants';
 import { client } from '../api/client';
 
 const HomePageComponent = () => {
-	const [searchQuery, setSearchQuery] = React.useState('');
-	const [locationQuery, setLocationQuery] = React.useState('');
-	const [isSearchFocused, setIsSearchFocused] = React.useState(false);
-	const [displayData, setDisplayData] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(false);
-	const fadeAnim = new Animated.Value(1); // Initial opacity value
-	const user = useSelector((state) => state?.auth);
 	const dispatch = useDispatch()
+	const user = useSelector((state) => state?.auth);
 	const localRestaurants = useSelector((state) => state?.restaurant)
+	const topRestaurants = useSelector((state) => state?.restaurant?.topRestaurants)
 	const apiToken = useSelector((state) => state?.auth?.apiToken);
-
 	const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
-	const topRestaurants = ['Restaurant A', 'Restaurant B', 'Restaurant C'];
 
-	const filteredData = React.useMemo(() => {
-		if (searchQuery === '') {
-			return foodCategories;
-		} else {
-			return [
-				...foodCategories.filter((category) => category.toLowerCase().includes(searchQuery.toLowerCase())),
-				...topRestaurants.filter((restaurant) => restaurant.toLowerCase().includes(searchQuery.toLowerCase())),
-			];
-		}
-	}, [searchQuery, foodCategories, topRestaurants]);
 
 	React.useEffect(() => {
 		dispatch(getLocalRestaurants({ latitude: user.latitude, longitude: user.longitude, apiToken: apiToken }));
+		dispatch(getTopRestaurants({ apiToken: apiToken }));
 	}, [user.latitude, user.longitude, dispatch]);
 
-	const onChangeSearch = (query) => setSearchQuery(query);
-	const onChangeLocation = (query) => setLocationQuery(query);
 
 	return (
 		<View style={styles.container}>
