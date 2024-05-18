@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
 import { COLORS } from '../constants';
 import { FontAwesome } from '@expo/vector-icons';
+import { router } from 'expo-router';
+
 
 const TopRestaurantsComponent = ({ topRestaurants }) => {
 	console.log('topRestaurants', topRestaurants);
@@ -16,7 +18,6 @@ const TopRestaurantsComponent = ({ topRestaurants }) => {
 	const handlePress = (restaurantId) => {
 		// Handle the card click event here
 		console.log('Restaurant clicked:', restaurantId);
-	
 	}
 
 	return (
