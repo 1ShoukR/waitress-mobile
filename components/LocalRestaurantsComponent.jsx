@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { COLORS } from '../constants';
 import React from 'react';
 import { Avatar, Button, Card } from 'react-native-paper';
+import { router } from 'expo-router';
 
 const LocalRestaurantsComponent = ({ localRestaurants }) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants?.restaurants;
@@ -9,6 +10,7 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 	const handlePress = (restaurant) => {
 		// Handle the card click event here
 		console.log('Restaurant clicked:', restaurant.Name);
+		router.push(`/home/restaurant/${restaurant.RestaurantId}`);
 	};
 
 	return (
