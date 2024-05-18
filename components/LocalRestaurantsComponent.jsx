@@ -4,7 +4,7 @@ import React from 'react';
 import { Avatar, Button, Card } from 'react-native-paper';
 
 const LocalRestaurantsComponent = ({ localRestaurants }) => {
-	console.log('props', localRestaurants?.localRestaurants);
+	const localRestaurantsData = localRestaurants?.localRestaurants?.restaurants;
 
 	const handlePress = (restaurant) => {
 		// Handle the card click event here
@@ -14,7 +14,7 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.headerText}>Restaurants Near You</Text>
-			{localRestaurants?.localRestaurants?.restaurants?.map((restaurant, index) => (
+			{localRestaurantsData?.map((restaurant, index) => (
 				<TouchableOpacity key={index} onPress={() => handlePress(restaurant)} style={styles.cardContainer}>
 					<Card style={styles.card}>
 						<Card.Cover source={{ uri: restaurant?.ImageURL }} style={styles.cardImage} />
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 	restaurantName: {
 		fontSize: 18,
 		fontWeight: 'bold',
-		color: COLORS.primary,
+		color: COLORS.secondary,
 		marginTop: 10,
 	},
 	restaurantDetails: {
