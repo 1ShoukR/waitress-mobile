@@ -1,10 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { getSingleRestaurant } from '../../redux/thunk'
 
-const IndividualRestaurant = () => {
+const IndividualRestaurant = ({restaurantId}) => {
+  const dispatch = useDispatch()
+  const handleRestaurant = async () => {
+    dispatch(getSingleRestaurant({restaurantId}))
+  }
   return (
     <View>
-      <Text>IndividualRestaurant</Text>
+      <TouchableOpacity onPress={handleRestaurant} style={{padding: 20}}>
+        <Text>Get Restaurant</Text>
+      </TouchableOpacity>
     </View>
   )
 }
