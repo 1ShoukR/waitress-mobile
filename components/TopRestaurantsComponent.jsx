@@ -18,6 +18,7 @@ const TopRestaurantsComponent = ({ topRestaurants }) => {
 	const handlePress = (restaurantId) => {
 		// Handle the card click event here
 		console.log('Restaurant clicked:', restaurantId);
+		router.push(`/home/restaurant/${restaurantId}`);
 	}
 
 	return (
