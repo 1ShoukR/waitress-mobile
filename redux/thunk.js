@@ -64,7 +64,6 @@ export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaur
 	const formData = new FormData();
 	formData.append('apiToken', requestData.apiToken);
 	formData.append('restaurantId', requestData.restaurantId);
-	const data = await client.post(`/api/restaurant/${requestData.restaurantId}/get`, formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	console.log('data', data)
+	const data = await client.post(`/api/restaurant/${requestData.restaurantId}/get`,  null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
