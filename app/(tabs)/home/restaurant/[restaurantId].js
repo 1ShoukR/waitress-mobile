@@ -1,22 +1,32 @@
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import { Text } from 'react-native-paper';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { COLORS } from '../../../../constants';
-import IndividualRestaurant from '../../../../components/RestaurantRelatedComponents/IndividualRestaurant';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSingleRestaurant } from '../../../../redux/thunk';
+import IndividualRestaurant from "../../../../components/RestaurantRelatedComponents/IndividualRestaurant"
 
-const restaurantId = () => {
-    const { restaurantId } = useLocalSearchParams();
-  return (
-    <>
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.primary}}>
-        <ScrollView>
-            <IndividualRestaurant restaurantId={restaurantId} />
-        </ScrollView>
-    </SafeAreaView>
-    </>
-  )
-}
+const RestaurantPage = () => {
+	const { restaurantId } = useLocalSearchParams();
+	const dispatch = useDispatch();
+  const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
 
-export default restaurantId
+  useEffect(() => {
+    if (restaurantId) {
+      console.log(`Fetching restaurant with ID: ${restaurantId}`);
+        dispatch(getSingleRestaurant({ restaurantId }));
+    } else {
+      console.log('Restaurant ID is undefined');
+    }
+  }, [restaurantId]);
 
-const styles = StyleSheet.create({})
+	return (
+		<>
+			<Stack.Screen options={{ title: `${singleRestaurant?.Name}` }} />
+			<IndividualRestaurant />
+		</>
+	);
+};
+
+export default RestaurantPage;
+

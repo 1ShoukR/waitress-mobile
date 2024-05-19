@@ -25,7 +25,6 @@ const TopRestaurantsComponent = ({ topRestaurants }) => {
 		<View style={styles.container}>
 			<Text style={styles.headerText}>Top Restaurants</Text>
 			{topRestaurants?.map((restaurant, index) => {
-				console.log('restaurant id', restaurant);
 				return (
 				<TouchableOpacity key={index} onPress={() => handlePress(restaurant.RestaurantId)} style={styles.cardContainer}>
 					<View style={styles.card}>
