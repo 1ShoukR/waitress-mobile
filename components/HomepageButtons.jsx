@@ -1,29 +1,27 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image,  } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { AntDesign, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
 import utensiles from '../assets/utensiles.png';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleInfo, faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { COLORS, FONT, SIZES } from '../constants/theme';
-import Platter from '../assets/platter.svg'
+import Platter from '../assets/platter.svg';
 import { router } from 'expo-router';
+
 const HomepageButtons = () => {
-	// const router = useRouter()
 	return (
 		<View style={styles.columnsContainer}>
 			<View style={styles.column}>
 				<TouchableOpacity onPress={() => router.push('/home/BookingScreen')} style={styles.button}>
 					<View style={styles.buttonContent}>
-						
 						<Text style={styles.buttonText}>Reserve a Table</Text>
-						{/* <Image style={{ height: 30, width: 30, left: 24, color: COLORS.white }} source={utensiles} /> */}
-						<Platter style={{left: 15}} height={26} width={26} />
+						<Platter style={{ left: 15,  }} height={26} width={26} />
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={[styles.buttonText, { fontSize: '14', marginRight: 20 }]}>Favorites</Text>
-						<Fontisto style={{ left: 28, color: COLORS.white }} name="favorite" size={24} color="black" />
+						<Fontisto style={{ left: 15, color: COLORS.lightModeText }} name="favorite" size={24} color="black" />
 					</View>
 				</TouchableOpacity>
 			</View>
@@ -31,13 +29,13 @@ const HomepageButtons = () => {
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Your Orders</Text>
-						<FontAwesomeIcon style={{ left: 34, color: COLORS.white }} size={22} icon={faReceipt} />
+						<FontAwesomeIcon style={{ left: 15, color: COLORS.lightModeText }} size={22} icon={faReceipt} />
 					</View>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Support</Text>
-						<FontAwesomeIcon style={{ left: 42, color: COLORS.white }} size={22} icon={faCircleInfo} />
+						<FontAwesomeIcon style={{ left: 15, color: COLORS.lightModeText }} size={22} icon={faCircleInfo} />
 					</View>
 				</TouchableOpacity>
 			</View>
@@ -62,13 +60,12 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		padding: 15,
-		// backgroundColor: '#DAA520',
 		borderRadius: 5,
 		marginBottom: 10,
 		width: 180,
 		height: 60,
-		borderWidth: 1,
-		borderColor: 'rgba(255, 255, 255, 0.6)', 
+		borderWidth: 3,
+		borderColor: 'rgba(255, 255, 255, 0.6)',
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
@@ -78,8 +75,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	buttonText: {
-		color: COLORS.white, 
-		fontFamily: FONT.branding, 
-		fontSize: SIZES.medium, 
+		color: COLORS.lightModeText,
+		fontFamily: FONT.branding,
+		fontSize: SIZES.medium,
 	},
 });

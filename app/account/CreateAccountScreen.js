@@ -3,15 +3,17 @@ import React from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import { COLORS } from '../../constants';
 import CreateAccountComponent from '../../components/CreateAccountComponent';
+import { useSelector } from 'react-redux';
 
 const createScreen = () => {
+	const globalDarkmode = useSelector((state) => state.auth.darkmode);
 	return (
 		<>
 			<Stack.Screen
 				options={{
 					headerTitle: 'Create Your Account',
 					headerShown: true,
-					headerTintColor: COLORS.white,
+					headerTintColor: globalDarkmode ? COLORS.lightModeText : COLORS.black,
 					headerShadowVisible: false,
 					headerStyle: {
 						backgroundColor: COLORS.primary,

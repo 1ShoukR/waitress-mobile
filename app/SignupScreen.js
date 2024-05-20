@@ -5,10 +5,11 @@ import { faArrowLeft, faX } from '@fortawesome/free-solid-svg-icons';
 import { Stack, router } from 'expo-router';
 import SignIn from '../components/SignIn';
 import { COLORS } from '../constants';
+import { useSelector } from 'react-redux';
 
 const signUp = () => {
     const isPresented = router.canGoBack();
-	
+	const globalDarkmode = useSelector((state) => state.auth.darkmode);
     return (
 			<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: COLORS.primary }}>
 				<Stack.Screen
@@ -16,7 +17,7 @@ const signUp = () => {
 						headerShown: true,
 						headerTitle: 'Sign In',
 						headerTitleStyle: {
-							color: 'white',
+							color: globalDarkmode ? COLORS.white : COLORS.black,
 						},
 						headerShadowVisible: false,
 						headerStyle: {
@@ -31,7 +32,7 @@ const signUp = () => {
 									},
 								]}
 								onPress={() => router.back()}>
-								<FontAwesomeIcon color="white" icon={faArrowLeft} />
+								<FontAwesomeIcon color={globalDarkmode ? COLORS.white : COLORS.black} icon={faArrowLeft} />
 							</Pressable>
 						),
 					}}

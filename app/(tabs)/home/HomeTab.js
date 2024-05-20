@@ -17,6 +17,7 @@ const HomeIndex = () => {
 	const [showAddressInput, setShowAddressInput] = useState(false);
 	const [isLoaded, setIsLoaded] = useState(false);
 	const reduxUser = useSelector((state) => state?.auth);
+	const globalDarkmode = useSelector((state) => state?.auth.darkmode);
 	const opacityAnim = useRef(new Animated.Value(1)).current;
 	const dispatch = useDispatch();
 	console.log("userLocation", userLocation);
@@ -82,7 +83,7 @@ const handleAddressSubmit = async () => {
 												height: 40,
 												borderColor: 'gray',
 												borderWidth: 1,
-												color: COLORS.white,
+												color: globalDarkmode ? COLORS.lightModeText : COLORS.black,
 												width: 200,
 												borderRadius: 20,
 												padding: 10,
@@ -107,13 +108,13 @@ const handleAddressSubmit = async () => {
 											<Text
 												style={
 													userLocation && userAddress
-														? [{ color: COLORS.white, fontStyle: 'italic', fontSize: 14, marginRight: 10 }]
-														: [{ color: COLORS.white, fontStyle: 'italic', fontSize: 11, marginRight: 2 }]
+														? [{ color: globalDarkmode ? COLORS.lightModeText : COLORS.black, fontStyle: 'italic', fontSize: 14, marginRight: 10 }]
+														: [{ color: globalDarkmode ? COLORS.lightModeText : COLORS.black, fontStyle: 'italic', fontSize: 11, marginRight: 2 }]
 												}>
 												{userLocation && userAddress ? `${userAddress}` : reduxUser ? `${reduxUser.address}`  : 'No address has been set.'}
 											</Text>
 										)}
-										<AntDesign name="enviromento" size={25} color={COLORS.white} />
+										<AntDesign name="enviromento" size={25} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} />
 									</>
 								)}
 							</Animated.View>

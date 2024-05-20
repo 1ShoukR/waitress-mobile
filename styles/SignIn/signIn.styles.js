@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 		width: 400,
 	},
 	branding: {
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		fontFamily: FONT.branding,
 		fontSize: 36,
 		marginBottom: SIZES.xxLarge,
@@ -29,14 +29,14 @@ const styles = StyleSheet.create({
 		marginRight: 20
 	},
 	title: {
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		fontSize: SIZES.xLarge,
 		fontWeight: 600,
 		marginBottom: SIZES.medium,
 	},
 	footerText: {
 		fontWeight: 'bold',
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 	},
 	inputContainer: {
 		marginBottom: SIZES.medium,
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 		marginBottom: SIZES.small,
 		//outlineColor: COLORS.primary,
 		overflow: 'hidden',
-		backgroundColor: COLORS.white,
+		backgroundColor: COLORS.gray100,
 	},
 	button: {
 		marginBottom: 16,

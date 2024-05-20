@@ -60,7 +60,7 @@ const Layout = () => {
 						<View style={{ flex: 1 }} onLayout={onLayoutRootView}>
 							<Stack>
 								<Stack.Screen name="index" />
-								<Stack.Screen name="SignupScreen" options={{gestureEnabled: false,}}/>
+								<Stack.Screen name="SignupScreen" options={{gestureEnabled: false, }}/>
 								{/* <Stack.Screen name="home/(tabs)/home/index" options={{ headerShown: false, }} /> */}
 								<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 								{/* <Stack.Screen name="tasks/[id]/noteModal" options={{ presentation: 'modal', headerTitle: '' }} /> */}

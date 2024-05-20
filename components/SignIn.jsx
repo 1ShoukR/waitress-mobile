@@ -57,8 +57,8 @@ useEffect(() => {
 					onChangeText={(text) => setEmail(text)}
 					mode="flat"
 					activeOutlineColor={COLORS.secondary}
-					outlineColor={COLORS.gray800}
-					textColor={COLORS.gray800}
+					outlineColor={COLORS.lightModeText}
+					textColor={COLORS.lightModeText}
 					style={styles.input}
 					keyboardType="email-address"
 				/>
@@ -70,7 +70,7 @@ useEffect(() => {
 					secureTextEntry
 					right={<TextInput.Icon name="eye" />}
 					mode="flat"
-					autoCapitalize='none'
+					autoCapitalize="none"
 					activeOutlineColor={COLORS.primary}
 					outlineColor={COLORS.gray800}
 					textColor={COLORS.tertiary}
@@ -98,7 +98,7 @@ useEffect(() => {
 							bottom: 6,
 						},
 					]}>
-					<Text style={{ textDecorationLine: 'underline', fontStyle: 'italic', color: COLORS.white }}>Sign up</Text>
+					<Text style={{ textDecorationLine: 'underline', fontStyle: 'italic', color: COLORS.lightModeText }}>Sign up</Text>
 				</Pressable>
 			</View>
 		</View>

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View, Image, Text } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { getSingleRestaurant } from '../../redux/thunk';
@@ -8,6 +8,7 @@ import { COLORS } from '../../constants';
 const IndividualRestaurant = ({ restaurantId }) => {
 	const dispatch = useDispatch();
 	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
+	const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
 
 	useEffect(() => {
 		if (restaurantId) {
@@ -18,12 +19,10 @@ const IndividualRestaurant = ({ restaurantId }) => {
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
-			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={'#FFFF00'} />);
+			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={COLORS.black} />);
 		}
 		return stars;
 	};
-
-
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -36,9 +35,18 @@ const IndividualRestaurant = ({ restaurantId }) => {
 								<View style={styles.cardContent}>
 									<Text style={styles.restaurantName}>{singleRestaurant.Name}</Text>
 									<View style={styles.ratingContainer}>
-                    {/* Hacky way of rendering average stars */}
+										{/* Hacky way of rendering average stars */}
 										{renderStars(singleRestaurant.Ratings.reduce((sum, review) => sum + review.Rating, 0) / singleRestaurant.Ratings.length)}
 										<Text style={styles.ratingText}>{singleRestaurant.Ratings.length} Reviews</Text>
+									</View>
+									<View style={styles.tagContainer}>
+										{foodCategories.map((category, index) => {
+											return (
+												<TouchableOpacity onPress={() => console.log('This will push a user to a category page showing all restaurants with the category')} key={index} style={styles.tag}>
+													<Text style={{ fontWeight: 'bold' }}>{category}</Text>
+												</TouchableOpacity>
+											);
+										})}
 									</View>
 									<Text style={styles.restaurantAddress}>{singleRestaurant.Address}</Text>
 									<Text style={styles.restaurantDetails}>{`Phone: ${singleRestaurant.Phone}`}</Text>
@@ -74,7 +82,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderLeftWidth: 1,
 		borderRightWidth: 1,
-		borderColor: 'rgba(255, 255, 255, 0.3)', // Faint white outline
+		borderColor: 'rgba(255, 255, 255, 0.3)', // Faint lightModeText outline
 		overflow: 'hidden',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 2 },
@@ -90,10 +98,23 @@ const styles = StyleSheet.create({
 		padding: 10,
 		backgroundColor: COLORS.primary,
 	},
+	tagContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 10,
+	},
+	tag: {
+		color: COLORS.lightModeText,
+		backgroundColor: COLORS.gray,
+		padding: 10,
+		margin: 5,
+		borderRadius: 50,
+	},
 	restaurantName: {
 		fontSize: 24,
 		fontWeight: 'bold',
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		textAlign: 'center', // Center the restaurant name
 		marginBottom: 10,
 	},
@@ -106,20 +127,20 @@ const styles = StyleSheet.create({
 	ratingText: {
 		marginLeft: 5,
 		fontSize: 16,
-		color: COLORS.secondary,
+		color: COLORS.black,
 	},
 	restaurantAddress: {
 		fontSize: 14,
-		color: COLORS.secondary,
+		color: COLORS.black,
 		marginBottom: 5,
 	},
 	restaurantDetails: {
 		fontSize: 14,
-		color: COLORS.secondary,
+		color: COLORS.black,
 		marginBottom: 5,
 	},
 	loadingText: {
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		textAlign: 'center',
 		marginTop: 20,
 	},
@@ -130,7 +151,7 @@ const styles = StyleSheet.create({
 	comment: {
 		fontSize: 16,
 		marginBottom: 5,
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 	},
 	starsContainer: {
 		flexDirection: 'row',

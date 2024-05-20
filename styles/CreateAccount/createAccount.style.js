@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 		width: 400,
 	},
 	branding: {
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		fontFamily: FONT.branding,
 		fontSize: 36,
 		marginBottom: SIZES.xxLarge,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 		marginBottom: SIZES.small,
 		//outlineColor: COLORS.primary,
 		overflow: 'hidden',
-		backgroundColor: COLORS.white,
+		backgroundColor: COLORS.lightModeText,
 	},
 	button: {
 		marginBottom: 16,

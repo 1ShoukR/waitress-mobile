@@ -13,6 +13,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const TabLayout = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
+	const globalDarkmode = useSelector((state) => state.auth.darkmode);
 
 	const authType = useSelector((state) => state.auth.authType);
 	const [isAdmin, setIsAdmin] = useState(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev' ? true : false);
@@ -47,7 +48,7 @@ const TabLayout = () => {
 					backgroundColor: '#121212',
 				},
 				tabBarActiveTintColor: COLORS.secondary,
-				tabBarInactiveTintColor: COLORS.white,
+				tabBarInactiveTintColor: COLORS.primary,
 			}}>
 			<Tabs.Screen
 				name="home"
@@ -94,7 +95,7 @@ const TabLayout = () => {
 					title: 'Account',
 					headerShown: true,
 					headerTitleStyle: {
-						color: COLORS.white,
+						color: globalDarkmode ? COLORS.lightModeText : COLORS.black,
 					},
 					headerLeft: () => {
 						if (setTabHeaderButtonAccountScreen) {
@@ -105,7 +106,7 @@ const TabLayout = () => {
 											dispatch(setShowAccountTabBackButton(false));
 											router.back();
 										}}>
-										<FontAwesomeIcon style={{ marginLeft: 15, padding: 10 }} size={29} color={COLORS.white} icon={faArrowLeft} />
+										<FontAwesomeIcon style={{ marginLeft: 15, padding: 10 }} size={29} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} icon={faArrowLeft} />
 									</TouchableOpacity>
 								</Animated.View>
 							);
@@ -136,7 +137,7 @@ const TabLayout = () => {
 						},
 						title: 'Admin',
 						headerTitleStyle: {
-							color: COLORS.white,
+							color: globalDarkmode ? COLORS.lightModeText : COLORS.black,
 						},
 						tabBarLabel: ({ focused, color }) => (
 							<Text

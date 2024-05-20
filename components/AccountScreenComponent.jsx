@@ -3,13 +3,17 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { router } from 'expo-router';
 import { setShowAccountTabBackButton } from '../redux/routesSlice';
+import { setDarkMode } from '../redux/thunk';
 
 const AccountScreenComponent = () => {
 	const dispatch = useDispatch()
+	const isDev = useSelector((state) => state.auth.authType);
+	console.log('isDev', isDev);
 	const [memberSince, setMemberSince] = React.useState('');
+	const [darkModeLocal, setDarkModeLocal] = React.useState(false);
 	const handleTabScreenHeaderButton = () => {
 		dispatch(setShowAccountTabBackButton(true))
 
@@ -20,7 +24,8 @@ const AccountScreenComponent = () => {
 		}
 	}, [user]);
 	const Divider = () => <View style={styles.divider} />; // New Divider component
-
+	const globalDarkMode = useSelector((state) => state.auth.darkMode);
+	console.log('globalDarkMode', globalDarkMode);
 	const Section = ({ title, onPress, rightComponent }) => (
         <>
 		<TouchableOpacity style={styles.sectionContainer} onPress={onPress}>
@@ -65,13 +70,21 @@ const AccountScreenComponent = () => {
 			<Section title="Edit Account" onPress={() => {
 				handleTabScreenHeaderButton()
 				router.push('/account/EditAccount');
-			}} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
-			<Section title="Payment" onPress={() => console.log('Navigate to Payment')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
-			<Section title="Waitress+" onPress={() => console.log('Navigate to Waitress+')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
-			<Section title="Gift Cards" onPress={() => console.log('Navigate to Gift Cards')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
-			<Section title="Notifications" onPress={() => console.log('Navigate to Notifications')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
-			<Section title="Linked Accounts" onPress={() => console.log('Navigate to Linked Accounts')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
-			<Section title="Support" onPress={() => console.log('Navigate to Support')} rightComponent={<FontAwesomeIcon color={COLORS.white} icon={faArrowRight} />} />
+			}} rightComponent={<FontAwesomeIcon color={globalDarkMode ? COLORS.lightModeText : COLORS.black } icon={faArrowRight} />} />
+			<Section title="Payment" onPress={() => console.log('Navigate to Payment')} rightComponent={<FontAwesomeIcon color={ globalDarkMode ? COLORS.lightModeText : COLORS.black } icon={faArrowRight} />} />
+			<Section title="Waitress+" onPress={() => console.log('Navigate to Waitress+')} rightComponent={<FontAwesomeIcon color={ globalDarkMode ? COLORS.lightModeText : COLORS.black } icon={faArrowRight} />} />
+			<Section title="Gift Cards" onPress={() => console.log('Navigate to Gift Cards')} rightComponent={<FontAwesomeIcon color={ globalDarkMode ? COLORS.lightModeText : COLORS.black } icon={faArrowRight} />} />
+			<Section title="Notifications" onPress={() => console.log('Navigate to Notifications')} rightComponent={<FontAwesomeIcon color={ globalDarkMode ? COLORS.lightModeText : COLORS.black } icon={faArrowRight} />} />
+			<Section title="Linked Accounts" onPress={() => console.log('Navigate to Linked Accounts')} rightComponent={<FontAwesomeIcon color={ globalDarkMode ? COLORS.lightModeText : COLORS.black } icon={faArrowRight} />} />
+			<Section title="Support" onPress={() => console.log('Navigate to Support')} rightComponent={<FontAwesomeIcon color={ globalDarkMode ? COLORS.lightModeText : COLORS.black } icon={faArrowRight} />} />
+			{isDev === 'dev' && (
+			<Section title="Dark Mode ( in development ) " onPress={() => {
+				console.log('Toggle Dark Mode');
+				const newDarkMode = !darkModeLocal;
+				setDarkModeLocal(newDarkMode);
+				dispatch(setDarkMode(newDarkMode));
+			}} rightComponent={<FontAwesomeIcon color={globalDarkMode ? COLORS.lightModeText : COLORS.black} icon={faMoon} />} />
+			)}
 		</View>
 	);
 };
@@ -101,7 +114,7 @@ const styles = StyleSheet.create({
 	userName: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		color: COLORS.white,
+		color: COLORS.lightModeText, // chage to globalDarkMode ? COLORS.lightModeText : COLORS.lightModeText
 	},
 	memberSince: {
 		fontSize: 14,
@@ -123,7 +136,7 @@ const styles = StyleSheet.create({
 	sectionTitle: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		color: COLORS.white,
+		color: COLORS.lightModeText, // chage to globalDarkMode ? COLORS.lightModeText : COLORS.lightModeText
 	},
 	rightText: {
 		fontSize: 14,

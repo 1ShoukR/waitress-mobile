@@ -2,7 +2,7 @@
  * Auth slice
  */
 import { createSlice } from '@reduxjs/toolkit';
-import { createUserAccountThunk, doLogin, updateUserLocation } from './thunk';
+import { createUserAccountThunk, doLogin, setDarkMode, updateUserLocation } from './thunk';
 
 const initialState = {
 	apiToken: null,
@@ -20,6 +20,7 @@ const initialState = {
 	longitude: null,
 	address: null,
 	createdAt: null,
+	darkMode: false,
 };
 
 const authSlice = createSlice({
@@ -116,6 +117,16 @@ const authSlice = createSlice({
 				state.loginStatus = 'failed';
 				state.error = action.error.message;
 			})
+			.addCase(setDarkMode.pending, (state) => {
+				state.darkMode = !state.darkMode;
+			}
+			)
+			.addCase(setDarkMode.fulfilled, (state, action) => {
+				state.darkMode = action.payload;
+			})
+			.addCase(setDarkMode.rejected, (state, action) => {
+				state.darkMode = !state.darkMode;
+			});
 
 	},
 });

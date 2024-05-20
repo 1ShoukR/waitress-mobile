@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 		marginBottom: 10,
-		color: COLORS.white
+		color: COLORS.lightModeText,
 	},
 	genreWrapper: {
 		flexDirection: 'row',

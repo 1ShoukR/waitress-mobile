@@ -3,10 +3,12 @@ import { TouchableOpacity, View, Text } from 'react-native';
 import { COLORS } from '../../../constants';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { useSelector } from 'react-redux';
 
 
 
 const HomeLayout = () => {
+    const globalDarkmode = useSelector((state) => state.auth.darkmode);
     return (
 			<>
 				<Stack>
@@ -15,14 +17,14 @@ const HomeLayout = () => {
                             backgroundColor: COLORS.primary
                             }, 
                             headerTitleStyle: {
-                                color: COLORS.white
+                                color: globalDarkmode ? COLORS.lightModeText : COLORS.black
                                 },
                             headerShown: true, title: 'Reserve ', 
                             headerLeft: () => {
                                 return (
                                     <TouchableOpacity>
                                         <View>
-                                            <FontAwesomeIcon icon={faArrowLeft} color={COLORS.white} />
+                                            <FontAwesomeIcon icon={faArrowLeft} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} />
                                         </View>
                                     </TouchableOpacity>
                                 )
@@ -33,7 +35,7 @@ const HomeLayout = () => {
                             backgroundColor: COLORS.primary
                             }, 
                             headerTitleStyle: {
-                                color: COLORS.white
+                                color: globalDarkmode ? COLORS.lightModeText : COLORS.black
                                 },
                             headerShown: true, title: 'Put Restaurant Name here', 
                             headerLeft: () => {
@@ -42,7 +44,7 @@ const HomeLayout = () => {
                                         router.back();
                                     }}>
                                         <View>
-                                            <FontAwesomeIcon style={{ padding: 10 }} size={25} color={COLORS.white} icon={faArrowLeft} />
+                                            <FontAwesomeIcon style={{ padding: 10 }} size={25} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} icon={faArrowLeft} />
                                         </View>
                                     </TouchableOpacity>
                                 )

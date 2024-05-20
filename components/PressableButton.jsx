@@ -9,7 +9,7 @@ const PressableButton = ({ title, onPress, fontSize, status, icon, theme, append
 	const [themeName, setThemeColor] = useState(COLORS[theme] ? theme : 'primary');
 	const [color, setColor] = useState(disabled ? COLORS.gray200 : COLORS[themeName]);
 	const [pressedColor, setPressedColor] = useState(disabled ? COLORS.gray200 : COLORS[themeName + 'Dark']);
-	const [textColor, setTextColor] = useState(disabled ? COLORS.gray300 : COLORS.white);
+	const [textColor, setTextColor] = useState(disabled ? COLORS.gray300 : COLORS.lightModeText);
 	const [textSize, setTextSize] = useState(fontSize || 14);
 	const [hasIcon, setHasIcon] = useState(icon ? true : false);
 	const [isLoading, setIsLoading] = useState(null);
@@ -22,7 +22,7 @@ const PressableButton = ({ title, onPress, fontSize, status, icon, theme, append
 	useEffect(() => {
 		setColor(disabled ? COLORS.gray200 : COLORS[themeName]);
 		setPressedColor(disabled ? COLORS.gray200 : COLORS[themeName + 'Dark']);
-		setTextColor(disabled ? COLORS.gray300 : COLORS.white);
+		setTextColor(disabled ? COLORS.gray300 : COLORS.lightModeText);
 	}, [disabled]);
 
 	useEffect(() => {
@@ -62,7 +62,7 @@ const PressableButton = ({ title, onPress, fontSize, status, icon, theme, append
 	//         disabled={disabled ? true : false}
 	//     >
 	//         {isLoading ? (
-	//             <ActivityIndicator size="small" color={COLORS.white} />
+	//             <ActivityIndicator size="small" color={COLORS.lightModeText} />
 	//         ) : (
 	//             <>
 	//                 {hasIcon && !appendIcon && <FontAwesomeIcon icon={icon} color={textColor} size={textSize} />}
