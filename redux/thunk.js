@@ -67,3 +67,7 @@ export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaur
 	const data = await client.post(`/api/restaurant/${requestData.restaurantId}/get`,  null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
+
+export const setDarkMode = createAsyncThunk('auth/setDarkMode', async (darkMode) => {
+	return darkMode;
+});
