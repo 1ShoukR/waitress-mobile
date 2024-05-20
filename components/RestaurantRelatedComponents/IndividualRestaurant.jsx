@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View, Image, Text } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { getSingleRestaurant } from '../../redux/thunk';
@@ -8,6 +8,7 @@ import { COLORS } from '../../constants';
 const IndividualRestaurant = ({ restaurantId }) => {
 	const dispatch = useDispatch();
 	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
+  const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
 
 	useEffect(() => {
 		if (restaurantId) {
@@ -40,6 +41,15 @@ const IndividualRestaurant = ({ restaurantId }) => {
 										{renderStars(singleRestaurant.Ratings.reduce((sum, review) => sum + review.Rating, 0) / singleRestaurant.Ratings.length)}
 										<Text style={styles.ratingText}>{singleRestaurant.Ratings.length} Reviews</Text>
 									</View>
+                  <View style={styles.tagContainer}>
+                  {foodCategories.map((category, index) => {
+                    return (
+											<TouchableOpacity key={index} style={styles.tag}>
+												<Text style={{ fontWeight: 'bold' }}>{category}</Text>
+											</TouchableOpacity>
+										);
+                  })}
+                  </View>
 									<Text style={styles.restaurantAddress}>{singleRestaurant.Address}</Text>
 									<Text style={styles.restaurantDetails}>{`Phone: ${singleRestaurant.Phone}`}</Text>
 									<Text style={styles.restaurantDetails}>{`Email: ${singleRestaurant.Email}`}</Text>
@@ -89,6 +99,20 @@ const styles = StyleSheet.create({
 	cardContent: {
 		padding: 10,
 		backgroundColor: COLORS.primary,
+	},
+	tagContainer: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginBottom: 10,
+	},
+	tag: {
+		color: COLORS.white,
+		backgroundColor: COLORS.gray,
+		padding: 10,
+		margin: 5,
+		borderRadius: 50,
+    
 	},
 	restaurantName: {
 		fontSize: 24,
