@@ -8,7 +8,7 @@ import { COLORS } from '../../constants';
 const IndividualRestaurant = ({ restaurantId }) => {
 	const dispatch = useDispatch();
 	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
-  const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
+	const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
 
 	useEffect(() => {
 		if (restaurantId) {
@@ -24,8 +24,6 @@ const IndividualRestaurant = ({ restaurantId }) => {
 		return stars;
 	};
 
-
-
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -37,19 +35,19 @@ const IndividualRestaurant = ({ restaurantId }) => {
 								<View style={styles.cardContent}>
 									<Text style={styles.restaurantName}>{singleRestaurant.Name}</Text>
 									<View style={styles.ratingContainer}>
-                    {/* Hacky way of rendering average stars */}
+										{/* Hacky way of rendering average stars */}
 										{renderStars(singleRestaurant.Ratings.reduce((sum, review) => sum + review.Rating, 0) / singleRestaurant.Ratings.length)}
 										<Text style={styles.ratingText}>{singleRestaurant.Ratings.length} Reviews</Text>
 									</View>
-                  <View style={styles.tagContainer}>
-                  {foodCategories.map((category, index) => {
-                    return (
-											<TouchableOpacity key={index} style={styles.tag}>
-												<Text style={{ fontWeight: 'bold' }}>{category}</Text>
-											</TouchableOpacity>
-										);
-                  })}
-                  </View>
+									<View style={styles.tagContainer}>
+										{foodCategories.map((category, index) => {
+											return (
+												<TouchableOpacity key={index} style={styles.tag}>
+													<Text style={{ fontWeight: 'bold' }}>{category}</Text>
+												</TouchableOpacity>
+											);
+										})}
+									</View>
 									<Text style={styles.restaurantAddress}>{singleRestaurant.Address}</Text>
 									<Text style={styles.restaurantDetails}>{`Phone: ${singleRestaurant.Phone}`}</Text>
 									<Text style={styles.restaurantDetails}>{`Email: ${singleRestaurant.Email}`}</Text>
@@ -112,7 +110,6 @@ const styles = StyleSheet.create({
 		padding: 10,
 		margin: 5,
 		borderRadius: 50,
-    
 	},
 	restaurantName: {
 		fontSize: 24,
