@@ -6,6 +6,7 @@ import { router } from 'expo-router';
 
 const LocalRestaurantsComponent = ({ localRestaurants }) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants?.restaurants;
+	console.log('Local Restaurants:', localRestaurants);
 
 	const handlePress = (restaurant) => {
 		// Handle the card click event here
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 		marginBottom: 10,
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 	},
 	cardContainer: {
 		marginBottom: 15,
@@ -60,12 +61,12 @@ const styles = StyleSheet.create({
 	restaurantName: {
 		fontSize: 18,
 		fontWeight: 'bold',
-		color: COLORS.secondary,
+		color: COLORS.lightModeText,
 		marginTop: 10,
 	},
 	restaurantDetails: {
 		fontSize: 14,
-		color: COLORS.secondary,
+		color: COLORS.lightModeText,
 		marginTop: 5,
 	},
 });

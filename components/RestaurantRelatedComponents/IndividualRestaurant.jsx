@@ -19,7 +19,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
-			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={'#FFFF00'} />);
+			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={COLORS.black} />);
 		}
 		return stars;
 	};
@@ -42,7 +42,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									<View style={styles.tagContainer}>
 										{foodCategories.map((category, index) => {
 											return (
-												<TouchableOpacity key={index} style={styles.tag}>
+												<TouchableOpacity onPress={() => console.log('This will push a user to a category page showing all restaurants with the category')} key={index} style={styles.tag}>
 													<Text style={{ fontWeight: 'bold' }}>{category}</Text>
 												</TouchableOpacity>
 											);
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 		borderBottomWidth: 1,
 		borderLeftWidth: 1,
 		borderRightWidth: 1,
-		borderColor: 'rgba(255, 255, 255, 0.3)', // Faint white outline
+		borderColor: 'rgba(255, 255, 255, 0.3)', // Faint lightModeText outline
 		overflow: 'hidden',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 2 },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 	},
 	tag: {
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		backgroundColor: COLORS.gray,
 		padding: 10,
 		margin: 5,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
 	restaurantName: {
 		fontSize: 24,
 		fontWeight: 'bold',
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		textAlign: 'center', // Center the restaurant name
 		marginBottom: 10,
 	},
@@ -127,20 +127,20 @@ const styles = StyleSheet.create({
 	ratingText: {
 		marginLeft: 5,
 		fontSize: 16,
-		color: COLORS.secondary,
+		color: COLORS.black,
 	},
 	restaurantAddress: {
 		fontSize: 14,
-		color: COLORS.secondary,
+		color: COLORS.black,
 		marginBottom: 5,
 	},
 	restaurantDetails: {
 		fontSize: 14,
-		color: COLORS.secondary,
+		color: COLORS.black,
 		marginBottom: 5,
 	},
 	loadingText: {
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 		textAlign: 'center',
 		marginTop: 20,
 	},
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
 	comment: {
 		fontSize: 16,
 		marginBottom: 5,
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 	},
 	starsContainer: {
 		flexDirection: 'row',

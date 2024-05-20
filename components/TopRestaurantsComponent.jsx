@@ -11,7 +11,7 @@ const TopRestaurantsComponent = ({ topRestaurants }) => {
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
-			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={COLORS.secondary} />);
+			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={COLORS.black} />);
 		}
 		return stars;
 	};
@@ -52,14 +52,14 @@ export default TopRestaurantsComponent;
 const styles = StyleSheet.create({
 	container: {
 		padding: 10,
-		backgroundColor: '#2A2C3B',
+		backgroundColor: COLORS.primary,
 		flex: 1,
 	},
 	headerText: {
 		fontSize: 20,
 		fontWeight: 'bold',
 		marginBottom: 10,
-		color: COLORS.white,
+		color: COLORS.lightModeText,
 	},
 	cardContainer: {
 		marginBottom: 15,
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
 	},
 	cardContent: {
 		padding: 10,
-		backgroundColor: '#2A2C3B',
+		backgroundColor: COLORS.primary,
 	},
 	restaurantName: {
 		fontSize: 18,
 		fontWeight: 'bold',
-		color: COLORS.secondary,
+		color: COLORS.black,
 		marginBottom: 5,
 	},
 	ratingContainer: {
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
 	},
 	restaurantTags: {
 		fontSize: 14,
-		color: COLORS.secondary,
+		color: COLORS.black,
 		marginBottom: 5,
 	},
 	restaurantDetails: {
