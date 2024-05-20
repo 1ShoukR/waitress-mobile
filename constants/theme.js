@@ -9,7 +9,8 @@ the webapp style/color scheme.
 */
 
 const COLORS = {
-	primary: '#2A2C3B', // Vibrant Pinkish Red
+	primaryDark: '#2A2C3B', // DarkMode  (Dark Blue)
+	primary: '#F0EAD6', // Vibrant Pinkish Red
 	primaryLight1: '#EF7874', // Lighter Shade of Primary
 	primaryLight2: '#F2918F', // Even Lighter Shade of Primary
 	primaryLight3: '#F5AAAA', // Much Lighter Shade of Primary
@@ -42,8 +43,9 @@ const COLORS = {
 	// Convenient aliases for theme colors
 	tertiary: '#888077', // Equal to gray600
 	black: '#000000', // Black
+	lightModeText: '#2A2C3B', // DarkMode  (Dark Blue)
 	white: '#FFFFFF', // White
-	lightWhite: '#F5F3EF', // Equal to gray100
+	lightWhite: '#F5F3EF', // Light Cream Beige
 	lightGray: '#E8E0DA', // Equal to gray200
 	gray2: '#D0C8BF', // Equal to gray300
 	gray: '#B8B0A6', // Equal to gray400
