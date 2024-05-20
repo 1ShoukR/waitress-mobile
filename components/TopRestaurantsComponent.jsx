@@ -32,7 +32,7 @@ const TopRestaurantsComponent = ({ topRestaurants }) => {
 						<View style={styles.cardContent}>
 							<Text style={styles.restaurantName}>{restaurant?.Name}</Text>
 							<View style={styles.ratingContainer}>
-								{renderStars(restaurant?.Rating)}
+								{renderStars(restaurant?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / restaurant.Ratings.length)}
 								<Text style={styles.ratingText}>{restaurant?.Rating}</Text>
 							</View>
 							<Text style={styles.restaurantTags}>Tags</Text>
