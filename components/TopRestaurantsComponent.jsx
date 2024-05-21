@@ -33,7 +33,7 @@ const TopRestaurantsComponent = ({ topRestaurants }) => {
 							<Text style={styles.restaurantName}>{restaurant?.Name}</Text>
 							<View style={styles.ratingContainer}>
 								{renderStars(restaurant?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / restaurant.Ratings.length)}
-								<Text style={styles.ratingText}>{restaurant?.Rating}</Text>
+								<Text style={styles.ratingText}>{restaurant?.Ratings.length > 0 ? restaurant?.Ratings.length + " Reviews" : restaurant?.Ratings.length + " Review"}</Text>
 							</View>
 							<Text style={styles.restaurantTags}>Tags</Text>
 							<Text style={styles.restaurantDetails}>{restaurant?.Details}</Text>
@@ -63,20 +63,23 @@ const styles = StyleSheet.create({
 	},
 	cardContainer: {
 		marginBottom: 15,
+		borderRadius: 10,
+		backgroundColor: COLORS.cardBackground,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 10 },
+		shadowOpacity: 0.5,
+		shadowRadius: 10,
+		elevation: 12,
 	},
 	card: {
-		backgroundColor: COLORS.cardBackground,
 		borderRadius: 10,
 		overflow: 'hidden',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.8,
-		shadowRadius: 2,
-		elevation: 5,
 	},
 	cardImage: {
 		height: 150,
 		width: '100%',
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
 	},
 	cardContent: {
 		padding: 10,
@@ -96,7 +99,7 @@ const styles = StyleSheet.create({
 	ratingText: {
 		marginLeft: 5,
 		fontSize: 16,
-		color: COLORS.secondary,
+		color: COLORS.gray,
 	},
 	restaurantTags: {
 		fontSize: 14,

@@ -1,10 +1,8 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { COLORS } from '../constants';
 import React from 'react';
-import { Card } from 'react-native-paper';
-import { router } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
-
+import { router } from 'expo-router';
 
 const LocalRestaurantsComponent = ({ localRestaurants }) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants;
@@ -15,6 +13,7 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 		console.log('Restaurant clicked:', restaurant.Name);
 		router.push(`/home/restaurant/${restaurant.RestaurantId}`);
 	};
+
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
@@ -30,22 +29,21 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 				console.log('Restaurant:', restaurant.Ratings);
 				return (
 					<TouchableOpacity key={index} onPress={() => handlePress(restaurant)} style={styles.cardContainer}>
-						<Card style={styles.card}>
-							<Card.Cover source={{ uri: restaurant?.ImageURL }} style={styles.cardImage} />
-							<Card.Content>
+						<View style={styles.card}>
+							<Image source={{ uri: restaurant?.ImageURL }} style={styles.cardImage} />
+							<View style={styles.cardContent}>
 								<Text style={styles.restaurantName}>{restaurant?.Name}</Text>
 								<View style={styles.ratingContainer}>
 									{renderStars(restaurant?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / restaurant.Ratings.length)}
-									<Text style={styles.ratingText}>{restaurant?.Rating}</Text>
+									<Text style={styles.ratingText}>{restaurant?.Ratings.length > 0 ? restaurant?.Ratings.length + ' Reviews' : restaurant?.Ratings.length + ' Review'}</Text>
 								</View>
 								<Text style={styles.restaurantTags}>Tags</Text>
 								<Text style={styles.restaurantDetails}>{restaurant?.Details}</Text>
-							</Card.Content>
-						</Card>
+							</View>
+						</View>
 					</TouchableOpacity>
 				);
 			})}
-			
 		</View>
 	);
 };
@@ -55,7 +53,7 @@ export default LocalRestaurantsComponent;
 const styles = StyleSheet.create({
 	container: {
 		padding: 10,
-		backgroundColor: COLORS.background,
+		backgroundColor: COLORS.primary,
 		flex: 1,
 	},
 	headerText: {
@@ -66,30 +64,51 @@ const styles = StyleSheet.create({
 	},
 	cardContainer: {
 		marginBottom: 15,
+		borderRadius: 10,
+		backgroundColor: COLORS.cardBackground,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 10 },
+		shadowOpacity: 0.5,
+		shadowRadius: 10,
+		elevation: 12,
 	},
 	card: {
-		backgroundColor: COLORS.cardBackground,
 		borderRadius: 10,
+		overflow: 'hidden',
 	},
 	cardImage: {
 		height: 150,
+		width: '100%',
 		borderTopLeftRadius: 10,
 		borderTopRightRadius: 10,
+	},
+	cardContent: {
+		padding: 10,
+		backgroundColor: COLORS.primary,
+	},
+	restaurantName: {
+		fontSize: 18,
+		fontWeight: 'bold',
+		color: COLORS.black,
+		marginBottom: 5,
 	},
 	ratingContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 5,
 	},
-	restaurantName: {
-		fontSize: 18,
-		fontWeight: 'bold',
-		color: COLORS.lightModeText,
-		marginTop: 10,
+	ratingText: {
+		marginLeft: 5,
+		fontSize: 16,
+		color: COLORS.gray,
+	},
+	restaurantTags: {
+		fontSize: 14,
+		color: COLORS.black,
+		marginBottom: 5,
 	},
 	restaurantDetails: {
 		fontSize: 14,
-		color: COLORS.lightModeText,
-		marginTop: 5,
+		color: COLORS.secondary,
 	},
 });
