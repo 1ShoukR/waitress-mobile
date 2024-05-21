@@ -39,7 +39,7 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 									<Text style={styles.ratingText}>{restaurant?.Rating}</Text>
 								</View>
 								<Text style={styles.restaurantTags}>Tags</Text>
-								<Text style={styles.restaurantDetails}>{restaurant?.Details}</Text>
+								<Text style={styles.restaurantDetails}>{restaurant?.Ratings.length > 0 ? restaurant?.Ratings.length + ' Reviews' : restaurant?.Ratings.length + ' Review'}</Text>
 							</Card.Content>
 						</Card>
 					</TouchableOpacity>
