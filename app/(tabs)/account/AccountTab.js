@@ -38,7 +38,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
     logoutButton: {
-        backgroundColor: COLORS.primary,
+        // backgroundColor: '#DCAE96',
+        backgroundColor: COLORS.secondary,
         padding: 20,
         borderRadius: 10,
         margin: 20,
