@@ -1,9 +1,18 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput } from 'react-native';
+import React, { useState } from 'react';
 import { Stack } from 'expo-router';
 import { COLORS } from '../../constants';
 
 const EditAccountComponent = () => {
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [phone, setPhone] = useState('');
+
+    const handleSaveGhanges = () => {
+        console.log('Save changes')
+    
+    }
+
 	return (
 		<>
 			<SafeAreaView style={styles.container}>
@@ -13,23 +22,36 @@ const EditAccountComponent = () => {
 							<TouchableOpacity onPress={() => console.log('Create future Image Upload Screen')}>
 								<Image source={{ uri: 'https://avatar.iran.liara.run/public/8' }} style={styles.userImage} />
 							</TouchableOpacity>
-                            <Text style={styles.profilePictureText}>Change Picture</Text>
+							<TouchableOpacity onPress={() => console.log('handle image change')}>
+								<Text style={styles.profilePictureText}>Change Picture</Text>
+							</TouchableOpacity>
 						</View>
 						<View style={styles.userInfoContainer}>
-							<TouchableOpacity style={styles.userInfo}>
+							<View style={styles.userInfo}>
 								<Text style={styles.userInfoLabel}>Name:</Text>
-								<Text style={styles.userInfoText}>John Doe</Text>
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.userInfo}>
+								<TextInput style={styles.userInfoInput} placeholder="John Doe" placeholderTextColor={COLORS.gray} value={name} onChangeText={setName} />
+							</View>
+							<View style={styles.userInfo}>
 								<Text style={styles.userInfoLabel}>Email:</Text>
-								<Text style={styles.userInfoText}>johndoe@example.com</Text>
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.userInfo}>
+								<TextInput style={styles.userInfoInput} placeholder="johndoe@example.com" placeholderTextColor={COLORS.gray} keyboardType="email-address" value={email} onChangeText={setEmail} />
+							</View>
+							<View style={styles.userInfo}>
 								<Text style={styles.userInfoLabel}>Phone:</Text>
-								<Text style={styles.userInfoText}>123-456-7890</Text>
-							</TouchableOpacity>
+								<TextInput style={styles.userInfoInput} placeholder="123-456-7890" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" value={phone} onChangeText={setPhone} />
+							</View>
+							<View style={styles.userInfo}>
+								<View style={{ flexDirection: 'row' }}>
+									<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>Street:</Text>
+									<TextInput style={[styles.userInfoInput, {marginRight: 10}]} placeholder="123 Main St" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
+									<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>Zip:</Text>
+									<TextInput style={[styles.userInfoInput]} placeholder="123 Main St" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
+								</View>
+							</View>
 						</View>
 					</View>
+					<TouchableOpacity style={styles.saveButton} onPress={() => console.log('Save changes')}>
+						<Text style={styles.saveButtonText}>Save Changes</Text>
+					</TouchableOpacity>
 				</View>
 			</SafeAreaView>
 		</>
@@ -41,18 +63,11 @@ export default EditAccountComponent;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
 		backgroundColor: COLORS.primary,
 	},
-	userImage: {
-		width: 60,
-		height: 60,
-		borderRadius: 25,
-		marginBottom: 10,
-	},
 	cardContainer: {
-		marginBottom: 15,
+		flex: 1,
+		margin: 20,
 		borderRadius: 10,
 		backgroundColor: COLORS.cardBackground,
 		shadowColor: '#000',
@@ -60,44 +75,60 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.5,
 		shadowRadius: 10,
 		elevation: 12,
-		width: '90%',
+		padding: 20,
 	},
 	card: {
 		borderRadius: 10,
 		overflow: 'hidden',
-		flexDirection: 'row',
+		flex: 1,
 		padding: 20,
 		backgroundColor: COLORS.primary,
 	},
 	profilePictureContainer: {
-		width: 100,
-		height: 200,
-		// backgroundColor: COLORS.secondary,
-		borderRadius: 50,
-		justifyContent: 'center',
 		alignItems: 'center',
-		marginRight: 20,
+		marginBottom: 30,
+	},
+	userImage: {
+		width: 100,
+		height: 100,
+		borderRadius: 50,
+		marginBottom: 10,
 	},
 	profilePictureText: {
 		color: COLORS.gray,
 		textAlign: 'center',
-        fontStyle: 'italic',
-        fontSize: 12,
+		fontStyle: 'italic',
+		fontSize: 12,
 	},
 	userInfoContainer: {
 		flex: 1,
-		justifyContent: 'center',
 	},
 	userInfo: {
-		marginBottom: 15,
+		marginBottom: 20,
 	},
 	userInfoLabel: {
 		fontSize: 16,
 		fontWeight: 'bold',
 		color: COLORS.black,
+		marginBottom: 5,
 	},
-	userInfoText: {
+	userInfoInput: {
 		fontSize: 16,
 		color: COLORS.black,
+		borderBottomWidth: 1,
+		borderBottomColor: COLORS.gray,
+		paddingVertical: 5,
+	},
+	saveButton: {
+		backgroundColor: COLORS.secondary,
+		padding: 15,
+		borderRadius: 10,
+		alignItems: 'center',
+		marginTop: 20,
+	},
+	saveButtonText: {
+		color: COLORS.white,
+		fontSize: 16,
+		fontWeight: 'bold',
 	},
 });
