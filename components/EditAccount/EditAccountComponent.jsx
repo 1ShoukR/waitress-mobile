@@ -1,128 +1,130 @@
 import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { COLORS } from '../../constants';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUserAccount } from '../../redux/thunk';
 
 const EditAccountComponent = () => {
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [phone, setPhone] = useState('');
-	const stateInitials = [
-		'AL',
-		'AK',
-		'AZ',
-		'AR',
-		'CA',
-		'CO',
-		'CT',
-		'DE',
-		'FL',
-		'GA',
-		'HI',
-		'ID',
-		'IL',
-		'IN',
-		'IA',
-		'KS',
-		'KY',
-		'LA',
-		'ME',
-		'MD',
-		'MA',
-		'MI',
-		'MN',
-		'MS',
-		'MO',
-		'MT',
-		'NE',
-		'NV',
-		'NH',
-		'NJ',
-		'NM',
-		'NY',
-		'NC',
-		'ND',
-		'OH',
-		'OK',
-		'OR',
-		'PA',
-		'RI',
-		'SC',
-		'SD',
-		'TN',
-		'TX',
-		'UT',
-		'VT',
-		'VA',
-		'WA',
-		'WV',
-		'WI',
-		'WY',
-	];
+	const dispatch = useDispatch()
+	const signedInUser = useSelector((state) => state.auth);
+	console.log(signedInUser);
 
-	const handleSaveChanges = () => {
-		console.log('Save changes');
+	const initialAddress = '123 Broadway St, New York, NY 10006';
+	const [street, setStreet] = useState('');
+	const [city, setCity] = useState('');
+	const [zip, setZip] = useState('');
+	const [state, setState] = useState('');
+	const [name, setName] = useState(signedInUser.firstName + ' ' + signedInUser.lastName);
+	const [email, setEmail] = useState(signedInUser.email);
+	const [phone, setPhone] = useState('');
+
+	useEffect(() => {
+		const addressParts = initialAddress.split(',');
+		setStreet(addressParts[0].trim());
+		setCity(addressParts[1].trim());
+		const stateZip = addressParts[2].trim().split(' ');
+		setState(stateZip[0].trim());
+		setZip(stateZip[1].trim());
+	}, [signedInUser]);
+
+	const handleSaveChanges = async () => {
+		const nameParts = name.split(' ');
+		const firstName = nameParts[0];
+		const lastName = nameParts.slice(1).join(' ');
+
+		console.log('First Name:', firstName);
+		console.log('Last Name:', lastName);
+		console.log('Email:', email);
+		console.log('Phone:', phone);
+		console.log('Street:', street);
+		console.log('City:', city);
+		console.log('Zip:', zip);
+		console.log('State:', state);
+		console.log('user id:', signedInUser.userId);
+		dispatch(updateUserAccount({
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				phone: phone,
+				street: street,
+				city: city,
+				zip: zip,
+				state: state,
+				userId: signedInUser.userId,
+			}));
+
 	};
 
 	return (
 		<>
 			<SafeAreaView style={styles.container}>
-				<KeyboardAvoidingView style={{ flex: 1, flexDirection: 'row' }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
 					<ScrollView contentContainerStyle={styles.scrollViewContent}>
 						<View style={styles.cardContainer}>
-								<View style={styles.profilePictureContainer}>
-									<TouchableOpacity onPress={() => console.log('Create future Image Upload Screen')}>
-										<Image source={{ uri: 'https://avatar.iran.liara.run/public/8' }} style={styles.userImage} />
-									</TouchableOpacity>
-									<TouchableOpacity onPress={() => console.log('handle image change')}>
-										<Text style={styles.profilePictureText}>Change Picture</Text>
-									</TouchableOpacity>
+							<View style={styles.profilePictureContainer}>
+								<TouchableOpacity onPress={() => console.log('Create future Image Upload Screen')}>
+									<Image source={{ uri: 'https://avatar.iran.liara.run/public/8' }} style={styles.userImage} />
+								</TouchableOpacity>
+								<TouchableOpacity onPress={() => console.log('handle image change')}>
+									<Text style={styles.profilePictureText}>Change Picture</Text>
+								</TouchableOpacity>
+							</View>
+							<View style={styles.userInfoContainer}>
+								<View style={styles.userInfo}>
+									<Text style={styles.userInfoLabel}>Name:</Text>
+									<TextInput style={styles.userInfoInput} placeholder="John Doe" placeholderTextColor={COLORS.gray} value={name} onChangeText={setName} />
 								</View>
-								<View style={styles.userInfoContainer}>
-									<View style={styles.userInfo}>
-										<Text style={styles.userInfoLabel}>Name:</Text>
-										<TextInput style={styles.userInfoInput} placeholder="John Doe" placeholderTextColor={COLORS.gray} value={name} onChangeText={setName} />
-									</View>
-									<View style={styles.userInfo}>
-										<Text style={styles.userInfoLabel}>Email:</Text>
-										<TextInput style={styles.userInfoInput} placeholder="johndoe@example.com" placeholderTextColor={COLORS.gray} keyboardType="email-address" value={email} onChangeText={setEmail} />
-									</View>
-									<View style={styles.userInfo}>
-										<Text style={styles.userInfoLabel}>Street:</Text>
-										<TextInput style={styles.userInfoInput} placeholder="123 Main St" placeholderTextColor={COLORS.gray} value={phone} onChangeText={setPhone} />
-									</View>
-									<View style={styles.userInfo}>
-										<View style={{ flexDirection: 'row' }}>
-											
-											<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>City:</Text>
-											<TextInput style={[styles.userInfoInput, { marginRight: 10 }]} placeholder="Atlanta" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
-											<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>Zip:</Text>
-											<TextInput style={[styles.userInfoInput]} placeholder="00000" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
-											<Text style={[styles.userInfoLabel, { top: 5, marginLeft: 5 }]}>State: </Text>
-											<TextInput style={[styles.userInfoInput, {width: 80}]} placeholder="GA" placeholderTextColor={COLORS.gray} />
-										</View>
-									</View>
-									<View style={styles.pillButtonContainer}>
-										<TouchableOpacity onPress={() => console.log('route to change password screen')} style={styles.pillButtons}>
-											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Change Password</Text>
-										</TouchableOpacity>
-										<TouchableOpacity onPress={() => console.log('route to user receipts page')} style={styles.pillButtons}>
-											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Receipts</Text>
-										</TouchableOpacity>
-										<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
-											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Delete</Text>
-										</TouchableOpacity>
-										<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
-											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Contact</Text>
-										</TouchableOpacity>
+								<View style={styles.userInfo}>
+									<Text style={styles.userInfoLabel}>Email:</Text>
+									<TextInput style={styles.userInfoInput} placeholder="johndoe@example.com" placeholderTextColor={COLORS.gray} keyboardType="email-address" value={email} onChangeText={setEmail} />
+								</View>
+								<View style={styles.userInfo}>
+									<Text style={styles.userInfoLabel}>Street:</Text>
+									<TextInput style={styles.userInfoInput} placeholder="123 Main St" placeholderTextColor={COLORS.gray} value={street} onChangeText={setStreet} />
+								</View>
+								<View style={styles.userInfo}>
+									<Text style={styles.userInfoLabel}>Phone:</Text>
+									<TextInput style={styles.userInfoInput} placeholder="555-555-5555" placeholderTextColor={COLORS.gray} value={phone} onChangeText={setPhone} />
+								</View>
+								<View style={styles.userInfo}>
+									<View style={{ flexDirection: 'row' }}>
+										<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>City:</Text>
+										<TextInput
+											style={[styles.userInfoInput, { marginRight: 10 }]}
+											placeholder="Atlanta"
+											placeholderTextColor={COLORS.gray}
+											keyboardType="default"
+											value={city}
+											onChangeText={setCity}
+										/>
+										<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>Zip:</Text>
+										<TextInput style={[styles.userInfoInput]} placeholder="00000" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" value={zip} onChangeText={setZip} />
+										<Text style={[styles.userInfoLabel, { top: 5, marginLeft: 5 }]}>State: </Text>
+										<TextInput style={[styles.userInfoInput, { width: 80 }]} placeholder="GA" placeholderTextColor={COLORS.gray} value={state} onChangeText={setState} />
 									</View>
 								</View>
+								<View style={styles.pillButtonContainer}>
+									<TouchableOpacity onPress={() => console.log('route to change password screen')} style={styles.pillButtons}>
+										<Text style={{ color: COLORS.white, borderRadius: 10 }}>Change Password</Text>
+									</TouchableOpacity>
+									<TouchableOpacity onPress={() => console.log('route to user receipts page')} style={styles.pillButtons}>
+										<Text style={{ color: COLORS.white, borderRadius: 10 }}>Receipts</Text>
+									</TouchableOpacity>
+									<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
+										<Text style={{ color: COLORS.white, borderRadius: 10 }}>Delete</Text>
+									</TouchableOpacity>
+									<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
+										<Text style={{ color: COLORS.white, borderRadius: 10 }}>Contact</Text>
+									</TouchableOpacity>
+								</View>
+							</View>
 							<TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
 								<Text style={styles.saveButtonText}>Save Changes</Text>
 							</TouchableOpacity>
 						</View>
 					</ScrollView>
-				</KeyboardAvoidingView>	
+				</KeyboardAvoidingView>
 			</SafeAreaView>
 		</>
 	);
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 20,
 		backgroundColor: COLORS.primary,
-		width: '100%'
+		width: '100%',
 	},
 	profilePictureContainer: {
 		alignItems: 'center',
