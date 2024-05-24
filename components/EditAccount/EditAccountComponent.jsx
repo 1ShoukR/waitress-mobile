@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { Stack } from 'expo-router';
 import { COLORS } from '../../constants';
@@ -59,67 +59,70 @@ const EditAccountComponent = () => {
 		'WI',
 		'WY',
 	];
-    const handleSaveGhanges = () => {
-        console.log('Save changes')
-    
-    }
+
+	const handleSaveChanges = () => {
+		console.log('Save changes');
+	};
 
 	return (
 		<>
 			<SafeAreaView style={styles.container}>
-				<View style={styles.cardContainer}>
-					<View style={styles.card}>
-						<View style={styles.profilePictureContainer}>
-							<TouchableOpacity onPress={() => console.log('Create future Image Upload Screen')}>
-								<Image source={{ uri: 'https://avatar.iran.liara.run/public/8' }} style={styles.userImage} />
-							</TouchableOpacity>
-							<TouchableOpacity onPress={() => console.log('handle image change')}>
-								<Text style={styles.profilePictureText}>Change Picture</Text>
-							</TouchableOpacity>
-						</View>
-						<View style={styles.userInfoContainer}>
-							<View style={styles.userInfo}>
-								<Text style={styles.userInfoLabel}>Name:</Text>
-								<TextInput style={styles.userInfoInput} placeholder="John Doe" placeholderTextColor={COLORS.gray} value={name} onChangeText={setName} />
-							</View>
-							<View style={styles.userInfo}>
-								<Text style={styles.userInfoLabel}>Email:</Text>
-								<TextInput style={styles.userInfoInput} placeholder="johndoe@example.com" placeholderTextColor={COLORS.gray} keyboardType="email-address" value={email} onChangeText={setEmail} />
-							</View>
-							<View style={styles.userInfo}>
-								<Text style={styles.userInfoLabel}>Street:</Text>
-								<TextInput style={styles.userInfoInput} placeholder="123 Main St" placeholderTextColor={COLORS.gray} value={phone} onChangeText={setPhone} />
-							</View>
-							<View style={styles.userInfo}>
-								<View style={{ flexDirection: 'row' }}>
-									<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>City:</Text>
-									<TextInput style={[styles.userInfoInput, { marginRight: 10 }]} placeholder="Atlanta" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
-									<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>Zip:</Text>
-									<TextInput style={[styles.userInfoInput]} placeholder="00000" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
-									<Text style={[styles.userInfoLabel, { top: 5, marginLeft: 5 }]}>State: </Text>
-									<TextInput style={[styles.userInfoInput]} placeholder="GA" placeholderTextColor={COLORS.gray} />
+				<KeyboardAvoidingView style={{ flex: 1, flexDirection: 'row' }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}>
+					<ScrollView contentContainerStyle={styles.scrollViewContent}>
+						<View style={styles.cardContainer}>
+								<View style={styles.profilePictureContainer}>
+									<TouchableOpacity onPress={() => console.log('Create future Image Upload Screen')}>
+										<Image source={{ uri: 'https://avatar.iran.liara.run/public/8' }} style={styles.userImage} />
+									</TouchableOpacity>
+									<TouchableOpacity onPress={() => console.log('handle image change')}>
+										<Text style={styles.profilePictureText}>Change Picture</Text>
+									</TouchableOpacity>
 								</View>
-							</View>
-							<View style={styles.pillButtonContainer}>
-								<TouchableOpacity onPress={() => console.log('route to change password screen')} style={styles.pillButtons}>
-									<Text style={{ color: COLORS.white, borderRadius: 10 }}>Change Password</Text>
-								</TouchableOpacity>
-								<TouchableOpacity onPress={() => console.log('route to user receipts page')} style={styles.pillButtons}>
-									<Text style={{ color: COLORS.white, borderRadius: 10 }}>Receipts</Text>
-								</TouchableOpacity>
-								<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
-									<Text style={{ color: COLORS.white, borderRadius: 10 }}>Delete</Text>
-								</TouchableOpacity>
-								<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
-									<Text style={{ color: COLORS.white, borderRadius: 10 }}>Contact</Text>
-								</TouchableOpacity>
-							</View>
+								<View style={styles.userInfoContainer}>
+									<View style={styles.userInfo}>
+										<Text style={styles.userInfoLabel}>Name:</Text>
+										<TextInput style={styles.userInfoInput} placeholder="John Doe" placeholderTextColor={COLORS.gray} value={name} onChangeText={setName} />
+									</View>
+									<View style={styles.userInfo}>
+										<Text style={styles.userInfoLabel}>Email:</Text>
+										<TextInput style={styles.userInfoInput} placeholder="johndoe@example.com" placeholderTextColor={COLORS.gray} keyboardType="email-address" value={email} onChangeText={setEmail} />
+									</View>
+									<View style={styles.userInfo}>
+										<Text style={styles.userInfoLabel}>Street:</Text>
+										<TextInput style={styles.userInfoInput} placeholder="123 Main St" placeholderTextColor={COLORS.gray} value={phone} onChangeText={setPhone} />
+									</View>
+									<View style={styles.userInfo}>
+										<View style={{ flexDirection: 'row' }}>
+											
+											<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>City:</Text>
+											<TextInput style={[styles.userInfoInput, { marginRight: 10 }]} placeholder="Atlanta" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
+											<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>Zip:</Text>
+											<TextInput style={[styles.userInfoInput]} placeholder="00000" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" />
+											<Text style={[styles.userInfoLabel, { top: 5, marginLeft: 5 }]}>State: </Text>
+											<TextInput style={[styles.userInfoInput, {width: 80}]} placeholder="GA" placeholderTextColor={COLORS.gray} />
+										</View>
+									</View>
+									<View style={styles.pillButtonContainer}>
+										<TouchableOpacity onPress={() => console.log('route to change password screen')} style={styles.pillButtons}>
+											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Change Password</Text>
+										</TouchableOpacity>
+										<TouchableOpacity onPress={() => console.log('route to user receipts page')} style={styles.pillButtons}>
+											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Receipts</Text>
+										</TouchableOpacity>
+										<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
+											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Delete</Text>
+										</TouchableOpacity>
+										<TouchableOpacity onPress={() => console.log('Idk what this is supposed to be, but for now this is a placeholder')} style={styles.pillButtons}>
+											<Text style={{ color: COLORS.white, borderRadius: 10 }}>Contact</Text>
+										</TouchableOpacity>
+									</View>
+								</View>
+							<TouchableOpacity style={styles.saveButton} onPress={handleSaveChanges}>
+								<Text style={styles.saveButtonText}>Save Changes</Text>
+							</TouchableOpacity>
 						</View>
-					</View>
-					<TouchableOpacity style={styles.saveButton} onPress={() => console.log('Save changes')}>
-						<Text style={styles.saveButtonText}>Save Changes</Text>
-					</TouchableOpacity>
-				</View>
+					</ScrollView>
+				</KeyboardAvoidingView>	
 			</SafeAreaView>
 		</>
 	);
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
 	},
 	pillButtons: {
 		backgroundColor: COLORS.secondary,
-		width: 136,
+		width: 160,
 		padding: 10,
 		justifyContent: 'center',
 		alignItems: 'center',
@@ -147,7 +150,7 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.cardBackground,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 10 },
-		shadowOpacity: 0.5,
+		shadowOpacity: 0.2,
 		shadowRadius: 10,
 		elevation: 12,
 		padding: 20,
@@ -164,6 +167,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		padding: 20,
 		backgroundColor: COLORS.primary,
+		width: '100%'
 	},
 	profilePictureContainer: {
 		alignItems: 'center',
@@ -211,5 +215,9 @@ const styles = StyleSheet.create({
 		color: COLORS.white,
 		fontSize: 16,
 		fontWeight: 'bold',
+	},
+	scrollViewContent: {
+		flexGrow: 1,
+		justifyContent: 'center',
 	},
 });
