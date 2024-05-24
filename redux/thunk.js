@@ -71,3 +71,18 @@ export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaur
 export const setDarkMode = createAsyncThunk('auth/setDarkMode', async (darkMode) => {
 	return darkMode;
 });
+
+export const updateUserAccount = createAsyncThunk('auth/updateUserAccount', async(requestData) => {
+	const formData = new FormData()
+	formData.append('firstName', requestData.firstName);
+	formData.append('lastName', requestData.lastName);
+	formData.append('email', requestData.email);
+	formData.append('phone', requestData.phone);
+	formData.append('street', requestData.street);
+	formData.append('city', requestData.city);
+	formData.append('state', requestData.state);
+	formData.append('zip', requestData.zip);
+	formData.append('userId', requestData.userId);
+	const data = await client.post('/api/users/update-account-info', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	return data
+});

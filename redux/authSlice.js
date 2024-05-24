@@ -2,7 +2,7 @@
  * Auth slice
  */
 import { createSlice } from '@reduxjs/toolkit';
-import { createUserAccountThunk, doLogin, setDarkMode, updateUserLocation } from './thunk';
+import { createUserAccountThunk, doLogin, setDarkMode, updateUserAccount, updateUserLocation } from './thunk';
 
 const initialState = {
 	apiToken: null,
@@ -126,8 +126,33 @@ const authSlice = createSlice({
 			})
 			.addCase(setDarkMode.rejected, (state, action) => {
 				state.darkMode = !state.darkMode;
+			})
+			.addCase(updateUserAccount.pending, (state) => {
+				state.loginStatus = 'loading';
+			})
+			.addCase(updateUserAccount.fulfilled, (state, action) => {
+				const payload = action.payload;
+				if (payload && payload.token) {
+					state.userId = payload.user.userId;
+					state.firstName = payload.user.firstName;
+					state.lastName = payload.user.lastName;
+					state.email = payload.user.email;
+					state.authType = payload.user.authType;
+					state.latitude = payload.user.latitude;
+					state.longitude = payload.user.longitude;
+					state.address = payload.user.address;
+					state.userType = payload.user.authType;
+					state.createdAt = payload.user.createdAt;
+					state.loginStatus = 'succeeded';
+				} else {
+					state.loginStatus = 'failed';
+					state.error = 'Login failed. Please try again.';
+				}
+			})
+			.addCase(updateUserAccount.rejected, (state, action) => {
+				state.loginStatus = 'failed';
+				state.error = action.error.message;
 			});
-
 	},
 });
 
