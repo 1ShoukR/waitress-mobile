@@ -21,6 +21,7 @@ const initialState = {
 	address: null,
 	createdAt: null,
 	darkMode: false,
+	updateUserAccountStatus: 'idle',
 };
 
 const authSlice = createSlice({
@@ -143,14 +144,14 @@ const authSlice = createSlice({
 					state.address = payload.user.address;
 					state.userType = payload.user.authType;
 					state.createdAt = payload.user.createdAt;
-					state.loginStatus = 'succeeded';
+					state.updateUserAccountStatus = 'succeeded';
 				} else {
-					state.loginStatus = 'failed';
+					state.updateUserAccountStatus = 'failed';
 					state.error = 'Login failed. Please try again.';
 				}
 			})
 			.addCase(updateUserAccount.rejected, (state, action) => {
-				state.loginStatus = 'failed';
+				state.updateUserAccountStatus = 'failed';
 				state.error = action.error.message;
 			});
 	},
