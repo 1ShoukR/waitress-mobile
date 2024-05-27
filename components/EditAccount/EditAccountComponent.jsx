@@ -1,60 +1,86 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { COLORS } from '../../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserAccount } from '../../redux/thunk';
+import { resetUpdateUserAccountStatus, updateUserAccount } from '../../redux/thunk';
 
 const EditAccountComponent = () => {
 	const dispatch = useDispatch()
-	const signedInUser = useSelector((state) => state.auth);
-	console.log(signedInUser);
+	const signedInUser = useSelector((state) => state?.auth);
+	const updateUserStatus = useSelector((state) => state?.auth?.updateUserAccountStatus);
 
 	const initialAddress = '123 Broadway St, New York, NY 10006';
 	const [street, setStreet] = useState('');
+	const [streetPlaceholder, setStreetPlaceholder] = useState('123 Broadway St, New York, NY 10006');
 	const [city, setCity] = useState('');
+	const [cityPlaceholder, setCityPlaceholder] = useState('');
 	const [zip, setZip] = useState('');
+	const [zipPlaceholder, setZipPlaceholder] = useState('');
 	const [state, setState] = useState('');
-	const [name, setName] = useState(signedInUser.firstName + ' ' + signedInUser.lastName);
-	const [email, setEmail] = useState(signedInUser.email);
+	const [statePlaceholder, setStatePlaceholder] = useState('');
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
 	const [phone, setPhone] = useState('');
 
-	useEffect(() => {
-		const addressParts = initialAddress.split(',');
-		setStreet(addressParts[0].trim());
-		setCity(addressParts[1].trim());
-		const stateZip = addressParts[2].trim().split(' ');
-		setState(stateZip[0].trim());
-		setZip(stateZip[1].trim());
+  useEffect(() => {
+		if (signedInUser) {
+			const initialAddress = signedInUser?.address || '123 Broadway St, New York, NY 10006';
+			const addressParts = initialAddress.split(',');
+			setStreetPlaceholder(addressParts[0].trim());
+			setCityPlaceholder(addressParts[1].trim());
+			const stateZip = addressParts[2].trim().split(' ');
+			setStatePlaceholder(stateZip[0].trim());
+			setZipPlaceholder(stateZip[1].trim());
+		}
 	}, [signedInUser]);
 
-	const handleSaveChanges = async () => {
-		const nameParts = name.split(' ');
-		const firstName = nameParts[0];
-		const lastName = nameParts.slice(1).join(' ');
+  useEffect(() => {
+		if (updateUserStatus === 'succeeded') {
+			Alert.alert('User account updated successfully', '', [
+				{
+					text: 'OK',
+					onPress: async () => dispatch(resetUpdateUserAccountStatus()),
+				},
+			]);
+		}
+	}, [updateUserStatus]);
 
-		console.log('First Name:', firstName);
-		console.log('Last Name:', lastName);
-		console.log('Email:', email);
-		console.log('Phone:', phone);
-		console.log('Street:', street);
-		console.log('City:', city);
-		console.log('Zip:', zip);
-		console.log('State:', state);
-		console.log('user id:', signedInUser.userId);
-		dispatch(updateUserAccount({
-				firstName: firstName,
-				lastName: lastName,
-				email: email,
-				phone: phone,
-				street: street,
-				city: city,
-				zip: zip,
-				state: state,
-				userId: signedInUser.userId,
-			}));
+const handleSaveChanges = async () => {
+	let nameParts;
+	let firstName;
+	let lastName;
 
-	};
+	if (name) {
+		nameParts = name.split(' ');
+		firstName = nameParts[0];
+		lastName = nameParts.slice(1).join(' ');
+	} else {
+		firstName = signedInUser?.firstName;
+		lastName = signedInUser?.lastName;
+	}
+
+	const finalEmail = email || signedInUser?.email;
+	const finalPhone = phone || signedInUser?.phone;
+	const finalStreet = street || streetPlaceholder;
+	const finalCity = city || signedInUser?.city || cityPlaceholder;
+	const finalZip = zip || zipPlaceholder;
+	const finalState = state || statePlaceholder;
+
+	dispatch(
+		updateUserAccount({
+			firstName: firstName,
+			lastName: lastName,
+			email: finalEmail,
+			phone: finalPhone,
+			street: finalStreet,
+			city: finalCity,
+			zip: finalZip,
+			state: finalState,
+			userId: signedInUser.userId,
+		})
+	);
+};
 
 	return (
 		<>
@@ -73,15 +99,22 @@ const EditAccountComponent = () => {
 							<View style={styles.userInfoContainer}>
 								<View style={styles.userInfo}>
 									<Text style={styles.userInfoLabel}>Name:</Text>
-									<TextInput style={styles.userInfoInput} placeholder="John Doe" placeholderTextColor={COLORS.gray} value={name} onChangeText={setName} />
+									<TextInput style={styles.userInfoInput} placeholder={`${signedInUser?.firstName} ${signedInUser.lastName}`} placeholderTextColor={COLORS.gray} value={name} onChangeText={setName} />
 								</View>
 								<View style={styles.userInfo}>
 									<Text style={styles.userInfoLabel}>Email:</Text>
-									<TextInput style={styles.userInfoInput} placeholder="johndoe@example.com" placeholderTextColor={COLORS.gray} keyboardType="email-address" value={email} onChangeText={setEmail} />
+									<TextInput
+										style={styles.userInfoInput}
+										placeholder={`${signedInUser?.email}`}
+										placeholderTextColor={COLORS.gray}
+										keyboardType="email-address"
+										value={email}
+										onChangeText={setEmail}
+									/>
 								</View>
 								<View style={styles.userInfo}>
 									<Text style={styles.userInfoLabel}>Street:</Text>
-									<TextInput style={styles.userInfoInput} placeholder="123 Main St" placeholderTextColor={COLORS.gray} value={street} onChangeText={setStreet} />
+									<TextInput style={styles.userInfoInput} placeholder={`${streetPlaceholder}`} placeholderTextColor={COLORS.gray} value={street} onChangeText={setStreet} />
 								</View>
 								<View style={styles.userInfo}>
 									<Text style={styles.userInfoLabel}>Phone:</Text>
@@ -92,16 +125,16 @@ const EditAccountComponent = () => {
 										<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>City:</Text>
 										<TextInput
 											style={[styles.userInfoInput, { marginRight: 10 }]}
-											placeholder="Atlanta"
+											placeholder={`${cityPlaceholder}`}
 											placeholderTextColor={COLORS.gray}
 											keyboardType="default"
 											value={city}
 											onChangeText={setCity}
 										/>
 										<Text style={[styles.userInfoLabel, { top: 5, marginRight: 5 }]}>Zip:</Text>
-										<TextInput style={[styles.userInfoInput]} placeholder="00000" placeholderTextColor={COLORS.gray} keyboardType="phone-pad" value={zip} onChangeText={setZip} />
+										<TextInput style={[styles.userInfoInput]} placeholder={`${zipPlaceholder}`} placeholderTextColor={COLORS.gray} keyboardType="phone-pad" value={zip} onChangeText={setZip} />
 										<Text style={[styles.userInfoLabel, { top: 5, marginLeft: 5 }]}>State: </Text>
-										<TextInput style={[styles.userInfoInput, { width: 80 }]} placeholder="GA" placeholderTextColor={COLORS.gray} value={state} onChangeText={setState} />
+										<TextInput style={[styles.userInfoInput, { width: 80 }]} placeholder={`${statePlaceholder}`} placeholderTextColor={COLORS.gray} value={state} onChangeText={setState} />
 									</View>
 								</View>
 								<View style={styles.pillButtonContainer}>
