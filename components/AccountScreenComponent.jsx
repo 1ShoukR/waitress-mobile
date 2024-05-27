@@ -11,7 +11,6 @@ import { setDarkMode } from '../redux/thunk';
 const AccountScreenComponent = () => {
 	const dispatch = useDispatch()
 	const isDev = useSelector((state) => state.auth.authType);
-	console.log('isDev', isDev);
 	const [memberSince, setMemberSince] = React.useState('');
 	const [darkModeLocal, setDarkModeLocal] = React.useState(false);
 	const handleTabScreenHeaderButton = () => {
@@ -25,7 +24,6 @@ const AccountScreenComponent = () => {
 	}, [user]);
 	const Divider = () => <View style={styles.divider} />; // New Divider component
 	const globalDarkMode = useSelector((state) => state.auth.darkMode);
-	console.log('globalDarkMode', globalDarkMode);
 	const Section = ({ title, onPress, rightComponent }) => (
         <>
 		<TouchableOpacity style={styles.sectionContainer} onPress={onPress}>
@@ -53,7 +51,6 @@ const AccountScreenComponent = () => {
 	};
 
 	const user = useSelector((state) => state.auth);
-	console.log('user', user);
 
 	return (
 		<View style={styles.container}>

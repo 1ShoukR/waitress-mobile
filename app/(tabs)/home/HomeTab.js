@@ -20,8 +20,6 @@ const HomeIndex = () => {
 	const globalDarkmode = useSelector((state) => state?.auth.darkmode);
 	const opacityAnim = useRef(new Animated.Value(1)).current;
 	const dispatch = useDispatch();
-	console.log("userLocation", userLocation);
-	console.log("userAddress", userAddress);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);

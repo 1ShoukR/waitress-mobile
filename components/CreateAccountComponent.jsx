@@ -154,16 +154,10 @@ const CreateAccountComponent = () => {
 	};
 
 const handleSubmit = async () => {
-	console.log(firstName);
-	console.log(lastName);
-	console.log(email);
-	console.log(password);
-	console.log(userAddress);
 	if (!validateState(userAddress.state)) {
 		return;
 	}
 	let results = await Location.geocodeAsync(userAddress.address);
-	console.log('results', results);
 	if (results.length > 0) {
 		const updatedUserAddress = {
 			...userAddress,

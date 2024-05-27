@@ -27,13 +27,11 @@ export const createUserAccountThunk = createAsyncThunk('auth/createUserAccountTh
 	formData.append('state', requestData.userAddress.state);
 	formData.append('zip', requestData.userAddress.zip);
 	const data = await client.post('/api/users/create', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	console.log('data', data)
 	return data;
 });
 
 
 export const getLocalRestaurants = createAsyncThunk('restaurant/getLocal', async (requestData) => {
-	console.log('requestData', requestData)
 	const formData = new FormData()
 	formData.append('latitude', requestData.latitude);
 	formData.append('longitude', requestData.longitude);
@@ -51,7 +49,6 @@ export const getTopRestaurants = createAsyncThunk('restaurant/getTopRestaurants'
 
 export const updateUserLocation = createAsyncThunk('user/updateUserLocation', async (requestData) => {
 	const formData = new FormData();
-	console.log('requestData', requestData)
 	formData.append('latitude', requestData.latitude);
 	formData.append('longitude', requestData.longitude);
 	formData.append('userId', requestData.userId);
@@ -70,4 +67,23 @@ export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaur
 
 export const setDarkMode = createAsyncThunk('auth/setDarkMode', async (darkMode) => {
 	return darkMode;
+});
+
+export const updateUserAccount = createAsyncThunk('auth/updateUserAccount', async (requestData) => {
+	const formData = new FormData();
+	formData.append('firstName', requestData.firstName);
+	formData.append('lastName', requestData.lastName);
+	formData.append('email', requestData.email);
+	formData.append('phone', requestData.phone);
+	formData.append('street', requestData.street);
+	formData.append('city', requestData.city);
+	formData.append('state', requestData.state);
+	formData.append('zip', requestData.zip);
+	formData.append('userId', requestData.userId);
+	const data = await client.post('/api/users/update-account-info', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	return data
+});
+
+export const resetUpdateUserAccountStatus = createAsyncThunk('auth/resetUpdateUserAccountStatus', async () => {
+	return 'idle';
 });
