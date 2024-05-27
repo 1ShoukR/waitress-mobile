@@ -6,7 +6,6 @@ import { router } from 'expo-router';
 
 const LocalRestaurantsComponent = ({ localRestaurants }) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants;
-	console.log('Local Restaurants:', localRestaurantsData);
 
 	const handlePress = (restaurant) => {
 		// Handle the card click event here
@@ -26,7 +25,7 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 		<View style={styles.container}>
 			<Text style={styles.headerText}>Restaurants Near You</Text>
 			{localRestaurantsData?.map((restaurant, index) => {
-				console.log('Restaurant:', restaurant.Ratings);
+				// console.log('Restaurant:', restaurant.Ratings);
 				return (
 					<TouchableOpacity key={index} onPress={() => handlePress(restaurant)} style={styles.cardContainer}>
 						<View style={styles.card}>
