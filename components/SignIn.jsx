@@ -1,4 +1,4 @@
-import {  Text, View, Pressable,  } from 'react-native';
+import { Text, View, Pressable, Alert } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { router } from 'expo-router';
 import { TextInput, Title } from 'react-native-paper';
@@ -9,35 +9,38 @@ import SvgVersion from '../assets/svgVersion.svg';
 import PressableButton from './PressableButton';
 import { doLogin } from '../redux/thunk';
 import * as Device from 'expo-device';
+
 const SignIn = () => {
 	//useState Hooks
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	//Expo Router Navigation
-
-	// // Redux Hooks
+	// Redux Hooks
 	const dispatch = useDispatch();
-	const authStatus = useSelector((state) => state?.auth?.loginStatus);
-	const userEmail = useSelector((state) => state?.auth?.email);
+	const authStatus = useSelector((state) => state.auth.loginStatus);
+	const userEmail = useSelector((state) => state.auth.email);
 
 	// Local Functions
 	const handleLogin = useCallback(() => {
-		console.log('email', email);
-		dispatch(doLogin({ email: email, password: password, userAgent: Device.osName }));
-	}, [email, password, dispatch]);
+		if (authStatus !== 'loading') {
+			// Ensure no multiple dispatches
+			console.log('email', email);
+			dispatch(doLogin({ email: email, password: password, userAgent: Device.osName }));
+		}
+	}, [email, password, dispatch, authStatus]);
 
-useEffect(() => {
-	if (authStatus === 'failed') {
-		alert('Login failed. Please try again.');
-	} else if (authStatus === 'succeeded') {
-		router.push('/home/HomeTab');
-		setEmail('');
-		setPassword('');
-	}
-}, [authStatus, userEmail]);
+	useEffect(() => {
+		if (authStatus === 'failed') {
+			Alert.alert('Login failed. Please try again.');
+		} else if (authStatus === 'succeeded') {
+			router.push('/home/HomeTab');
+			setEmail('');
+			setPassword('');
+		}
+	}, [authStatus, userEmail]);
+
 	const navigateToCreateAccount = () => {
-			router.push('/account/CreateAccountScreen');
+		router.push('/account/CreateAccountScreen');
 	};
 
 	return (
