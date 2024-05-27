@@ -1,8 +1,5 @@
-/**
- * Auth slice
- */
 import { createSlice } from '@reduxjs/toolkit';
-import { createUserAccountThunk, doLogin, setDarkMode, updateUserAccount, updateUserLocation } from './thunk';
+import { createUserAccountThunk, doLogin, setDarkMode, updateUserAccount, updateUserLocation, resetUpdateUserAccountStatus } from './thunk';
 
 const initialState = {
 	apiToken: null,
@@ -43,9 +40,9 @@ const authSlice = createSlice({
 			})
 			.addCase(doLogin.fulfilled, (state, action) => {
 				const payload = action.payload;
-				if (payload && payload.token) {
+				if (payload && (payload.token || payload.apiToken)) {
 					// Update login-related fields
-					state.apiToken = payload.token;
+					state.apiToken = payload.token || payload.apiToken;
 					state.userId = payload.user.userId;
 					state.firstName = payload.user.firstName;
 					state.lastName = payload.user.lastName;
@@ -86,29 +83,29 @@ const authSlice = createSlice({
 				state.updateLocationStatus = 'failed';
 				state.error = action.error.message;
 			})
-			.addCase(createUserAccountThunk.pending, (state) => { 
+			.addCase(createUserAccountThunk.pending, (state) => {
 				state.loginStatus = 'loading';
 			})
 			.addCase(createUserAccountThunk.fulfilled, (state, action) => {
 				const payload = action.payload;
-				if (payload && payload.token) {
-                    state.apiToken = payload.token;
-                    state.userId = payload.user.UserID;
-                    state.firstName = payload.user.Entity.FirstName;
-                    state.lastName = payload.user.Entity.LastName;
-                    state.email = payload.user.Email;
-                    state.authType = payload.user.AuthType;
-                    state.latitude = payload.user.Latitude;
-                    state.longitude = payload.user.Longitude;
-                    state.address = payload.user.Address;
-                    state.userType = payload.user.AuthType;
-                    state.createdAt = payload.user.Entity.CreatedAt;
-                    state.updatedAt = payload.user.Entity.UpdatedAt;
-                    state.accessRevoked = payload.user.AccessRevoked;
-                    state.profileImage = payload.user.ProfileImage;
-                    state.ratings = payload.user.Ratings;
-                    state.reservations = payload.user.Reservations;
-                    state.loginStatus = 'succeeded';
+				if (payload && (payload.token || payload.apiToken)) {
+					state.apiToken = payload.token || payload.apiToken;
+					state.userId = payload.user.UserID;
+					state.firstName = payload.user.Entity.FirstName;
+					state.lastName = payload.user.Entity.LastName;
+					state.email = payload.user.Email;
+					state.authType = payload.user.AuthType;
+					state.latitude = payload.user.Latitude;
+					state.longitude = payload.user.Longitude;
+					state.address = payload.user.Address;
+					state.userType = payload.user.AuthType;
+					state.createdAt = payload.user.Entity.CreatedAt;
+					state.updatedAt = payload.user.Entity.UpdatedAt;
+					state.accessRevoked = payload.user.AccessRevoked;
+					state.profileImage = payload.user.ProfileImage;
+					state.ratings = payload.user.Ratings;
+					state.reservations = payload.user.Reservations;
+					state.loginStatus = 'succeeded';
 				} else {
 					state.loginStatus = 'failed';
 					state.error = 'Login failed. Please try again.';
@@ -120,8 +117,7 @@ const authSlice = createSlice({
 			})
 			.addCase(setDarkMode.pending, (state) => {
 				state.darkMode = !state.darkMode;
-			}
-			)
+			})
 			.addCase(setDarkMode.fulfilled, (state, action) => {
 				state.darkMode = action.payload;
 			})
@@ -134,23 +130,36 @@ const authSlice = createSlice({
 			.addCase(updateUserAccount.fulfilled, (state, action) => {
 				const payload = action.payload;
 				if (payload && payload.token) {
-					state.userId = payload.user.userId;
-					state.firstName = payload.user.firstName;
-					state.lastName = payload.user.lastName;
-					state.email = payload.user.email;
-					state.authType = payload.user.authType;
-					state.latitude = payload.user.latitude;
-					state.longitude = payload.user.longitude;
-					state.address = payload.user.address;
-					state.userType = payload.user.authType;
-					state.createdAt = payload.user.createdAt;
+					state.userId = payload.user.UserID;
+					state.firstName = payload.user.Entity.FirstName;
+					state.lastName = payload.user.Entity.LastName;
+					state.email = payload.user.Email;
+					state.authType = payload.user.AuthType;
+					state.latitude = payload.user.Latitude;
+					state.longitude = payload.user.Longitude;
+					state.address = payload.user.Address;
+					state.phone = payload.user.Phone;
+					state.token = payload.token;
+					state.userType = payload.user.AuthType;
+					state.createdAt = payload.user.Entity.CreatedAt;
 					state.updateUserAccountStatus = 'succeeded';
 				} else {
 					state.updateUserAccountStatus = 'failed';
-					state.error = 'Login failed. Please try again.';
+					state.error = 'Update failed. Please try again.';
 				}
 			})
+
 			.addCase(updateUserAccount.rejected, (state, action) => {
+				state.updateUserAccountStatus = 'failed';
+				state.error = action.error.message;
+			})
+			.addCase(resetUpdateUserAccountStatus.pending, (state) => {
+				state.updateUserAccountStatus = 'loading';
+			})
+			.addCase(resetUpdateUserAccountStatus.fulfilled, (state, action) => {
+				state.updateUserAccountStatus = action.payload;
+			})
+			.addCase(resetUpdateUserAccountStatus.rejected, (state, action) => {
 				state.updateUserAccountStatus = 'failed';
 				state.error = action.error.message;
 			});
@@ -162,4 +171,3 @@ export default authSlice.reducer;
 
 export const selectApiToken = (state) => state.auth.apiToken;
 // TODO: Add more selectors for new state fields like firstName, lastName, etc.
-
