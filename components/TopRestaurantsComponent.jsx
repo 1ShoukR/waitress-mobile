@@ -1,12 +1,12 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import React, { memo } from 'react';
 import { COLORS } from '../constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-
-const TopRestaurantsComponent = ({ topRestaurants }) => {
+const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) => {
 	console.log('topRestaurants', topRestaurants);
+	console.log('isLoading', isLoading);
 
 	const renderStars = (rating) => {
 		const stars = [];
@@ -19,35 +19,38 @@ const TopRestaurantsComponent = ({ topRestaurants }) => {
 		// Handle the card click event here
 		console.log('Restaurant clicked:', restaurantId);
 		router.push(`/home/restaurant/${restaurantId}`);
-	}
+	};
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.headerText}>Top Restaurants</Text>
-			{topRestaurants?.map((restaurant, index) => {
-				return (
-				<TouchableOpacity key={index} onPress={() => handlePress(restaurant.RestaurantId)} style={styles.cardContainer}>
-					<View style={styles.card}>
-						<Image source={{ uri: restaurant?.ImageURL }} style={styles.cardImage} />
-						<View style={styles.cardContent}>
-							<Text style={styles.restaurantName}>{restaurant?.Name}</Text>
-							<View style={styles.ratingContainer}>
-								{renderStars(restaurant?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / restaurant.Ratings.length)}
-								<Text style={styles.ratingText}>{restaurant?.Ratings.length > 0 ? restaurant?.Ratings.length + " Reviews" : restaurant?.Ratings.length + " Review"}</Text>
+			{isLoading ? (
+				<ActivityIndicator size="large"  />
+			) : (
+				topRestaurants?.map((restaurant, index) => {
+					return (
+						<TouchableOpacity key={index} onPress={() => handlePress(restaurant.RestaurantId)} style={styles.cardContainer}>
+							<View style={styles.card}>
+								<Image source={{ uri: restaurant?.ImageURL }} style={styles.cardImage} />
+								<View style={styles.cardContent}>
+									<Text style={styles.restaurantName}>{restaurant?.Name}</Text>
+									<View style={styles.ratingContainer}>
+										{renderStars(restaurant?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / restaurant.Ratings.length)}
+										<Text style={styles.ratingText}>{restaurant?.Ratings.length > 0 ? restaurant?.Ratings.length + ' Reviews' : restaurant?.Ratings.length + ' Review'}</Text>
+									</View>
+									<Text style={styles.restaurantTags}>Tags</Text>
+									<Text style={styles.restaurantDetails}>{restaurant?.Details}</Text>
+								</View>
 							</View>
-							<Text style={styles.restaurantTags}>Tags</Text>
-							<Text style={styles.restaurantDetails}>{restaurant?.Details}</Text>
-						</View>
-					</View>
-				</TouchableOpacity>
-				)
-			}
+						</TouchableOpacity>
+					);
+				})
 			)}
 		</View>
 	);
 };
 
-export default TopRestaurantsComponent;
+export default memo(TopRestaurantsComponent);
 
 const styles = StyleSheet.create({
 	container: {

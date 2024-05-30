@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, FlatList, Animated, TouchableOpacity, StyleSheet } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import { Searchbar, Divider } from 'react-native-paper';
 import SearchListComponent from './SearchListComponent';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,10 +9,9 @@ import CategoriesComponent from './CategoriesComponent';
 import TopRestaurantsComponent from './TopRestaurantsComponent';
 import LocalRestaurantsComponent from './LocalRestaurantsComponent';
 import { COLORS } from '../constants';
-import { client } from '../api/client';
 
 const HomePageComponent = () => {
-	const [isLoading, setIsLoading] = React.useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const dispatch = useDispatch()
 	const user = useSelector((state) => state?.auth);
 	const localRestaurants = useSelector((state) => state?.restaurant)
@@ -22,20 +21,38 @@ const HomePageComponent = () => {
 
 
 	React.useEffect(() => {
-		dispatch(getLocalRestaurants({ latitude: user.latitude, longitude: user.longitude, apiToken: apiToken }));
-		dispatch(getTopRestaurants({ apiToken: apiToken }));
-	}, [user.latitude, user.longitude, dispatch]);
+		let isMounted = true;
+		const fetchData = async () => {
+			setIsLoading(true);
+			try {
+				// For some reason, await here works to show and set the isLoading state
+				// so please do not remove these await keywords until we find a better solution
+				await dispatch(getLocalRestaurants({ latitude: user.latitude, longitude: user.longitude, apiToken }));
+				await dispatch(getTopRestaurants({ apiToken }));
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			} finally {
+				if (isMounted) {
+					setIsLoading(false);
+				}
+			}
+		};
+		fetchData();
+		return () => {
+			isMounted = false;
+		};
+	}, [user.latitude, user.longitude, dispatch, apiToken]);
 
 
 	return (
 		<View style={styles.container}>
-			<View style={{flex: 1, justifyContent: 'center', alignItems: "center", marginBottom: 20, marginTop: -30}}>
-				<Text style={{ fontSize: 25, fontWeight: 'bold', color: COLORS.primary, }}>Waitress</Text>
+			<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 20, marginTop: -30 }}>
+				<Text style={{ fontSize: 25, fontWeight: 'bold', color: COLORS.primary }}>Waitress</Text>
 			</View>
 			<HomepageButtons />
 			<CategoriesComponent foodCategories={foodCategories} />
-			<TopRestaurantsComponent topRestaurants={topRestaurants} />
-			<LocalRestaurantsComponent localRestaurants={localRestaurants}/>
+			<TopRestaurantsComponent setIsLoading={setIsLoading} isLoading={isLoading} topRestaurants={topRestaurants} />
+			<LocalRestaurantsComponent localRestaurants={localRestaurants} />
 		</View>
 	);
 };
