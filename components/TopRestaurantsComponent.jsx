@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) => {
-	console.log('topRestaurants', topRestaurants);
+	// console.log('topRestaurants', topRestaurants);
 	console.log('isLoading', isLoading);
 
 	const renderStars = (rating) => {
