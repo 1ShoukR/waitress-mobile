@@ -68,6 +68,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									</View>
 									<View style={styles.separator} />
 									<View style={styles.tablesContainer}>
+										{/* we need to change this to be "low, medium, or high levels of cap based on number of tables available." */}
 										<Text style={styles.tableNumber}>{`Available Tables: ${singleRestaurant.NumberOfTables}`}</Text>
 										<TouchableOpacity style={styles.reserveButton}>
 											<Text style={styles.reserveButtonText}>Reserve Now</Text>
