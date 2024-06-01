@@ -5,6 +5,7 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleRestaurant } from '../../../../redux/thunk';
 import IndividualRestaurant from "../../../../components/RestaurantRelatedComponents/IndividualRestaurant"
+import { COLORS } from '../../../../constants';
 
 const RestaurantPage = () => {
 	const { restaurantId } = useLocalSearchParams();
@@ -22,8 +23,12 @@ const RestaurantPage = () => {
 
 	return (
 		<>
-			<Stack.Screen options={{ title: `${singleRestaurant?.Name}` }} />
-			<IndividualRestaurant />
+			<Stack.Screen options={{ title: `${singleRestaurant?.Name}`, contentStyle: {backgroundColor: COLORS.primary} }} />
+      <SafeAreaView>
+        <ScrollView>
+			    <IndividualRestaurant />
+        </ScrollView>
+      </SafeAreaView>
 		</>
 	);
 };
