@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { getSingleRestaurant } from '../../redux/thunk';
 import { COLORS } from '../../constants';
+import { router } from 'expo-router';
 
 const IndividualRestaurant = ({ restaurantId }) => {
 	const dispatch = useDispatch();
@@ -70,7 +71,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									<View style={styles.tablesContainer}>
 										{/* we need to change this to be "low, medium, or high levels of cap based on number of tables available." */}
 										<Text style={styles.tableNumber}>{`Available Tables: ${singleRestaurant.NumberOfTables}`}</Text>
-										<TouchableOpacity style={styles.reserveButton}>
+										<TouchableOpacity onPress={() => router.push(`/home/reserve/ReserveScreen`)} style={styles.reserveButton}>
 											<Text style={styles.reserveButtonText}>Reserve Now</Text>
 										</TouchableOpacity>
 									</View>
@@ -82,14 +83,16 @@ const IndividualRestaurant = ({ restaurantId }) => {
 										<View key={category} style={styles.menuCategory}>
 											<Text style={styles.menuCategoryTitle}>{category}</Text>
 											{mockMenuItems[category].map((item) => (
-												<View key={item.id} style={styles.menuItem}>
-													<Image source={{ uri: item.imageUrl }} style={styles.menuItemImage} />
-													<View style={styles.menuItemDetails}>
-														<Text style={styles.menuItemName}>{item.name}</Text>
-														<Text style={styles.menuItemDescription}>{item.description}</Text>
-														<Text style={styles.menuItemPrice}>{item.price}</Text>
+												<TouchableOpacity onPress={() => router.push(`/home/menu/${item.id}`)}>
+													<View key={item.id} style={styles.menuItem}>
+														<Image source={{ uri: item.imageUrl }} style={styles.menuItemImage} />
+														<View style={styles.menuItemDetails}>
+															<Text style={styles.menuItemName}>{item.name}</Text>
+															<Text style={styles.menuItemDescription}>{item.description}</Text>
+															<Text style={styles.menuItemPrice}>{item.price}</Text>
+														</View>
 													</View>
-												</View>
+												</TouchableOpacity>
 											))}
 										</View>
 									))}
