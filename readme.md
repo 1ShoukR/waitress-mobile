@@ -4,6 +4,10 @@
 
 Welcome to Waitress! This is a mobile application that allows users to  reserve tables and order food from their favorite restaurants.
 
+Please refer to the [waitress-backend] repository for the backend code, which is located here: 
+
+<https://github.com/1ShoukR/waitress-backend>
+
 ## Installation
 
 1. Clone the repositoryq
