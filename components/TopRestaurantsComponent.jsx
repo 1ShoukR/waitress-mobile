@@ -1,13 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, FlatList } from 'react-native';
 import React, { memo } from 'react';
 import { COLORS } from '../constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) => {
-	// console.log('topRestaurants', topRestaurants);
-	console.log('isLoading', isLoading);
-
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
@@ -16,35 +13,41 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) =>
 		return stars;
 	};
 	const handlePress = (restaurantId) => {
-		// Handle the card click event here
 		console.log('Restaurant clicked:', restaurantId);
 		router.push(`/home/restaurant/${restaurantId}`);
 	};
+
+	const renderItem = ({ item }) => (
+		<TouchableOpacity onPress={() => handlePress(item.RestaurantId)} style={styles.cardContainer}>
+			<View style={styles.card}>
+				<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
+				<View style={styles.cardContent}>
+					<Text style={styles.restaurantName}>{item?.Name}</Text>
+					<View style={styles.ratingContainer}>
+						{renderStars(item?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings.length)}
+						<Text style={styles.ratingText}>{item?.Ratings.length > 0 ? item?.Ratings.length + ' Reviews' : item?.Ratings.length + ' Review'}</Text>
+					</View>
+					<Text style={styles.restaurantTags}>Tags</Text>
+					<Text style={styles.restaurantDetails}>{item?.Details}</Text>
+				</View>
+			</View>
+		</TouchableOpacity>
+	);
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.headerText}>Top Restaurants</Text>
 			{isLoading ? (
-				<ActivityIndicator size="large"  />
+				<ActivityIndicator size="large" />
 			) : (
-				topRestaurants?.map((restaurant, index) => {
-					return (
-						<TouchableOpacity key={index} onPress={() => handlePress(restaurant.RestaurantId)} style={styles.cardContainer}>
-							<View style={styles.card}>
-								<Image source={{ uri: restaurant?.ImageURL }} style={styles.cardImage} />
-								<View style={styles.cardContent}>
-									<Text style={styles.restaurantName}>{restaurant?.Name}</Text>
-									<View style={styles.ratingContainer}>
-										{renderStars(restaurant?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / restaurant.Ratings.length)}
-										<Text style={styles.ratingText}>{restaurant?.Ratings.length > 0 ? restaurant?.Ratings.length + ' Reviews' : restaurant?.Ratings.length + ' Review'}</Text>
-									</View>
-									<Text style={styles.restaurantTags}>Tags</Text>
-									<Text style={styles.restaurantDetails}>{restaurant?.Details}</Text>
-								</View>
-							</View>
-						</TouchableOpacity>
-					);
-				})
+				<FlatList
+					data={topRestaurants}
+					renderItem={renderItem}
+					keyExtractor={(item) => item.RestaurantId.toString()}
+					horizontal
+					showsHorizontalScrollIndicator={false}
+					contentContainerStyle={styles.flatListContentContainer}
+				/>
 			)}
 		</View>
 	);
@@ -64,22 +67,29 @@ const styles = StyleSheet.create({
 		marginBottom: 10,
 		color: COLORS.lightModeText,
 	},
+	flatListContentContainer: {
+		paddingVertical: 10,
+	},
 	cardContainer: {
-		marginBottom: 15,
+		marginRight: 15,
 		borderRadius: 10,
 		backgroundColor: COLORS.cardBackground,
+		borderWidth: 1,
+		borderColor: '#ddd',
 		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 10 },
-		shadowOpacity: 0.5,
-		shadowRadius: 10,
-		elevation: 12,
+		shadowOffset: { width: 0, height: 5 },
+		shadowOpacity: 0.1,
+		shadowRadius: 5,
+		elevation: 3,
+		width: 220, // Adjust the width to your preference
+		marginVertical: 5,
 	},
 	card: {
 		borderRadius: 10,
 		overflow: 'hidden',
 	},
 	cardImage: {
-		height: 150,
+		height: 120,
 		width: '100%',
 		borderTopLeftRadius: 10,
 		borderTopRightRadius: 10,
@@ -89,7 +99,7 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.primary,
 	},
 	restaurantName: {
-		fontSize: 18,
+		fontSize: 16,
 		fontWeight: 'bold',
 		color: COLORS.black,
 		marginBottom: 5,
@@ -101,16 +111,16 @@ const styles = StyleSheet.create({
 	},
 	ratingText: {
 		marginLeft: 5,
-		fontSize: 16,
+		fontSize: 14,
 		color: COLORS.gray,
 	},
 	restaurantTags: {
-		fontSize: 14,
+		fontSize: 12,
 		color: COLORS.black,
 		marginBottom: 5,
 	},
 	restaurantDetails: {
-		fontSize: 14,
+		fontSize: 12,
 		color: COLORS.secondary,
 	},
 });
