@@ -1,13 +1,14 @@
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { TextInput, RadioButton } from 'react-native-paper';
 import { COLORS } from '../constants';
 import styles from '../styles/CreateAccount/createAccount.style';
-import React from 'react';
+import React, { useMemo } from 'react';
 import PressableButton from './PressableButton';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import { createUserAccountThunk } from '../redux/thunk';
 import { router } from 'expo-router';
+import RadioGroup from 'react-native-radio-buttons-group';
 
 const stateInitials = [
 	'AL',
@@ -82,6 +83,26 @@ const CreateAccountComponent = () => {
 	const [passwordError, setPasswordError] = React.useState('');
 	const [emailError, setEmailError] = React.useState('');
 	const [stateError, setStateError] = React.useState('');
+	const [userType, setUserType] = React.useState('customer');
+	const [selectedUserType, setSelectedUserType] = React.useState();
+
+	const radioButtons = useMemo(() => [
+		{
+			id: '1', // acts as primary key, should be unique and non-empty string
+			label: 'Customer',
+			value: 'Customer',
+		},
+		{
+			id: '2',
+			label: 'Owner',
+			value: 'Owner',
+		},
+		{
+			id: '3',
+			label: 'Waiter',
+			value: 'Staff',
+		},
+	], []);
 
 	const goNextForm = () => {
 		setNextForm(true);
@@ -153,34 +174,36 @@ const CreateAccountComponent = () => {
 		setAddressForm(true);
 	};
 
-const handleSubmit = async () => {
-	if (!validateState(userAddress.state)) {
-		return;
-	}
-	let results = await Location.geocodeAsync(userAddress.address);
-	if (results.length > 0) {
-		const updatedUserAddress = {
-			...userAddress,
-			latitude: results[0].latitude,
-			longitude: results[0].longitude,
-		};
-		dispatch(createUserAccountThunk({
-				firstName: firstName,
-				lastName: lastName,
-				email: email,
-				password: password,
-				userType: 'customer',
-				userAddress: updatedUserAddress,
-			}));
-		const userObject = useSelector((state) => state?.auth);
-		if (userObject && userObject.userId) {
-			router.push('/home/HomeTab');
+	const handleSubmit = async () => {
+		if (!validateState(userAddress.state)) {
+			return;
 		}
-		setUserAddress(updatedUserAddress);
-	} else {
-		setPasswordError('Please enter a valid address');
-	}
-};
+		let results = await Location.geocodeAsync(userAddress.address);
+		if (results.length > 0) {
+			const updatedUserAddress = {
+				...userAddress,
+				latitude: results[0].latitude,
+				longitude: results[0].longitude,
+			};
+			dispatch(
+				createUserAccountThunk({
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					password: password,
+					userType: userType,
+					userAddress: updatedUserAddress,
+				})
+			);
+			const userObject = useSelector((state) => state?.auth);
+			if (userObject && userObject.userId) {
+				router.push('/home/HomeTab');
+			}
+			setUserAddress(updatedUserAddress);
+		} else {
+			setPasswordError('Please enter a valid address');
+		}
+	};
 
 	return (
 		<ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingBottom: 200 }}>
@@ -192,8 +215,26 @@ const handleSubmit = async () => {
 								<Text style={{ ...styles.branding, marginBottom: 0, textAlign: 'left' }}>First,</Text>
 								<Text style={{ ...styles.branding, textAlign: 'left' }}>We're going to need your first and last name.</Text>
 							</View>
-							<TextInput autoFocus={true} autoCorrect={false} placeholder="Enter your First Name" value={firstName} onChangeText={(text) => setFirstName(text)} style={styles.input} />
-							<TextInput placeholder="Enter your last name" value={lastName} onChangeText={(text) => setLastName(text)} style={[styles.input, { width: 400 }]} />
+							<TextInput
+								autoFocus={true}
+								autoCorrect={false}
+								placeholder="Enter your First Name"
+								value={firstName}
+								onChangeText={(text) => setFirstName(text)}
+								mode="flat"
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
+								style={styles.input}
+							/>
+							<TextInput
+								placeholder="Enter your last name"
+								value={lastName}
+								onChangeText={(text) => setLastName(text)}
+								mode="flat"
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
+								style={styles.input}
+							/>
 							<PressableButton onPress={goNextForm} title={'Next'} icon="arrow-right-bold" appendIcon={true} />
 						</View>
 					) : !addressForm ? (
@@ -208,9 +249,8 @@ const handleSubmit = async () => {
 								placeholder="Enter your email"
 								onChangeText={(text) => setEmail(text)}
 								mode="flat"
-								activeOutlineColor={COLORS.secondary}
-								outlineColor={COLORS.gray800}
-								textColor={COLORS.gray800}
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
 								style={styles.input}
 							/>
 							{emailError ? <Text style={{ color: 'red', marginBottom: 10 }}>{emailError}</Text> : null}
@@ -220,29 +260,41 @@ const handleSubmit = async () => {
 								placeholder="Enter your password"
 								onChangeText={(text) => setPassword(text)}
 								mode="flat"
-								activeOutlineColor={COLORS.primary}
-								outlineColor={COLORS.gray800}
-								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
+								style={styles.input}
 								secureTextEntry={true}
-								passwordRules="required: upper; required: lower; required: digit; max-consecutive: 2; minlength: 8;"
 							/>
-
 							<TextInput
 								label="Confirm Password"
 								value={confirmPassword}
 								placeholder="Confirm your password"
 								onChangeText={(text) => setConfirmPassword(text)}
 								mode="flat"
-								activeOutlineColor={COLORS.primary}
-								outlineColor={COLORS.gray800}
-								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
+								style={styles.input}
 								secureTextEntry={true}
 							/>
 							{passwordError ? <Text style={{ color: 'red', marginBottom: 10 }}>{passwordError}</Text> : null}
+							<View style={styles.radioButtonContainer}>
+								<Text style={styles.radioButtonLabel}>I am a:</Text>
+								<RadioGroup radioButtons={radioButtons} onPress={setSelectedUserType} selectedId={selectedUserType}  />
+								{/* <RadioButton.Group onValueChange={(newValue) => setUserType(newValue)} value={userType}>
+									<View style={styles.radioButton}>
+										<RadioButton value="customer" color={COLORS.secondary} />
+										<Text style={styles.radioButtonText}>Customer</Text>
+									</View>
+									<View style={styles.radioButton}>
+										<RadioButton value="owner" color={COLORS.primary} />
+										<Text style={styles.radioButtonText}>Restaurant Owner</Text>
+									</View>
+									<View style={styles.radioButton}>
+										<RadioButton value="staff" color={COLORS.primary} />
+										<Text style={styles.radioButtonText}>Staff Member</Text>
+									</View>
+								</RadioButton.Group> */}
+							</View>
 							<PressableButton onPress={goAddressForm} title={'Next'} icon="arrow-right-bold" appendIcon={true} />
 						</View>
 					) : (
@@ -253,9 +305,8 @@ const handleSubmit = async () => {
 								placeholder="Enter your address"
 								onChangeText={(text) => setUserAddress({ ...userAddress, address: text })}
 								mode="flat"
-								activeOutlineColor={COLORS.secondary}
-								outlineColor={COLORS.gray800}
-								textColor={COLORS.gray800}
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
 								style={styles.input}
 							/>
 							<TextInput
@@ -264,11 +315,9 @@ const handleSubmit = async () => {
 								placeholder="Enter your city"
 								onChangeText={(text) => setUserAddress({ ...userAddress, city: text })}
 								mode="flat"
-								activeOutlineColor={COLORS.primary}
-								outlineColor={COLORS.gray800}
-								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
+								style={styles.input}
 							/>
 							<TextInput
 								label="State"
@@ -279,11 +328,9 @@ const handleSubmit = async () => {
 									validateState(text);
 								}}
 								mode="flat"
-								activeOutlineColor={COLORS.primary}
-								outlineColor={COLORS.gray800}
-								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
+								style={styles.input}
 							/>
 							{stateError ? <Text style={{ color: 'red', marginBottom: 10 }}>{stateError}</Text> : null}
 							<TextInput
@@ -292,11 +339,9 @@ const handleSubmit = async () => {
 								placeholder="Enter your zip code"
 								onChangeText={(text) => setUserAddress({ ...userAddress, zip: text })}
 								mode="flat"
-								activeOutlineColor={COLORS.primary}
-								outlineColor={COLORS.gray800}
-								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								activeUnderlineColor={COLORS.primary}
+								placeholderTextColor={COLORS.gray500}
+								style={styles.input}
 							/>
 							<PressableButton onPress={handleSubmit} title={'Submit'} icon="account-arrow-right" appendIcon={true} />
 						</View>
