@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
 import React from 'react'
 import { COLORS } from '../constants';
 
@@ -9,9 +9,14 @@ const CategoriesComponent = ({foodCategories}) => {
 			<ScrollView horizontal={true}>
 				<View style={styles.genreWrapper}>
 					{foodCategories.map((category, index) => (
-						<Text key={index} style={styles.genre}>
-							{category}
-						</Text>
+						<View key={index} style={styles.genre}>
+							{/* Need to add SVG images of categories, 
+							then remove background color and have 
+							just the image and text 
+							*/}
+							<Image source={{ uri: category.ImageUrl }} />
+							<Text style={{fontWeight: 'bold'}}>{category.CategoryName}</Text>
+						</View>
 					))}
 				</View>
 			</ScrollView>
@@ -33,9 +38,10 @@ const styles = StyleSheet.create({
 		flexWrap: 'wrap',
 	},
 	genre: {
+		color: COLORS.lightModeText,
+		backgroundColor: COLORS.secondary,
+		padding: 10,
 		margin: 5,
-		padding: 5,
-		color: '#eee',
-		borderRadius: 5,
+		borderRadius: 50,
 	},
 });
