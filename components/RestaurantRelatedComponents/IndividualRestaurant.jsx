@@ -9,7 +9,6 @@ import { router } from 'expo-router';
 const IndividualRestaurant = ({ restaurantId }) => {
 	const dispatch = useDispatch();
 	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
-	const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
 
 	const mockMenuItems = {
 		Appetizers: [
@@ -61,9 +60,9 @@ const IndividualRestaurant = ({ restaurantId }) => {
 										<Text style={styles.restaurantDetails}>{`Email: ${singleRestaurant.Email}`}</Text>
 									</View>
 									<View style={styles.tagContainer}>
-										{foodCategories.map((category, index) => (
+										{singleRestaurant?.Categories?.map((category, index) => (
 											<TouchableOpacity onPress={() => console.log('This will push a user to a category page showing all restaurants with the category')} key={index} style={styles.tag}>
-												<Text style={{ fontWeight: 'bold' }}>{category}</Text>
+												<Text style={{ fontWeight: 'bold' }}>{category?.CategoryName}</Text>
 											</TouchableOpacity>
 										))}
 									</View>
@@ -76,7 +75,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 										</TouchableOpacity>
 									</View>
 									<View style={styles.separator} />
-									<View style={{justifyContent: 'center', alignItems: 'center'}}>
+									<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 										<Text style={styles.menuTitle}>Menu</Text>
 									</View>
 									{Object.keys(mockMenuItems).map((category) => (
