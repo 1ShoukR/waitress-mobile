@@ -5,6 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) => {
+	console.log('TopRestaurants', topRestaurants);
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
@@ -28,6 +29,15 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) =>
 						<Text style={styles.ratingText}>{item?.Ratings.length > 0 ? item?.Ratings.length + ' Reviews' : item?.Ratings.length + ' Review'}</Text>
 					</View>
 					<Text style={styles.restaurantTags}>Tags</Text>
+					<View>
+						{item?.Categories?.map((category, index) => {
+							return (
+								<Text key={index} style={{ fontSize: 12, color: COLORS.secondary }}>
+									{category.CategoryName}
+								</Text>
+							)
+						})}
+					</View>
 					<Text style={styles.restaurantDetails}>{item?.Details}</Text>
 				</View>
 			</View>
