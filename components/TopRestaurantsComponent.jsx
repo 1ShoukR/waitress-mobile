@@ -31,11 +31,14 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) =>
 					<Text style={styles.restaurantTags}>Tags</Text>
 					<View style={{flexDirection: 'row', gap: 7, paddingTop: 7}}>
 						{item?.Categories?.map((category, index) => {
+							console.log('Category:', category.CategoryID);
 							return (
-								<Text key={index} style={{ fontSize: 12, color: COLORS.secondary }}>
-									{category.CategoryName}
-								</Text>
-							)
+								<TouchableOpacity onPress={() => router.push(`/category/${category.CategoryID}`)}>
+									<Text key={index} style={{ fontSize: 12, color: COLORS.secondary }}>
+										{category.CategoryName}
+									</Text>
+								</TouchableOpacity>
+							);
 						})}
 					</View>
 					<Text style={styles.restaurantDetails}>{item?.Details}</Text>
