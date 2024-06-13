@@ -29,7 +29,7 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) =>
 						<Text style={styles.ratingText}>{item?.Ratings.length > 0 ? item?.Ratings.length + ' Reviews' : item?.Ratings.length + ' Review'}</Text>
 					</View>
 					<Text style={styles.restaurantTags}>Tags</Text>
-					<View>
+					<View style={{flexDirection: 'row', gap: 7, paddingTop: 7}}>
 						{item?.Categories?.map((category, index) => {
 							return (
 								<Text key={index} style={{ fontSize: 12, color: COLORS.secondary }}>
