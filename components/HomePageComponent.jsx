@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import { Searchbar, Divider } from 'react-native-paper';
 import SearchListComponent from './SearchListComponent';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLocalRestaurants, getTopRestaurants } from '../redux/thunk';
+import { getAllCategories, getLocalRestaurants, getTopRestaurants } from '../redux/thunk';
 import HomepageButtons from './HomepageButtons';
 import CategoriesComponent from './CategoriesComponent';
 import TopRestaurantsComponent from './TopRestaurantsComponent';
@@ -17,7 +17,7 @@ const HomePageComponent = () => {
 	const localRestaurants = useSelector((state) => state?.restaurant)
 	const topRestaurants = useSelector((state) => state?.restaurant?.topRestaurants)
 	const apiToken = useSelector((state) => state?.auth?.apiToken);
-	const foodCategories = ['Italian', 'Chinese', 'Indian', 'Mexican', 'Thai'];
+	const foodCategories = useSelector((state) => state?.restaurant?.categories);
 
 
 	React.useEffect(() => {
@@ -29,6 +29,8 @@ const HomePageComponent = () => {
 				// so please do not remove these await keywords until we find a better solution
 				await dispatch(getLocalRestaurants({ latitude: user.latitude, longitude: user.longitude, apiToken }));
 				await dispatch(getTopRestaurants({ apiToken }));
+				await dispatch(getAllCategories({ apiToken: apiToken }));
+
 			} catch (error) {
 				console.error('Error fetching data:', error);
 			} finally {
@@ -42,7 +44,8 @@ const HomePageComponent = () => {
 			isMounted = false;
 		};
 	}, [user.latitude, user.longitude, dispatch, apiToken]);
-
+	const categories = useSelector((state) => state?.restaurant?.categories);
+	console.log('categories', categories);
 
 	return (
 		<View style={styles.container}>

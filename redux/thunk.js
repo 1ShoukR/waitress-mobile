@@ -48,6 +48,13 @@ export const getTopRestaurants = createAsyncThunk('restaurant/getTopRestaurants'
 	return data;
 });
 
+export const getAllCategories = createAsyncThunk('restaurant/getAllCategories', async (requestData) => {
+	const formData = new FormData();
+	formData.append('apiToken', requestData.apiToken);
+	const data = await client.post('/api/restaurant/categories/get-all', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	return data;
+})
+
 export const updateUserLocation = createAsyncThunk('user/updateUserLocation', async (requestData) => {
 	const formData = new FormData();
 	formData.append('latitude', requestData.latitude);
