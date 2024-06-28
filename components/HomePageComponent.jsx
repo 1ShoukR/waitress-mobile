@@ -50,7 +50,7 @@ const HomePageComponent = () => {
 	return (
 		<View style={styles.container}>
 			<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginBottom: 20, marginTop: -30 }}>
-				<Text style={{ fontSize: 25, fontWeight: 'bold', color: COLORS.primary }}>Waitress</Text>
+				<Text style={{ fontSize: 25, fontWeight: 'bold', color: COLORS.black }}>Waitress</Text>
 			</View>
 			<HomepageButtons />
 			<CategoriesComponent foodCategories={foodCategories} />
@@ -63,7 +63,6 @@ const HomePageComponent = () => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 5,
 	},
 	categoryContainer: {
 		flex: 1,
