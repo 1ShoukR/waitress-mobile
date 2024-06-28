@@ -65,7 +65,7 @@ const handleAddressSubmit = async () => {
 };
 
 	return (
-		<SafeAreaView style={{  backgroundColor: COLORS.primary }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.primary }}>
 			<Tabs.Screen
 				options={{
 					headerShown: true,
@@ -120,8 +120,8 @@ const handleAddressSubmit = async () => {
 					),
 				}}
 			/>
-			<ScrollView style={{ backgroundColor: COLORS.primary }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
-				<View style={{ flex: 1, paddingVertical: 32, }}>
+			<ScrollView style={{  backgroundColor: COLORS.primary }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+				<View style={{  paddingVertical: 32, }}>
 					<HomePageComponent refreshing={refreshing} />
 				</View>
 			</ScrollView>
