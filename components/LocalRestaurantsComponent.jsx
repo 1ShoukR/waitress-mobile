@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, ScrollView } from 'react-native';
 import { COLORS } from '../constants';
-import React from 'react';
+import React, { memo } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-const LocalRestaurantsComponent = ({ localRestaurants }) => {
+const LocalRestaurantsComponent = ({ localRestaurants, isLoading }) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants;
 	console.log('Local Restaurants:', localRestaurants);
 
@@ -21,39 +21,43 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 		return stars;
 	};
 
-	const renderItem = ({ item }) => (
-		<TouchableOpacity onPress={() => handlePress(item)} style={styles.cardContainer}>
-			<View style={styles.card}>
-				<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
-				<View style={styles.cardContent}>
-					<Text style={styles.restaurantName}>{item?.Name}</Text>
-					<View style={styles.ratingContainer}>
-						{renderStars(item?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings.length)}
-						<Text style={styles.ratingText}>{item?.Ratings.length > 0 ? item?.Ratings.length + ' Reviews' : item?.Ratings.length + ' Review'}</Text>
-					</View>
-					<Text style={styles.restaurantTags}>Tags</Text>
-					<Text style={styles.restaurantDetails}>{item?.Details}</Text>
-				</View>
-			</View>
-		</TouchableOpacity>
-	);
-
 	return (
-		<>
+		<View style={styles.container}>
 			<Text style={styles.headerText}>Restaurants Near You</Text>
-			<FlatList
-				data={localRestaurantsData}
-				renderItem={renderItem}
-				keyExtractor={(item) => item.RestaurantId.toString()}
-				horizontal
-				showsHorizontalScrollIndicator={false}
-				contentContainerStyle={styles.flatListContentContainer}
-			/>
-		</>
+			{isLoading ? (
+				<ActivityIndicator size="large" />
+			) : (
+				<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollViewContentContainer}>
+					{localRestaurantsData.map((item) => (
+						<TouchableOpacity key={item.RestaurantId} onPress={() => handlePress(item)} style={styles.cardContainer}>
+							<View style={styles.card}>
+								<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
+								<View style={styles.cardContent}>
+									<Text style={styles.restaurantName}>{item?.Name}</Text>
+									<View style={styles.ratingContainer}>
+										{renderStars(item?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings.length)}
+										<Text style={styles.ratingText}>{item?.Ratings.length > 0 ? item?.Ratings.length + ' Reviews' : item?.Ratings.length + ' Review'}</Text>
+									</View>
+									<Text style={styles.restaurantTags}>Tags</Text>
+									<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7 }}>
+										{item?.Categories?.map((category, index) => (
+											<TouchableOpacity key={index} onPress={() => router.push(`/category/${category.CategoryID}`)}>
+												<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category.CategoryName}</Text>
+											</TouchableOpacity>
+										))}
+									</View>
+									<Text style={styles.restaurantDetails}>{item?.Details}</Text>
+								</View>
+							</View>
+						</TouchableOpacity>
+					))}
+				</ScrollView>
+			)}
+		</View>
 	);
 };
 
-export default LocalRestaurantsComponent;
+export default memo(LocalRestaurantsComponent);
 
 const styles = StyleSheet.create({
 	container: {
@@ -66,9 +70,9 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		marginTop: 10,
 		color: COLORS.lightModeText,
-		marginLeft: 10
+		marginLeft: 10,
 	},
-	flatListContentContainer: {
+	scrollViewContentContainer: {
 		paddingVertical: 10,
 	},
 	cardContainer: {
