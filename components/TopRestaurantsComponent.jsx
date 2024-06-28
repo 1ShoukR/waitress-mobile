@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, ScrollView, FlatList } from 'react-native';
 import React, { memo } from 'react';
 import { COLORS } from '../constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
-const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) => {
+const TopRestaurantsComponent = ({ topRestaurants, isLoading }) => {
 	console.log('TopRestaurants', topRestaurants);
 	const renderStars = (rating) => {
 		const stars = [];
@@ -48,7 +48,7 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) =>
 	);
 
 	return (
-		<View style={styles.container}>
+		<>
 			<Text style={styles.headerText}>Top Restaurants</Text>
 			{isLoading ? (
 				<ActivityIndicator size="large" />
@@ -62,7 +62,7 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading, setIsLoading }) =>
 					contentContainerStyle={styles.flatListContentContainer}
 				/>
 			)}
-		</View>
+		</>
 	);
 };
 
@@ -77,10 +77,11 @@ const styles = StyleSheet.create({
 	headerText: {
 		fontSize: 20,
 		fontWeight: 'bold',
-		marginBottom: 10,
+		marginTop: 10,
 		color: COLORS.lightModeText,
+		marginLeft: 10
 	},
-	flatListContentContainer: {
+	scrollViewContentContainer: {
 		paddingVertical: 10,
 	},
 	cardContainer: {

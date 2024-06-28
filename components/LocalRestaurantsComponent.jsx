@@ -39,7 +39,7 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 	);
 
 	return (
-		<View style={styles.container}>
+		<>
 			<Text style={styles.headerText}>Restaurants Near You</Text>
 			<FlatList
 				data={localRestaurantsData}
@@ -49,7 +49,7 @@ const LocalRestaurantsComponent = ({ localRestaurants }) => {
 				showsHorizontalScrollIndicator={false}
 				contentContainerStyle={styles.flatListContentContainer}
 			/>
-		</View>
+		</>
 	);
 };
 
@@ -64,8 +64,9 @@ const styles = StyleSheet.create({
 	headerText: {
 		fontSize: 20,
 		fontWeight: 'bold',
-		marginBottom: 10,
+		marginTop: 10,
 		color: COLORS.lightModeText,
+		marginLeft: 10
 	},
 	flatListContentContainer: {
 		paddingVertical: 10,
