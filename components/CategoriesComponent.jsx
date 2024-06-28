@@ -30,8 +30,9 @@ export default CategoriesComponent
 const styles = StyleSheet.create({
 	header: {
 		fontSize: 20,
+		marginLeft: 11,
 		fontWeight: 'bold',
-		marginBottom: 10,
+		marginBottom: 5,
 		color: COLORS.lightModeText,
 	},
 	genreWrapper: {
