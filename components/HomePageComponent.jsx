@@ -45,7 +45,6 @@ const HomePageComponent = () => {
 		};
 	}, [user.latitude, user.longitude, dispatch, apiToken]);
 	const categories = useSelector((state) => state?.restaurant?.categories);
-	console.log('categories', categories);
 
 	return (
 		<View style={styles.container}>

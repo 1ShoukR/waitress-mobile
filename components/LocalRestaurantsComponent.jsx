@@ -6,7 +6,6 @@ import { router } from 'expo-router';
 
 const LocalRestaurantsComponent = ({ localRestaurants, isLoading }) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants;
-	console.log('Local Restaurants:', localRestaurants);
 
 	const handlePress = (restaurant) => {
 		console.log('Restaurant clicked:', restaurant.Name);
