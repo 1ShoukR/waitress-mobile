@@ -9,29 +9,14 @@ import { router } from 'expo-router';
 const IndividualRestaurant = ({ restaurantId }) => {
 	const dispatch = useDispatch();
 	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
-
-	const mockMenuItems = {
-		Appetizers: [
-			{ id: 1, name: 'Bruschetta', description: 'Grilled bread with tomatoes, olive oil, and basil.', price: '$6.99', imageUrl: 'https://via.placeholder.com/150' },
-			{ id: 2, name: 'Spring Rolls', description: 'Crispy rolls with vegetables and dipping sauce.', price: '$5.99', imageUrl: 'https://via.placeholder.com/150' },
-		],
-		Mains: [
-			{ id: 3, name: 'Spaghetti Carbonara', description: 'Classic Italian pasta with eggs, cheese, pancetta, and pepper.', price: '$12.99', imageUrl: 'https://via.placeholder.com/150' },
-			{ id: 4, name: 'Sweet and Sour Chicken', description: 'Crispy chicken with sweet and sour sauce.', price: '$10.99', imageUrl: 'https://via.placeholder.com/150' },
-			{ id: 5, name: 'Butter Chicken', description: 'Creamy and flavorful chicken curry.', price: '$11.99', imageUrl: 'https://via.placeholder.com/150' },
-		],
-		Desserts: [
-			{ id: 6, name: 'Tiramisu', description: 'Layered dessert with coffee-soaked ladyfingers, mascarpone cheese, and cocoa.', price: '$6.99', imageUrl: 'https://via.placeholder.com/150' },
-			{ id: 7, name: 'Mango Sticky Rice', description: 'Sweet sticky rice with fresh mango slices.', price: '$5.99', imageUrl: 'https://via.placeholder.com/150' },
-		],
-	};
+	const placeholderImage = 'https://via.placeholder.com/150';
 
 	useEffect(() => {
 		if (restaurantId) {
 			dispatch(getSingleRestaurant({ restaurantId }));
 		}
 	}, [restaurantId]);
-
+	// Render stars based on rating
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
@@ -39,6 +24,23 @@ const IndividualRestaurant = ({ restaurantId }) => {
 		}
 		return stars;
 	};
+
+	// Categorize menu items into predefined categories
+	const categorizeMenuItems = (menuItems) => {
+		const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
+		menuItems.forEach((item) => {
+			const category = item.Category || 'Other';
+			if (categories[category]) {
+				categories[category].push(item);
+			} else {
+				categories.Other.push(item);
+			}
+		});
+		return categories;
+	};
+
+	const categorizedMenuItems = singleRestaurant ? categorizeMenuItems(singleRestaurant.MenuItems) : {};
+	const categoryOrder = ['Appetizers', 'Mains', 'Desserts', 'Other'];
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -68,7 +70,6 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									</View>
 									<View style={styles.separator} />
 									<View style={styles.tablesContainer}>
-										{/* we need to change this to be "low, medium, or high levels of cap based on number of tables available." */}
 										<Text style={styles.tableNumber}>{`Available Tables: ${singleRestaurant.NumberOfTables}`}</Text>
 										<TouchableOpacity onPress={() => router.push(`/home/reserve/ReserveScreen`)} style={styles.reserveButton}>
 											<Text style={styles.reserveButtonText}>Reserve Now</Text>
@@ -78,23 +79,27 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									<View style={{ justifyContent: 'center', alignItems: 'center' }}>
 										<Text style={styles.menuTitle}>Menu</Text>
 									</View>
-									{Object.keys(mockMenuItems).map((category) => (
-										<View key={category} style={styles.menuCategory}>
-											<Text style={styles.menuCategoryTitle}>{category}</Text>
-											{mockMenuItems[category].map((item) => (
-												<TouchableOpacity onPress={() => router.push(`/home/menu/${item.id}`)}>
-													<View key={item.id} style={styles.menuItem}>
-														<Image source={{ uri: item.imageUrl }} style={styles.menuItemImage} />
-														<View style={styles.menuItemDetails}>
-															<Text style={styles.menuItemName}>{item.name}</Text>
-															<Text style={styles.menuItemDescription}>{item.description}</Text>
-															<Text style={styles.menuItemPrice}>{item.price}</Text>
-														</View>
-													</View>
-												</TouchableOpacity>
-											))}
-										</View>
-									))}
+									{categoryOrder.map(
+										(category) =>
+											categorizedMenuItems[category] &&
+											categorizedMenuItems[category].length > 0 && (
+												<View key={category} style={styles.menuCategory}>
+													<Text style={styles.menuCategoryTitle}>{category}</Text>
+													{categorizedMenuItems[category].map((item) => (
+														<TouchableOpacity key={item.MenuID} onPress={() => router.push(`/home/menu/${item.MenuID}`)}>
+															<View style={styles.menuItem}>
+																<Image source={{ uri: placeholderImage }} style={styles.menuItemImage} />
+																<View style={styles.menuItemDetails}>
+																	<Text style={styles.menuItemName}>{item.NameOfItem}</Text>
+																	<Text style={styles.menuItemDescription}>{'This is a mock description.'}</Text>
+																	<Text style={styles.menuItemPrice}>{`$${item.Price.toFixed(2)}`}</Text>
+																</View>
+															</View>
+														</TouchableOpacity>
+													))}
+												</View>
+											)
+									)}
 								</View>
 							</View>
 						</View>
