@@ -26,7 +26,6 @@ export const createUserAccountThunk = createAsyncThunk('auth/createUserAccountTh
 	formData.append('city', requestData.userAddress.city);
 	formData.append('state', requestData.userAddress.state);
 	formData.append('zip', requestData.userAddress.zip);
-	console.log('formData', formData);
 	const data = await client.post('/api/users/create', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });

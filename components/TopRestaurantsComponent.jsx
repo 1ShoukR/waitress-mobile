@@ -5,7 +5,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 const TopRestaurantsComponent = ({ topRestaurants, isLoading }) => {
-	console.log('TopRestaurants', topRestaurants);
 	const renderStars = (rating) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
@@ -31,7 +30,6 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading }) => {
 					<Text style={styles.restaurantTags}>Tags</Text>
 					<View style={{flexDirection: 'row', gap: 7, paddingTop: 7}}>
 						{item?.Categories?.map((category, index) => {
-							console.log('Category:', category.CategoryID);
 							return (
 								<TouchableOpacity onPress={() => router.push(`/category/${category.CategoryID}`)}>
 									<Text key={index} style={{ fontSize: 12, color: COLORS.secondary }}>
