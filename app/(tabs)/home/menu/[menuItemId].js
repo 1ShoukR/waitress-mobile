@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { client } from '../../../../api/client';
 import IndividualMenuItem from '../../../../components/MenuItemComponents/IndividualMenuItem';
+import { COLORS } from '../../../../constants'
 
 const MenuItemDetails = () => {
 	const { menuItemId } = useLocalSearchParams();
@@ -29,7 +30,7 @@ const MenuItemDetails = () => {
 	if (isLoading) {
 		return (
 			<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" color="#0000ff" />
+				<ActivityIndicator size="large" color={COLORS.black} />
 			</View>
 		);
 	}
@@ -44,9 +45,7 @@ const MenuItemDetails = () => {
 
 	return (
 		<View style={styles.container}>
-			<Text>{menuItem.NameOfItem}</Text>
-      <IndividualMenuItem />
-			{/* Render other menu item details here */}
+      		<IndividualMenuItem menuItem={menuItem} />
 		</View>
 	);
 };
@@ -56,7 +55,7 @@ export default MenuItemDetails;
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center',
 	},
 	loadingContainer: {
