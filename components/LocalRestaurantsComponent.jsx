@@ -21,7 +21,7 @@ const LocalRestaurantsComponent = ({ localRestaurants, isLoading }) => {
 	};
 
 	return (
-		<View style={styles.container}>
+		<>
 			<Text style={styles.headerText}>Restaurants Near You</Text>
 			{isLoading ? (
 				<ActivityIndicator size="large" />
@@ -52,7 +52,7 @@ const LocalRestaurantsComponent = ({ localRestaurants, isLoading }) => {
 					))}
 				</ScrollView>
 			)}
-		</View>
+		</>
 	);
 };
 
