@@ -10,7 +10,7 @@ are automatically added to routing based on their names.
 */
 
 import React from 'react';
-import { View, ScrollView, LogBox, StyleSheet } from 'react-native';
+import { View, ScrollView, LogBox, StyleSheet, Text } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { Button } from 'react-native-paper';
 import { COLORS } from '../constants';
