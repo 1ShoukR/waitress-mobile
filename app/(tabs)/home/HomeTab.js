@@ -8,6 +8,7 @@ import * as Location from 'expo-location';
 import { client } from '../../../api/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserLocation } from '../../../redux/thunk';
+import SvgVersion from "../../../assets/svgVersion.svg"
 
 const HomeIndex = () => {
 	const [refreshing, setRefreshing] = useState(false);
@@ -118,6 +119,13 @@ const handleAddressSubmit = async () => {
 							</Animated.View>
 						</TouchableOpacity>
 					),
+					headerLeft: () => {
+						return (
+							<>
+								<SvgVersion style={{marginLeft: -15, top: -13}}/>
+							</>
+						);
+					}
 				}}
 			/>
 			<ScrollView style={{  backgroundColor: COLORS.primary }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
