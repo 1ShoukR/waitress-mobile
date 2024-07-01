@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const IndividualMenuItem = () => {
+const IndividualMenuItem = ({menuItem}) => {
   return (
-    <View>
-      <Text>IndividualMenuItem</Text>
-    </View>
-  )
+		<View>
+			<Text>{menuItem.NameOfItem}</Text>
+		</View>
+	);
 }
 
 export default IndividualMenuItem
