@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ActivityIndicator, Pressable } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, Pressable, SafeAreaView, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -31,9 +31,32 @@ const MenuItemDetails = () => {
 
 	if (isLoading) {
 		return (
-			<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" color={COLORS.black} />
-			</View>
+			<>
+				<Stack.Screen
+					options={{
+						title: `${menuItem?.NameOfItem ? menuItem.NameOfItem : 'Loading'}`,
+						headerStyle: {
+							backgroundColor: COLORS.primary,
+						},
+						headerLeft: () => (
+							<Pressable
+								style={({ pressed }) => [
+									{
+										backgroundColor: COLORS.primary,
+										// padding: 10,
+									},
+								]}
+								onPress={() => router.back()}>
+								{/* <FontAwesomeIcon color={globalDarkmode ? COLORS.white : COLORS.black} icon={faArrowLeft} /> */}
+								<FontAwesomeIcon size={25} color={COLORS.black} icon={faArrowLeft} />
+							</Pressable>
+						),
+					}}
+				/>
+				<View style={styles.loadingContainer}>
+					<ActivityIndicator size="large" color={COLORS.black} />
+				</View>
+			</>
 		);
 	}
 
@@ -57,18 +80,19 @@ const MenuItemDetails = () => {
 					style={({ pressed }) => [
 						{
 							backgroundColor: COLORS.primary,
-							padding: 10,
+							// padding: 10,
 						},
 					]}
 					onPress={() => router.back()}>
 					{/* <FontAwesomeIcon color={globalDarkmode ? COLORS.white : COLORS.black} icon={faArrowLeft} /> */}
-					<FontAwesomeIcon color={ COLORS.black } icon={faArrowLeft} />
+					<FontAwesomeIcon color={ COLORS.black } size={25}  icon={faArrowLeft} />
 				</Pressable>
 			),
 		}} />
-		<View style={styles.container}>
-      		<IndividualMenuItem menuItem={menuItem} />
-		</View>
+
+			<SafeAreaView style={{flex: 1, backgroundColor: COLORS.primary}}>
+				<IndividualMenuItem menuItem={menuItem} />
+			</SafeAreaView>
 		</>
 	);
 };
@@ -85,5 +109,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundColor: COLORS.primary,
 	},
 });
