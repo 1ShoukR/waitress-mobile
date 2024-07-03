@@ -7,7 +7,7 @@ const CategoriesComponent = ({foodCategories}) => {
   return (
 		<>
 			<Text style={styles.header}>Category</Text>
-			<ScrollView horizontal={true}>
+			<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
 				<View style={styles.genreWrapper}>
 					{foodCategories.map((category, index) => (
 						<TouchableOpacity onPress={() => router.push(`/home/category/${category.CategoryID}`)} key={index} style={styles.genre}>
