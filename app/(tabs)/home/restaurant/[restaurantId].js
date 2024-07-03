@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import { Text } from 'react-native-paper';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSingleRestaurant } from '../../../../redux/thunk';
