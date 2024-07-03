@@ -1,9 +1,6 @@
-import React, { useCallback, useState } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import { Text, View } from 'react-native';
-import { Tabs, useRouter, Stack } from 'expo-router';
-import { IconButton, Menu } from 'react-native-paper';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import React from 'react';
+import { Provider,  } from 'react-redux';
+import {  Stack } from 'expo-router';
 import store from '../../../redux/store'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MD2LightTheme, PaperProvider } from 'react-native-paper';

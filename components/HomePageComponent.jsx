@@ -1,7 +1,5 @@
-import { View, Text, ScrollView, FlatList, Animated, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text,  StyleSheet } from 'react-native';
 import React, {useState} from 'react';
-import { Searchbar, Divider } from 'react-native-paper';
-import SearchListComponent from './SearchListComponent';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategories, getLocalRestaurants, getTopRestaurants } from '../redux/thunk';
 import HomepageButtons from './HomepageButtons';

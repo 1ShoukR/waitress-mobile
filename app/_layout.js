@@ -2,19 +2,18 @@ import React, { useCallback, useState } from 'react';
 import { View, Pressable } from 'react-native';
 import { Provider } from 'react-redux';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { MD2LightTheme, PaperProvider } from 'react-native-paper';
 import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import { Button } from 'react-native';
 import store from '../redux/store';
 import * as SplashScreen from 'expo-splash-screen';
+import { ToastProvider } from 'react-native-toast-notifications';
 
 
 
 SplashScreen.preventAutoHideAsync();
 
 const theme = {
-	...MD2LightTheme,
 	colors: {
 		background: '#fff',
 		primary: '#4C4ADD',
@@ -54,9 +53,9 @@ const Layout = () => {
 	}
 
     return (
+		<ToastProvider>
 			<Provider store={store}>
 				<SafeAreaProvider>
-					<PaperProvider theme={theme}>
 						<View style={{ flex: 1 }} onLayout={onLayoutRootView}>
 							<Stack>
 								<Stack.Screen name="index" />
@@ -66,9 +65,9 @@ const Layout = () => {
 								{/* <Stack.Screen name="tasks/[id]/noteModal" options={{ presentation: 'modal', headerTitle: '' }} /> */}
 							</Stack>
 						</View>
-					</PaperProvider>
 				</SafeAreaProvider>
 			</Provider>
+		</ToastProvider>
 		);
 
 }

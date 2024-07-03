@@ -27,6 +27,8 @@ const IndividualRestaurant = ({ restaurantId }) => {
 
 	// Categorize menu items into predefined categories
 	const categorizeMenuItems = (menuItems) => {
+		// We can grab all the restaurant's categorires, and make the categories based on those here, rather than hardcoding them
+		// instead of const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		menuItems.forEach((item) => {
 			const category = item.Category || 'Other';
@@ -64,7 +66,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									<View style={styles.tagContainer}>
 										{singleRestaurant?.Categories?.map((category, index) => (
 											<TouchableOpacity onPress={() => console.log('This will push a user to a category page showing all restaurants with the category')} key={index} style={styles.tag}>
-												<Text style={{ fontWeight: 'bold' }}>{category?.CategoryName}</Text>
+												<Text style={{ fontWeight: 'bold',  }}>{category?.CategoryName}</Text>
 											</TouchableOpacity>
 										))}
 									</View>
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
 	},
 	tag: {
 		color: COLORS.lightModeText,
-		backgroundColor: COLORS.gray,
+		backgroundColor: COLORS.secondary,
 		padding: 10,
 		margin: 5,
 		borderRadius: 50,
