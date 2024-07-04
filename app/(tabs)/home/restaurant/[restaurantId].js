@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSingleRestaurant } from '../../../../redux/thunk';
 import IndividualRestaurant from "../../../../components/RestaurantRelatedComponents/IndividualRestaurant"
 import { COLORS } from '../../../../constants';
+import OrderComponent from '../../../../components/RestaurantRelatedComponents/OrderComponent';
 
 const RestaurantPage = () => {
 	const { restaurantId } = useLocalSearchParams();
@@ -27,6 +28,9 @@ const RestaurantPage = () => {
         <ScrollView>
 			    <IndividualRestaurant />
         </ScrollView>
+        {singleRestaurant ? (
+          <OrderComponent />
+        ): null}
       </SafeAreaView>
 		</>
 	);
