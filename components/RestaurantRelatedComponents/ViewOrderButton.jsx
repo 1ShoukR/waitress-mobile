@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, Animated, TouchableOpacity } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { COLORS } from '../../constants';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 const ViewOrderButton = () => {
+	const [modalVisible, setModalVisible] = useState(false);
 	const order = useSelector((state) => state?.orders?.order);
 	const fadeAnim = useRef(new Animated.Value(0)).current;
 	const slideAnim = useRef(new Animated.Value(100)).current; // Initial position below the screen
@@ -24,13 +25,13 @@ const ViewOrderButton = () => {
 		}
 	}, [order]);
 	return (
-		<Animated.View style={[styles.addToBagContainer, { transform: [{ translateY: slideAnim }] }]}>
-			<TouchableOpacity onPress={() => router.push('/home/order/ViewOrderScreen')}>
-				<View style={styles.addToBagButton}>
+		<>
+			<Animated.View style={[styles.addToBagContainer, { transform: [{ translateY: slideAnim }] }]}>
+				<TouchableOpacity style={styles.addToBagButton} onPress={() => router.push("/home/restaurant/ViewOrderScreen")}>
 					<Text style={styles.addToBagText}>View Order ({`${order.length}`})</Text>
-				</View>
-			</TouchableOpacity>
-		</Animated.View>
+				</TouchableOpacity>
+			</Animated.View>
+		</>
 	);
 };
 
