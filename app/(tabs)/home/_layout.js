@@ -1,7 +1,7 @@
 import { Stack, router } from 'expo-router';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { COLORS } from '../../../constants';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faArrowLeft, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { useSelector } from 'react-redux';
 
@@ -53,7 +53,15 @@ const HomeLayout = () => {
                             }} />
                     <Stack.Screen name="restaurant/ViewOrderScreen" 
                     options={{
-                        presentation: 'modal'
+                        presentation: 'modal',
+                        title: 'Checkout',
+                        headerLeft: () => {
+                            return (
+                                <TouchableOpacity onPress={() => router.back()}>
+                                    <FontAwesomeIcon icon={faChevronDown} size={25}/>
+                                </TouchableOpacity>
+                            )
+                        }
                         }} />
 				</Stack>
 			</>
