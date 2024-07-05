@@ -1,3 +1,20 @@
+/* // app/home/restaurant/_layout.js
+import React from 'react';
+import { Stack } from 'expo-router';
+
+const RestaurantLayout = () => {
+	return (
+		<Stack>
+			<Stack.Screen name="[restaurantId]" options={{ headerShown: false }} />
+			<Stack.Screen name="ViewOrderScreen" options={{ headerShown: false, presentation: 'modal' }} />
+		</Stack>
+	);
+};
+
+export default RestaurantLayout;
+*/
+
+
 import React, { useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { Stack, useLocalSearchParams } from 'expo-router';

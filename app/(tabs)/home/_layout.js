@@ -37,7 +37,8 @@ const HomeLayout = () => {
                             headerTitleStyle: {
                                 color: globalDarkmode ? COLORS.lightModeText : COLORS.black
                                 },
-                            headerShown: true, title: 'Put Restaurant Name here', 
+                            headerShown: true, 
+                            title: 'Put Restaurant Name here', 
                             headerLeft: () => {
                                 return (
                                     <TouchableOpacity  onPress={() => {
@@ -50,6 +51,10 @@ const HomeLayout = () => {
                                 )
                             }
                             }} />
+                    <Stack.Screen name="restaurant/ViewOrderScreen" 
+                    options={{
+                        presentation: 'modal'
+                        }} />
 				</Stack>
 			</>
 		);

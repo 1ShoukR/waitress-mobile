@@ -24,7 +24,7 @@ const ViewOrderScreen = () => {
         )
     }}
     />
-    <View>
+    <View style={styles.container}>
       <Text>ViewOrderScreen</Text>
     </View>
     </>
@@ -33,4 +33,9 @@ const ViewOrderScreen = () => {
 
 export default ViewOrderScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+    }
+})
