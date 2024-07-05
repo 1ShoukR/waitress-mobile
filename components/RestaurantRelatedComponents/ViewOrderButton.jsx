@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Animated, TouchableOpacity } from 'react-native
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { COLORS } from '../../constants';
+import { router } from 'expo-router';
 
 const ViewOrderButton = () => {
 	const order = useSelector((state) => state?.orders?.order);
@@ -24,7 +25,7 @@ const ViewOrderButton = () => {
 	}, [order]);
 	return (
 		<Animated.View style={[styles.addToBagContainer, { transform: [{ translateY: slideAnim }] }]}>
-			<TouchableOpacity onPress={console.log('bag')}>
+			<TouchableOpacity onPress={() => router.push('/home/order/ViewOrderScreen')}>
 				<View style={styles.addToBagButton}>
 					<Text style={styles.addToBagText}>View Order ({`${order.length}`})</Text>
 				</View>
