@@ -4,8 +4,11 @@ import { router, Stack } from 'expo-router'
 import { COLORS } from '../../../../constants'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { useSelector } from 'react-redux';
 
 const ViewOrderScreen = () => {
+    const currentOrder = useSelector((state) => state?.orders?.order);
+    console.log('currentOrder', currentOrder)
   return (
     <>
     <Stack.Screen 
