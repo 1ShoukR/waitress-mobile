@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { COLORS } from '../../constants';
 
-const OrderComponent = () => {
+const ViewOrderButton = () => {
 	const order = useSelector((state) => state?.orders?.order);
 	const fadeAnim = useRef(new Animated.Value(0)).current;
 	const slideAnim = useRef(new Animated.Value(100)).current; // Initial position below the screen
@@ -33,7 +33,7 @@ const OrderComponent = () => {
 	);
 };
 
-export default OrderComponent;
+export default ViewOrderButton;
 
 const styles = StyleSheet.create({
 	addToBagContainer: {

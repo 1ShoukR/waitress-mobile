@@ -5,7 +5,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { getSingleRestaurant } from '../../redux/thunk';
 import { COLORS } from '../../constants';
 import { router } from 'expo-router';
-import OrderComponent from './OrderComponent';
+import ViewOrderButton from './ViewOrderButton';
 
 const IndividualRestaurant = ({ restaurantId }) => {
 	const dispatch = useDispatch();
