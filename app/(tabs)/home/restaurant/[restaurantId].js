@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getSingleRestaurant } from '../../../../redux/thunk';
 import IndividualRestaurant from "../../../../components/RestaurantRelatedComponents/IndividualRestaurant"
 import { COLORS } from '../../../../constants';
-import OrderComponent from '../../../../components/RestaurantRelatedComponents/OrderComponent';
+import ViewOrderButton from '../../../../components/RestaurantRelatedComponents/ViewOrderButton';
 
 const RestaurantPage = () => {
 	const { restaurantId } = useLocalSearchParams();
@@ -23,15 +23,13 @@ const RestaurantPage = () => {
 
 	return (
 		<>
-			<Stack.Screen options={{ title: `${singleRestaurant?.Name}`, contentStyle: {backgroundColor: COLORS.primary} }} />
-      <SafeAreaView>
-        <ScrollView>
-			    <IndividualRestaurant />
-        </ScrollView>
-        {singleRestaurant ? (
-          <OrderComponent />
-        ): null}
-      </SafeAreaView>
+			<Stack.Screen options={{ title: `${singleRestaurant?.Name}`, contentStyle: { backgroundColor: COLORS.primary } }} />
+			<SafeAreaView>
+				<ScrollView>
+					<IndividualRestaurant />
+				</ScrollView>
+				{singleRestaurant ? <ViewOrderButton /> : null}
+			</SafeAreaView>
 		</>
 	);
 };
