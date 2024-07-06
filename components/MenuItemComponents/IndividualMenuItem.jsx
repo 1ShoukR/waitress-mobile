@@ -14,6 +14,7 @@ const IndividualMenuItem = ({ menuItem }) => {
 	const slideAnim = useRef(new Animated.Value(100)).current; // Initial position below the screen
 	const [quantity, setQuantity] = useState(0);
 	const dispatch = useDispatch();
+	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
 	const orders = useSelector((state) => state?.orders.order);
 	const toast = useToast();
 
@@ -44,6 +45,7 @@ const IndividualMenuItem = ({ menuItem }) => {
 				itemName: menuItem.NameOfItem,
 				quantity: quantity,
 				price: Number((quantity * menuItem.Price).toFixed(2)),
+				restaurant: singleRestaurant,
 			})
 		);
 		toast.show('Added to Order!', {

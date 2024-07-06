@@ -4,8 +4,8 @@
   "main": "node_modules/expo-router/entry.js",
   "scripts": {
     "start": "expo start -c",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "postinstall": "patch-package"
   },
@@ -48,7 +48,9 @@
     "redux": "^5.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^3.0.0",
-    "remote-redux-devtools": "^0.5.16"
+    "remote-redux-devtools": "^0.5.16",
+    "expo-dev-client": "~4.0.19",
+    "expo-build-properties": "~0.12.3"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"

@@ -1,8 +1,9 @@
 import { REACT_APP_API_URL } from '@env';
+import { Platform } from 'react-native';
 
 const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : REACT_APP_API_URL;
 
-console.log('env', API_URL)
+console.log('env', API_URL);
 export async function client(endpoint, { body, ...customConfig } = {}, token = null) {
 	const headers = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'any' };
 	if (token) {
@@ -22,7 +23,14 @@ export async function client(endpoint, { body, ...customConfig } = {}, token = n
 	};
 
 	if (body) {
-		config.body = body;
+		if (Platform.OS === 'android') {
+			config.body = JSON.stringify(body);
+		} else {
+			const formData = new FormData();
+			Object.keys(body).forEach((key) => formData.append(key, body[key]));
+			config.body = formData;
+			config.headers['Content-Type'] = 'multipart/form-data';
+		}
 	}
 
 	let data;

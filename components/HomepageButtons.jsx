@@ -20,7 +20,7 @@ const HomepageButtons = () => {
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.button}>
 					<View style={styles.buttonContent}>
-						<Text style={[styles.buttonText, { fontSize: '14', marginRight: 20 }]}>Favorites</Text>
+						<Text style={[styles.buttonText, { fontSize: 14, marginRight: 20 }]}>Favorites</Text>
 						<Fontisto style={{ left: 15, color: COLORS.lightModeText }} name="favorite" size={24} color="black" />
 					</View>
 				</TouchableOpacity>
