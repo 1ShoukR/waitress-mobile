@@ -5,11 +5,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
 
 export const doLogin = createAsyncThunk('auth/doLogin', async (requestData) => {
-	const formData = new FormData();
-	formData.append('email', requestData.email);
-	formData.append('password', requestData.password);
-	formData.append('userAgent', requestData.userAgent)
-	const data = await client.post('/api/auth/login', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	const body = {
+		email: requestData.email,
+		password: requestData.password,
+		userAgent: requestData.userAgent,
+	};
+	const data = await client.post('/api/auth/login', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 
@@ -31,14 +32,15 @@ export const createUserAccountThunk = createAsyncThunk('auth/createUserAccountTh
 });
 
 
-export const getLocalRestaurants = createAsyncThunk('restaurant/getLocal', async (requestData) => {
-	const formData = new FormData()
-	formData.append('latitude', requestData.latitude);
-	formData.append('longitude', requestData.longitude);
-	formData.append('apiToken', requestData.apiToken);
-	const data = await client.post('/api/restaurant/local', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	return data
-})
+export const getLocalRestaurants = createAsyncThunk('restaurant/getLocalRestaurants', async (locationData) => {
+	const body = {
+		latitude: locationData.latitude,
+		longitude: locationData.longitude,
+		apiToken: locationData.apiToken,
+	};
+	const data = await client.post('/api/restaurant/local', body, null, { headers: { 'Content-Type': 'application/json' } });
+	return data;
+});
 
 export const getTopRestaurants = createAsyncThunk('restaurant/getTopRestaurants', async (requestData) => {
 	const formData = new FormData();
