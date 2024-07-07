@@ -12,6 +12,7 @@ const BookingScreen = () => {
         <>
         <View style={styles.container}>
             {/* <AccountScreenUserHeader />  */}
+            <Text>ABc</Text>
         </View>
         </>
     )
