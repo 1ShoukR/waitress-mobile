@@ -66,7 +66,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									</View>
 									<View style={styles.tagContainer}>
 										{singleRestaurant?.Categories?.map((category, index) => (
-											<TouchableOpacity onPress={() => console.log('This will push a user to a category page showing all restaurants with the category')} key={index} style={styles.tag}>
+											<TouchableOpacity onPress={() => router.push(`/home/category/${category.CategoryID}`)} key={index} style={styles.tag}>
 												<Text style={{ fontWeight: 'bold',  }}>{category?.CategoryName}</Text>
 											</TouchableOpacity>
 										))}

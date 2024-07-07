@@ -32,7 +32,7 @@ const RestaurantPage = () => {
   useEffect(() => {
     if (restaurantId) {
       console.log(`Fetching restaurant with ID: ${restaurantId}`);
-        dispatch(getSingleRestaurant({ restaurantId }));
+    	dispatch(getSingleRestaurant({ restaurantId }));
     } else {
       console.log('Restaurant ID is undefined');
     }
