@@ -1,5 +1,5 @@
 import { Stack, router } from 'expo-router';
-import { TouchableOpacity, View, Text } from 'react-native';
+import { TouchableOpacity, View, Text, Platform } from 'react-native';
 import { COLORS } from '../../../constants';
 import { faArrowDown, faArrowLeft, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -19,13 +19,13 @@ const HomeLayout = () => {
                             headerTitleStyle: {
                                 color: globalDarkmode ? COLORS.lightModeText : COLORS.black
                                 },
-                            headerShown: true, title: 'Reserve ', 
+                            headerShown: true, title: 'Reserve', 
                             headerLeft: () => {
                                 return (
-                                    <TouchableOpacity>
-                                        <View>
-                                            <FontAwesomeIcon icon={faArrowLeft} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} />
-                                        </View>
+                                    <TouchableOpacity onPress={() => {
+                                        router.back();
+                                    }}>
+                                            <FontAwesomeIcon style={ Platform.OS == "android" ? {marginRight: 10} : {marginRight: 0}} icon={faArrowLeft} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} />
                                     </TouchableOpacity>
                                 )
                             }
