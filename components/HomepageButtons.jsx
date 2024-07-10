@@ -18,21 +18,21 @@ const HomepageButtons = () => {
 						<Platter style={{ left: 15,  }} height={26} width={26} />
 					</View>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.button}>
+				<TouchableOpacity onPress={() => router.push('/home/favorites/FavoritesScreen')} style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={[styles.buttonText, { fontSize: 14, marginRight: 20 }]}>Favorites</Text>
-						<Fontisto style={{ left: 15, color: COLORS.lightModeText }} name="favorite" size={24} color="black" />
+						<Fontisto  style={{ left: 15, color: COLORS.lightModeText }} name="favorite" size={24} color="black" />
 					</View>
 				</TouchableOpacity>
 			</View>
 			<View style={styles.column}>
-				<TouchableOpacity style={styles.button}>
+				<TouchableOpacity onPress={() => router.push('/home/order/ViewOrderScreen')} style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Your Orders</Text>
 						<FontAwesomeIcon style={{ left: 15, color: COLORS.lightModeText }} size={22} icon={faReceipt} />
 					</View>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.button}>
+				<TouchableOpacity onPress={() => router.push('/home/support/SupportScreen')} style={styles.button}>
 					<View style={styles.buttonContent}>
 						<Text style={styles.buttonText}>Support</Text>
 						<FontAwesomeIcon style={{ left: 15, color: COLORS.lightModeText }} size={22} icon={faCircleInfo} />

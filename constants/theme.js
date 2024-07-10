@@ -51,6 +51,7 @@ const COLORS = {
 	lightGray: '#E8E0DA', // Equal to gray200
 	gray2: '#D0C8BF', // Equal to gray300
 	gray: '#B8B0A6', // Equal to gray400
+	yellow: '#FFFF00', // Yellow
 
 	// Convenient definitions for commonly used variations of theme colors
 	primaryDark: '#BF4E49', // Darker Shade of Secondary

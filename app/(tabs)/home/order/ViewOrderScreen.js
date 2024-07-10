@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
 import React from 'react'
 import { router, Stack } from 'expo-router'
 import { COLORS } from '../../../../constants'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from 'react-redux';
+import OrderPageComponenet from '../../../../components/OrderPageComponent';
 
 const ViewOrderScreen = () => {
     const currentOrder = useSelector((state) => state?.orders?.order);
@@ -19,13 +20,13 @@ const ViewOrderScreen = () => {
         },
         headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
-                <FontAwesomeIcon size={24} icon={faArrowLeft} />
+                <FontAwesomeIcon style={ Platform.OS == "android" ? {marginRight: 10} : {marginRight: 0}} size={24} icon={faArrowLeft} />
             </TouchableOpacity>
         )
     }}
     />
     <View style={styles.container}>
-      <Text>ViewOrderScreen</Text>
+      <OrderPageComponenet />
     </View>
     </>
   )

@@ -12,7 +12,7 @@ const BookingScreen = () => {
         <>
         <View style={styles.container}>
             {/* <AccountScreenUserHeader />  */}
-            <Text>ABc</Text>
+            <Text>Reserve</Text>
         </View>
         </>
     )
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default BookingScreen
+export default BookingScreen;
