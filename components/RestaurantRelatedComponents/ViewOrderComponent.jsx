@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { COLORS } from '../../constants';
+import { Divider } from '../Divider';
 
 const ViewOrderComponent = () => {
 	const userOrder = useSelector((state) => state?.orders?.order?.[0]);
@@ -13,20 +15,46 @@ const ViewOrderComponent = () => {
 	console.log('userOrder', userOrder);
 
 	return (
-		<View style={styles.checkoutHeader}>
-			<Text>{`${user.firstName},`}</Text>
-			<Text>{`your order for ${restaurantName}`}</Text>
+		<>
+		<View style={styles.checkoutContainer}>
+			<View style={styles.infoHeader}>
+				<Text style={styles.infoText}>{`${restaurantName}`}</Text>
+				<TouchableOpacity onPress={() => console.log('add more items')}>
+					<Text style={styles.infoAddMoreText}>Add more items</Text>
+				</TouchableOpacity>
+			</View>
+		<Divider color={COLORS.black} />
 		</View>
+		</>
 	);
 };
 
 export default ViewOrderComponent;
 
 const styles = StyleSheet.create({
-	checkoutHeader: {
+	checkoutContainer: {
 		flexDirection: 'column',
-		// justifyContent: 'space-between',
-		padding: 16,
-		// backgroundColor: '#f8f8f8',
+		flex: 1,
+		paddingTop: 20,
+	},
+	infoHeader: {
+		gap: 10,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		paddingBottom: 10
+	},
+	infoText: {
+		fontSize: 24,
+		fontWeight: '700',
+		paddingLeft: 10
+	},
+	infoAddMoreText: {
+		marginTop: 7,
+		color: COLORS.secondary,
+		fontSize: 15,
+		paddingRight: 10
+	},
+	infoTextConfirm: {
+		fontSize: 18,
 	},
 });
