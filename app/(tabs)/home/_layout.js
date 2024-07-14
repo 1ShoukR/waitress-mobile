@@ -58,10 +58,6 @@ const HomeLayout = () => {
                         headerStyle: {
                             backgroundColor: COLORS.primary,
                         },
-                        contentStyle: {
-                            borderTopColor: COLORS.black,
-                            borderTopWidth: 1,
-                        },
                         headerLeft: () => {
                             return (
                                 <TouchableOpacity onPress={() => router.back()}>

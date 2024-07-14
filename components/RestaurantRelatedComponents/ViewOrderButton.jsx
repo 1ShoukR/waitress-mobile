@@ -8,7 +8,7 @@ const ViewOrderButton = () => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const order = useSelector((state) => state?.orders?.order);
 	const fadeAnim = useRef(new Animated.Value(0)).current;
-	const slideAnim = useRef(new Animated.Value(100)).current; // Initial position below the screen
+	const slideAnim = useRef(new Animated.Value(100)).current; 
 	useEffect(() => {
 		if (order.length > 0) {
 			Animated.timing(slideAnim, {
