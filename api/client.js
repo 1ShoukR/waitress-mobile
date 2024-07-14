@@ -23,14 +23,7 @@ export async function client(endpoint, { body, ...customConfig } = {}, token = n
 	};
 
 	if (body) {
-		if (Platform.OS === 'android') {
-			config.body = JSON.stringify(body);
-		} else {
-			const formData = new FormData();
-			Object.keys(body).forEach((key) => formData.append(key, body[key]));
-			config.body = formData;
-			config.headers['Content-Type'] = 'multipart/form-data';
-		}
+		config.body = JSON.stringify(body);
 	}
 
 	let data;
