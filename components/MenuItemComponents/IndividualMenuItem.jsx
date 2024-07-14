@@ -15,7 +15,7 @@ const IndividualMenuItem = ({ menuItem }) => {
 	const [quantity, setQuantity] = useState(0);
 	const dispatch = useDispatch();
 	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
-	const orders = useSelector((state) => state?.orders.order);
+	const orders = useSelector((state) => state?.orders?.order);
 	const toast = useToast();
 
 
