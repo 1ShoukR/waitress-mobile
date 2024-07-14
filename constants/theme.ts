@@ -53,7 +53,6 @@ const COLORS = {
 	gray: '#B8B0A6', // Equal to gray400
 
 	// Convenient definitions for commonly used variations of theme colors
-	primaryDark: '#BF4E49', // Darker Shade of Secondary
 	primaryLight: '#FFE5E2', // Light Pink (already existing)
 	secondaryDark: '#507070', // Dark Muted Teal
 	secondaryBackground: '#66999933', // Light Muted Teal
