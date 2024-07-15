@@ -5,7 +5,7 @@ import { TextInput, Title } from 'react-native-paper';
 import styles from '../styles/SignIn/signIn.styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants';
-import SvgVersion from '../assets/svgVersion.svg';
+import SvgVersion from '../assets/svgVersion.svg'
 import PressableButton from './PressableButton';
 import { doLogin } from '../redux/thunk';
 import * as Device from 'expo-device';
@@ -17,8 +17,8 @@ const SignIn = () => {
 
 	// Redux Hooks
 	const dispatch = useDispatch();
-	const authStatus = useSelector((state) => state.auth.loginStatus);
-	const userEmail = useSelector((state) => state.auth.email);
+	const authStatus = useSelector((state: any) => state.auth.loginStatus);
+	const userEmail = useSelector((state: any) => state.auth.email);
 
 	// Local Functions
 	const handleLogin = useCallback(() => {
@@ -88,19 +88,16 @@ const SignIn = () => {
 				fontSize={18}
 				theme="danger"
 				loadingDelay={1000}
-				shadowStyle={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 2.41, elevation: 2 }}
-			/>
+				shadowStyle={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 2.41, elevation: 2 }} status={undefined} icon={undefined} appendIcon={undefined} disabled={undefined}			/>
 			<View style={{ flex: 1, flexDirection: 'row' }}>
 				<Text style={styles.footerText}>Don't have an account?</Text>
 				<Pressable
 					onPress={navigateToCreateAccount}
-					style={(props) => [
-						{
-							backgroundColor: props.pressed ? 'rgb(210, 230, 255)' : null,
-							padding: 5,
-							bottom: 6,
-						},
-					]}>
+					style={(props) => ({
+						backgroundColor: props.pressed ? 'rgb(210, 230, 255)' : undefined,
+						padding: 5,
+						bottom: 6,
+					})}>
 					<Text style={{ textDecorationLine: 'underline', fontStyle: 'italic', color: COLORS.lightModeText }}>Sign up</Text>
 				</Pressable>
 			</View>
