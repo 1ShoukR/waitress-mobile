@@ -1,26 +1,36 @@
 {
-	"compilerOptions": {
-        "jsx": "react",
-		/* Basic Options */
-		"target": "es5", // Specify ECMAScript target version: 'es5', 'es6', 'es2016', etc.
-		"module": "commonjs", // Specify module code generation: 'commonjs', 'amd', 'system', 'umd', 'es6', 'es2015', or 'node'.
-
-		/* Strict Type-Checking Options */
-		"strict": true, // Enable all strict type-checking options.
-
-		/* Module Resolution Options */
-		"esModuleInterop": true, // Enables emit interoperability between CommonJS and ES Modules via __importStar and __importDefault.
-
-		/* Experimental Options */
-		"experimentalDecorators": true, // Enables experimental support for decorators.
-		"emitDecoratorMetadata": true, // Enables experimental support for emitting type metadata for decorators.
-
-		/* Paths and Aliases */
-		"baseUrl": ".", // Base directory to resolve non-relative module names.
-		"paths": {
-			"@components/*": ["./components/*"] // Alias for components directory.
-		}
-	},
-	"include": ["app/**/*", "api/**/*", "assets/**/*", "components/**/*", "constants/**/*", "patches/**/*", "redux/**/*", "styles/**/*"],
-	"exclude": ["node_modules", "android", ".expo", ".expo-shared"]
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "./components/*"
+      ]
+    }
+  },
+  "include": [
+    "app/**/*",
+    "api/**/*",
+    "assets/**/*",
+    "components/**/*",
+    "constants/**/*",
+    "patches/**/*",
+    "redux/**/*",
+    "styles/**/*",
+    "types/**/*", 
+    "svg.d.ts"  
+, "env.d.ts"  ],
+  "exclude": [
+    "node_modules",
+    "android",
+    ".expo",
+    ".expo-shared"
+  ],
+  "extends": "expo/tsconfig.base"
 }
