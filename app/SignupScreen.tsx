@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 const signUp = () => {
     const isPresented = router.canGoBack();
-	const globalDarkmode = useSelector((state) => state.auth.darkmode);
+	const globalDarkmode = useSelector((state: any) => state.auth.darkmode);
     return (
 			<ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: COLORS.primary }}>
 				<Stack.Screen
