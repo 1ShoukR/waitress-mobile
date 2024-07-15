@@ -1,7 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { createUserAccountThunk, doLogin, setDarkMode, updateUserAccount, updateUserLocation, resetUpdateUserAccountStatus } from './thunk';
+import { LoginResponse } from 'types/types';
+interface AuthState { 
+	apiToken: string | null;
+	authType: string | null;
+	userId: string | null;
+	firstName: string | null;
+	lastName: string | null;
+	email: string | null;
+	userType: string | null;
+	loginStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; 
+	updateLocationStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; 
+	error: string | unknown;
+	lastTab: string;
+	latitude: number | null;
+	longitude: number | null;
+	address: string | null;
+	createdAt: string | null;
+	darkMode: boolean;
+	updateUserAccountStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+}
 
-const initialState = {
+
+const initialState: AuthState = {
 	apiToken: null,
 	authType: null,
 	userId: null,
@@ -9,8 +30,8 @@ const initialState = {
 	lastName: null,
 	email: null,
 	userType: null,
-	loginStatus: 'idle', // Renamed from status to loginStatus for clarity
-	updateLocationStatus: 'idle', // Added separate status for location updates
+	loginStatus: 'idle', 
+	updateLocationStatus: 'idle', 
 	error: null,
 	lastTab: 'HomeTab',
 	latitude: null,
@@ -38,30 +59,30 @@ const authSlice = createSlice({
 			.addCase(doLogin.pending, (state) => {
 				state.loginStatus = 'loading';
 			})
-			.addCase(doLogin.fulfilled, (state, action) => {
+			.addCase(doLogin.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
 				const payload = action.payload;
 				if (payload && (payload.token || payload.apiToken)) {
 					// Update login-related fields
 					state.apiToken = payload.token || payload.apiToken;
-					state.userId = payload.user.userId;
-					state.firstName = payload.user.firstName;
-					state.lastName = payload.user.lastName;
-					state.email = payload.user.email;
-					state.authType = payload.user.authType;
-					state.latitude = payload.user.latitude;
-					state.longitude = payload.user.longitude;
-					state.address = payload.user.address;
-					state.userType = payload.user.authType;
-					state.createdAt = payload.user.createdAt;
+					state.userId = payload.user!.userId;
+					state.firstName = payload.user!.firstName;
+					state.lastName = payload.user!.lastName;
+					state.email = payload.user!.email;
+					state.authType = payload.user!.authType;
+					state.latitude = payload.user!.latitude;
+					state.longitude = payload.user!.longitude;
+					state.address = payload.user!.address;
+					state.userType = payload.user!.authType;
+					state.createdAt = payload.user!.createdAt;
 					state.loginStatus = 'succeeded';
 				} else {
 					state.loginStatus = 'failed';
 					state.error = 'Login failed. Please try again.';
 				}
 			})
-			.addCase(doLogin.rejected, (state, action) => {
+			.addCase(doLogin.rejected, (state, action: PayloadAction<string | undefined> & { error: SerializedError }) => {
 				state.loginStatus = 'failed';
-				state.error = action.error.message;
+				state.error = 'message' in action ? action.message! : 'Login failed. Please try again.';
 			})
 			.addCase(updateUserLocation.pending, (state) => {
 				state.updateLocationStatus = 'loading';
