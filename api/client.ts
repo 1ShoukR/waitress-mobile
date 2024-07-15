@@ -1,7 +1,6 @@
-import { REACT_APP_API_URL } from '@env';
 import { Platform } from 'react-native';
 
-const API_URL = process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : REACT_APP_API_URL;
+const API_URL = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : 'http://localhost:8080';
 
 console.log('env', API_URL);
 export async function client(endpoint, { body, ...customConfig } = {}, token = null) {
