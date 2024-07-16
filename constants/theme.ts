@@ -72,7 +72,9 @@ const COLORS = {
 	mutedText: '#A0988E', // Equal to gray500
 	inputPlaceholder: '#B8B0A6', // Equal to gray400
 	cardBorder: '#E8E0DA', // Equal to gray200
-};
+} as const;
+
+type ColorTheme = keyof typeof COLORS;
 
 
 const FONT = {
@@ -111,4 +113,4 @@ const SHADOWS = {
 	},
 };
 
-export { COLORS, FONT, SIZES, SHADOWS };
+export { COLORS, FONT, SIZES, SHADOWS, ColorTheme };
