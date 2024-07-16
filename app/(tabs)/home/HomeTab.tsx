@@ -15,7 +15,7 @@ import { UserLocation } from 'types/types';
 const HomeIndex = () => {
 	const [refreshing, setRefreshing] = useState(false);
 	const user = useAppSelector((state) => state?.auth);
-	const [userLocation, setUserLocation] = useState<UserLocation | null>(user && user.latitude && user.longitude ? { latitude: user.latitude, longitude: user.longitude } : null);
+	const [userLocation, setUserLocation] = useState<UserLocation | null>(user && user.latitude && user.longitude ? { latitude: user.latitude, longitude: user.longitude, address: '' } : null);
 	const [userAddress, setUserAddress] = useState<string>(user && user.address ? user.address : '');
 	const [showAddressInput, setShowAddressInput] = useState<boolean>(false);
 	const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -59,7 +59,7 @@ const handleAddressSubmit = async () => {
 					userId: user.userId, // Ensure userId is available
 				})
 			);
-			setUserLocation({ latitude: results[0].latitude, longitude: results[0].longitude });
+			setUserLocation({ latitude: results[0].latitude, longitude: results[0].longitude, address: userAddress });
 			setUserAddress(userAddress);
 			setShowAddressInput(false);
 		} else {

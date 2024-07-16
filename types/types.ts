@@ -25,6 +25,7 @@ export interface LoginRequestData {
 export interface UserLocation {
     latitude: number;
     longitude: number;
+    address: string;
 }
 
 export interface UpdateUserLocationRequest {
