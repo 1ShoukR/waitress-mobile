@@ -4,7 +4,7 @@ import { LoginResponse } from 'types/types';
 interface AuthState { 
 	apiToken: string | null;
 	authType: string | null;
-	userId: string | null;
+	userId: number | null;
 	firstName: string | null;
 	lastName: string | null;
 	email: string | null;
