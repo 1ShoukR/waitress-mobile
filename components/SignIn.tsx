@@ -9,19 +9,20 @@ import SvgVersion from '../assets/svgVersion.svg'
 import PressableButton from './PressableButton';
 import { doLogin } from '../redux/thunk';
 import * as Device from 'expo-device';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 const SignIn = () => {
 	//useState Hooks
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState<string>('');
+	const [password, setPassword] = useState<string>('');
 
 	// Redux Hooks
-	const dispatch = useDispatch();
-	const authStatus = useSelector((state: any) => state.auth.loginStatus);
-	const userEmail = useSelector((state: any) => state.auth.email);
+	const dispatch = useAppDispatch();
+	const authStatus = useAppSelector((state) => state.auth.loginStatus);
+	const userEmail = useAppSelector((state) => state.auth.email);
 
 	// Local Functions
-	const handleLogin = useCallback(() => {
+	const handleLogin = useCallback((): void => {
 		if (authStatus !== 'loading') {
 			// Ensure no multiple dispatches
 			console.log('email', email);
@@ -29,7 +30,7 @@ const SignIn = () => {
 		}
 	}, [email, password, dispatch, authStatus]);
 
-	useEffect(() => {
+	useEffect((): void => {
 		if (authStatus === 'failed') {
 			Alert.alert('Login failed. Please try again.');
 		} else if (authStatus === 'succeeded') {
@@ -39,7 +40,7 @@ const SignIn = () => {
 		}
 	}, [authStatus, userEmail]);
 
-	const navigateToCreateAccount = () => {
+	const navigateToCreateAccount = (): void => {
 		router.push('/account/CreateAccountScreen');
 	};
 
