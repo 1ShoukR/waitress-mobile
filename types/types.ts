@@ -4,7 +4,7 @@ export interface ClientConfig {
 }
 
 export type User = {
-    userId: string;
+    userId: number;
     firstName: string;
     lastName: string;
     email: string;
@@ -22,6 +22,17 @@ export interface LoginRequestData {
 	userAgent: string | null;
 }
 
+export interface UserLocation {
+    latitude: number;
+    longitude: number;
+}
+
+export interface UpdateUserLocationRequest {
+	latitude: number;
+	longitude: number;
+	userId: number | null;
+	address: string; // Added address field
+}
 
 export interface LoginResponse {
     token: string
