@@ -9,27 +9,26 @@ import { COLORS } from '../../constants';
 import { setShowAccountTabBackButton } from '../../redux/routesSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useAppSelector } from 'redux/hooks';
 
 const TabLayout = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
-	const globalDarkmode = useSelector((state) => state.auth.darkmode);
+	const globalDarkmode = useAppSelector((state) => state.auth.darkMode);
 
-	const authType = useSelector((state) => state.auth.authType);
-	const [isAdmin, setIsAdmin] = useState(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev' ? true : false);
-	const [visible, setVisible] = useState(false);
-	const openMenu = () => setVisible(true);
-	const closeMenu = () => setVisible(false);
-	const setTabHeaderButtonAccountScreen = useSelector((state) => state?.routes?.showAccountTabBackButton);
+	const authType = useAppSelector((state) => state.auth.authType);
+	const [isAdmin, setIsAdmin] = useState<boolean>(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev' ? true : false);
+	const [visible, setVisible] = useState<boolean>(false);
+	const setTabHeaderButtonAccountScreen = useAppSelector((state) => state?.routes?.showAccountTabBackButton);
 
-	const handleTabChange = (tabName) => {
+	const handleTabChange = (tabName: string): void => {
 		dispatch(setLastTab(tabName));
 	};
 
 	// Animated value for fading
-	const [fadeAnim] = useState(new Animated.Value(0));
+	const [fadeAnim] = useState<Animated.Value>(new Animated.Value(0));
 
-	useEffect(() => {
+	useEffect((): void => {
 		if (setTabHeaderButtonAccountScreen) {
 			Animated.timing(fadeAnim, {
 				toValue: 1,
