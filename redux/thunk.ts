@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { LoginRequestData, LoginResponse } from 'types/types';
+import { LoginRequestData, LoginResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData, { rejectValue: string }>('auth/doLogin', async (requestData, { rejectWithValue }) => {
 	const body = {
@@ -61,16 +61,16 @@ export const getAllCategories = createAsyncThunk('restaurant/getAllCategories', 
 	return data;
 })
 
-export const updateUserLocation = createAsyncThunk('user/updateUserLocation', async (requestData) => {
-	const formData = new FormData();
-	formData.append('latitude', requestData.latitude);
-	formData.append('longitude', requestData.longitude);
-	formData.append('userId', requestData.userId);
-	formData.append('address', requestData.address);
-	const data = await client.post('/api/users/update-user-location', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+export const updateUserLocation = createAsyncThunk<UserLocation, UpdateUserLocationRequest>('user/updateUserLocation', async (requestData) => {
+	const body = {
+		latitude: requestData.latitude,
+		longitude: requestData.longitude,
+		userId: requestData.userId,
+		address: requestData.address,
+	};
+	const data = await client.post('/api/users/update-user-location', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
-
 export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaurant', async (requestData) => {
 	const formData = new FormData();
 	formData.append('apiToken', requestData.apiToken);
