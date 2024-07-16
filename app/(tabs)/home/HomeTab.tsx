@@ -9,27 +9,29 @@ import { client } from '../../../api/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserLocation } from '../../../redux/thunk';
 import SvgVersion from "../../../assets/svgVersion.svg"
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { UserLocation } from 'types/types';
 
 const HomeIndex = () => {
 	const [refreshing, setRefreshing] = useState(false);
-	const user = useSelector((state) => state?.auth);
-	const [userLocation, setUserLocation] = useState(user && user.latitude && user.longitude ? { latitude: user.latitude, longitude: user.longitude } : null);
-	const [userAddress, setUserAddress] = useState(user && user.address ? user.address : '');
-	const [showAddressInput, setShowAddressInput] = useState(false);
-	const [isLoaded, setIsLoaded] = useState(false);
-	const reduxUser = useSelector((state) => state?.auth);
-	const globalDarkmode = useSelector((state) => state?.auth.darkmode);
-	const opacityAnim = useRef(new Animated.Value(1)).current;
-	const dispatch = useDispatch();
+	const user = useAppSelector((state) => state?.auth);
+	const [userLocation, setUserLocation] = useState<UserLocation | null>(user && user.latitude && user.longitude ? { latitude: user.latitude, longitude: user.longitude } : null);
+	const [userAddress, setUserAddress] = useState<string>(user && user.address ? user.address : '');
+	const [showAddressInput, setShowAddressInput] = useState<boolean>(false);
+	const [isLoaded, setIsLoaded] = useState<boolean>(false);
+	const reduxUser = useAppSelector((state) => state?.auth);
+	const globalDarkmode = useAppSelector((state) => state?.auth.darkMode);
+	const opacityAnim = useRef<Animated.Value>(new Animated.Value(1)).current;
+	const dispatch = useAppDispatch();
 
-	const onRefresh = useCallback(() => {
+	const onRefresh = useCallback((): void => {
 		setRefreshing(true);
 		setTimeout(() => {
 			setRefreshing(false);
 		}, 1500);
 	}, []);
 
-	const toggleInput = () => {
+	const toggleInput = (value: boolean): void => {
 		Animated.timing(opacityAnim, {
 			toValue: 0,
 			duration: 300,
@@ -46,23 +48,25 @@ const HomeIndex = () => {
 	};
 
 const handleAddressSubmit = async () => {
-    if (userAddress) {
-        let results = await Location.geocodeAsync(userAddress);
-        if (results.length > 0) {
-            dispatch(updateUserLocation({
-                latitude: results[0].latitude,
-                longitude: results[0].longitude,
-                userId: user.userId,
-                address: userAddress
-            }));
-            setUserLocation({ latitude: results[0].latitude, longitude: results[0].longitude });
-            setUserAddress(userAddress); 
-            setShowAddressInput(false);
-        } else {
-            console.log('No locations found for the address:', userAddress);
-            // Handling of loading state should be within Redux if the thunk fails
-        }
-    }
+	if (userAddress) {
+		let results = await Location.geocodeAsync(userAddress);
+		if (results.length > 0) {
+			dispatch(
+				updateUserLocation({
+					latitude: results[0].latitude,
+					longitude: results[0].longitude,
+					address: userAddress,
+					userId: user.userId, // Ensure userId is available
+				})
+			);
+			setUserLocation({ latitude: results[0].latitude, longitude: results[0].longitude });
+			setUserAddress(userAddress);
+			setShowAddressInput(false);
+		} else {
+			console.log('No locations found for the address:', userAddress);
+			// Handling of loading state should be within Redux if the thunk fails
+		}
+	}
 };
 
 	return (
@@ -73,7 +77,7 @@ const handleAddressSubmit = async () => {
 					title: '',
 					headerBackground: () => <View style={{ backgroundColor: COLORS.primary, height: 100 }} />,
 					headerRight: () => (
-						<TouchableOpacity onPress={toggleInput}>
+						<TouchableOpacity onPress={() => toggleInput(true)}>
 							<Animated.View style={{ flexDirection: 'row', alignItems: 'center', opacity: opacityAnim }}>
 								{showAddressInput ? (
 									<>
@@ -130,7 +134,7 @@ const handleAddressSubmit = async () => {
 			/>
 			<ScrollView style={{  backgroundColor: COLORS.primary }} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 				<View style={{  paddingVertical: 32, }}>
-					<HomePageComponent refreshing={refreshing} />
+					<HomePageComponent />
 				</View>
 			</ScrollView>
 		</SafeAreaView>
