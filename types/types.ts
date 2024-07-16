@@ -19,7 +19,7 @@ export type User = {
 export interface LoginRequestData {
 	email: string;
 	password: string;
-	userAgent: string;
+	userAgent: string | null;
 }
 
 
