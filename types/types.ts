@@ -94,7 +94,7 @@ export interface MenuItem {
 export interface Rating {
 	ratingId: number;
 	comment: string;
-	rating: number;
+	Rating: number;
 	restaurantId: number;
 	userId: number;
     restaurant: Restaurant;
