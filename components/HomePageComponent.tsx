@@ -7,29 +7,30 @@ import CategoriesComponent from './CategoriesComponent';
 import TopRestaurantsComponent from './TopRestaurantsComponent';
 import LocalRestaurantsComponent from './LocalRestaurantsComponent';
 import { COLORS } from '../constants';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 const HomePageComponent = () => {
-	const [isLoading, setIsLoading] = useState(false);
-	const dispatch = useDispatch()
-	const user = useSelector((state) => state?.auth);
-	const localRestaurants = useSelector((state) => state?.restaurant)
-	const topRestaurants = useSelector((state) => state?.restaurant?.topRestaurants)
-	const apiToken = useSelector((state) => state?.auth?.apiToken);
-	const foodCategories = useSelector((state) => state?.restaurant?.categories);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const dispatch = useAppDispatch()
+	const user = useAppSelector((state) => state?.auth);
+	const localRestaurants = useAppSelector((state) => state?.restaurant)
+	const topRestaurants = useAppSelector((state) => state?.restaurant?.topRestaurants)
+	const apiToken = useAppSelector((state) => state?.auth?.apiToken);
+	const foodCategories = useAppSelector((state) => state?.restaurant?.categories);
 
 
-	React.useEffect(() => {
-		let isMounted = true;
-		const fetchData = async () => {
+	React.useEffect((): ( () => void ) => {
+		let isMounted: boolean = true;
+		const fetchData = async (): Promise<void> => {
 			setIsLoading(true);
 			try {
-				// For some reason, await here works to show and set the isLoading state
-				// so please do not remove these await keywords until we find a better solution
-				await dispatch(getLocalRestaurants({ latitude: user.latitude, longitude: user.longitude, apiToken }));
-				await dispatch(getTopRestaurants({ apiToken }));
-				await dispatch(getAllCategories({ apiToken: apiToken }));
-
-			} catch (error) {
+				const promises = [
+							dispatch(getLocalRestaurants({ latitude: user.latitude!, longitude: user.longitude!, apiToken: user.apiToken! })),
+							dispatch(getTopRestaurants({ apiToken: user.apiToken! })),
+							dispatch(getAllCategories({ apiToken: user.apiToken! })),
+						] as const;
+						await Promise.all(promises);
+			} catch (error: unknown) {
 				console.error('Error fetching data:', error);
 			} finally {
 				if (isMounted) {
@@ -38,11 +39,11 @@ const HomePageComponent = () => {
 			}
 		};
 		fetchData();
-		return () => {
+		return (): void => {
 			isMounted = false;
 		};
-	}, [user.latitude, user.longitude, dispatch, apiToken]);
-	const categories = useSelector((state) => state?.restaurant?.categories);
+	}, [user.latitude, user.longitude, useAppDispatch, apiToken]);
+	const categories = useAppSelector((state) => state?.restaurant?.categories);
 
 	return (
 		<View style={styles.container}>
@@ -51,8 +52,8 @@ const HomePageComponent = () => {
 			</View>
 			<HomepageButtons />
 			<CategoriesComponent foodCategories={foodCategories} />
-			<TopRestaurantsComponent setIsLoading={setIsLoading} isLoading={isLoading} topRestaurants={topRestaurants} />
-			<LocalRestaurantsComponent localRestaurants={localRestaurants} />
+			<TopRestaurantsComponent isLoading={isLoading} topRestaurants={topRestaurants} />
+			<LocalRestaurantsComponent isLoading={isLoading} localRestaurants={localRestaurants} />
 		</View>
 	);
 };

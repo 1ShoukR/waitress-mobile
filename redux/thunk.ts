@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, UpdateUserLocationRequest, UserLocation } from 'types/types';
+import { AllCategoriesResponse, ApiKey, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData, { rejectValue: string }>('auth/doLogin', async (requestData, { rejectWithValue }) => {
 	const body = {
@@ -47,17 +47,19 @@ export const getLocalRestaurants = createAsyncThunk<LocalRestaurantsResponse, Lo
 	return data;
 });
 
-export const getTopRestaurants = createAsyncThunk('restaurant/getTopRestaurants', async (requestData) => {
-	const formData = new FormData();
-	formData.append('apiToken', requestData.apiToken);
-	const data = await client.post('/api/restaurant/top10restaurants/', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+export const getTopRestaurants = createAsyncThunk<TopRestaurantResponse, ApiKey>('restaurant/getTopRestaurants', async (requestData) => {
+	const body = {
+		apiToken: requestData.apiToken,
+	};
+	const data = await client.post('/api/restaurant/top10restaurants/', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 
-export const getAllCategories = createAsyncThunk('restaurant/getAllCategories', async (requestData) => {
-	const formData = new FormData();
-	formData.append('apiToken', requestData.apiToken);
-	const data = await client.post('/api/restaurant/categories/get-all', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+export const getAllCategories = createAsyncThunk<AllCategoriesResponse, ApiKey>('restaurant/getAllCategories', async (requestData) => {
+	const body = {
+		apiToken: requestData.apiToken,
+	};
+	const data = await client.post('/api/restaurant/categories/get-all', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 })
 
