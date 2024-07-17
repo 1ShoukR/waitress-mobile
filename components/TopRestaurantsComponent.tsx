@@ -3,32 +3,38 @@ import React, { memo } from 'react';
 import { COLORS } from '../constants';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { Restaurant } from 'types/types';
 
-const TopRestaurantsComponent = ({ topRestaurants, isLoading }) => {
-	const renderStars = (rating) => {
+const TopRestaurantsComponent = ({ 
+	topRestaurants, isLoading 
+}: { 
+	topRestaurants: Restaurant[], 
+	isLoading: boolean  
+}) => {
+	const renderStars = (rating: number): React.JSX.Element[] => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
 			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={COLORS.black} />);
 		}
 		return stars;
 	};
-	const handlePress = (restaurantId) => {
+	const handlePress = (restaurantId: number) => {
 		console.log('Restaurant clicked:', restaurantId);
 		router.push(`/home/restaurant/${restaurantId}`);
 	};
 
-	const renderItem = ({ item }) => (
-		<TouchableOpacity onPress={() => handlePress(item.RestaurantId)} style={styles.cardContainer}>
+	const renderItem = ({ item }: {item: Restaurant}) => (
+		<TouchableOpacity onPress={(): void => handlePress(item.RestaurantId)} style={styles.cardContainer}>
 			<View style={styles.card}>
 				<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
 				<View style={styles.cardContent}>
 					<Text style={styles.restaurantName}>{item?.Name}</Text>
 					<View style={styles.ratingContainer}>
-						{renderStars(item?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings.length)}
-						<Text style={styles.ratingText}>{item?.Ratings.length > 0 ? item?.Ratings.length + ' Reviews' : item?.Ratings.length + ' Review'}</Text>
+						{renderStars(item?.Ratings!.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings!.length)}
+						<Text style={styles.ratingText}>{item?.Ratings!.length > 0 ? item?.Ratings!.length + ' Reviews' : item?.Ratings!.length + ' Review'}</Text>
 					</View>
 					<Text style={styles.restaurantTags}>Tags</Text>
-					<View style={{flexDirection: 'row', gap: 7, paddingTop: 7}}>
+					<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7, paddingBottom: 10 }}>
 						{item?.Categories?.map((category, index) => {
 							return (
 								<TouchableOpacity onPress={() => router.push(`/category/${category.CategoryID}`)}>
@@ -39,7 +45,6 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading }) => {
 							);
 						})}
 					</View>
-					<Text style={styles.restaurantDetails}>{item?.Details}</Text>
 				</View>
 			</View>
 		</TouchableOpacity>
@@ -57,7 +62,6 @@ const TopRestaurantsComponent = ({ topRestaurants, isLoading }) => {
 					keyExtractor={(item) => item.RestaurantId.toString()}
 					horizontal
 					showsHorizontalScrollIndicator={false}
-					contentContainerStyle={styles.flatListContentContainer}
 				/>
 			)}
 		</>
@@ -85,7 +89,6 @@ const styles = StyleSheet.create({
 	cardContainer: {
 		marginRight: 15,
 		borderRadius: 10,
-		backgroundColor: COLORS.cardBackground,
 		borderWidth: 1,
 		borderColor: '#ddd',
 		shadowColor: '#000',
@@ -93,7 +96,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.1,
 		shadowRadius: 5,
 		elevation: 3,
-		width: 220, // Adjust the width to your preference
+		width: 220, 
 		marginVertical: 5,
 	},
 	card: {
