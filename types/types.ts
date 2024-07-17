@@ -57,9 +57,9 @@ export interface TopRestaurantResponse {
 }
 
 export interface Category {
-	categoryId: number;
-	categoryName: string;
-    imageURL: string;
+	CategoryID: number;
+	CategoryName: string;
+	ImageUrl: string;
 }
 
 export interface Receipt {
