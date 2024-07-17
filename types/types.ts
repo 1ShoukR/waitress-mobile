@@ -16,6 +16,12 @@ export type User = {
     createdAt: string;
     darkMode: boolean;
 }
+export interface LocationData {
+	latitude: number;
+	longitude: number;
+	apiToken: string;
+}
+
 export interface LoginRequestData {
 	email: string;
 	password: string;
@@ -25,7 +31,7 @@ export interface LoginRequestData {
 export interface UserLocation {
     latitude: number;
     longitude: number;
-    address: string;
+    address: string | null;
 }
 
 export interface UpdateUserLocationRequest {
@@ -39,4 +45,74 @@ export interface LoginResponse {
     token: string
     apiToken: string
     user: User
+}
+
+export interface LocalRestaurantsResponse {
+	restaurants: Restaurant[];
+}
+
+export interface Category {
+	categoryId: number;
+	categoryName: string;
+    imageURL: string;
+}
+
+export interface Receipt {
+	receiptId: number;
+    assignedWaiterId: number;
+    assignedUserId: number;
+    restaurantId: number;
+    restaurant: Restaurant
+}
+
+export interface Reservation {
+	reservationId: number;
+    restaurantId: number;
+    userId: number;
+    tableId: number;
+    time: string;
+    restaurant: Restaurant;
+}
+
+export interface MenuItem {
+	menuItemId: number;
+    restaurantId: number;
+    nameOfItem: string;
+    price: number;
+    isAvailable: boolean;
+    category: Category;
+    imageUrl: string;
+    description: string;
+    restaurant: Restaurant;
+}
+
+export interface Rating {
+	ratingId: number;
+	comment: string;
+	rating: number;
+	restaurantId: number;
+	userId: number;
+    restaurant: Restaurant;
+}
+
+export interface Restaurant {
+	RestaurantId: number;
+	OwnerID: number;
+	Name: string;
+	Address: string;
+	Phone: string;
+	Email: string;
+	Website?: string;
+	Categories: Category[];
+	NumberOfTables?: number;
+	Latitude?: number;
+	Longitude?: number;
+	Receipts: Receipt[];
+	Reservations?: Reservation[];
+	MenuItems?: MenuItem[];
+	Owner: User;
+	Ratings?: Rating[];
+	ImageURL?: string;
+	AverageRating: number;
+	ReviewCount?: number;
 }
