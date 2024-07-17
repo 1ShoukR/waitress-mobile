@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { AntDesign, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
-import utensiles from '../assets/utensiles.png';
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleInfo, faReceipt } from '@fortawesome/free-solid-svg-icons';
