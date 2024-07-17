@@ -18,7 +18,7 @@ const TopRestaurantsComponent = ({
 		}
 		return stars;
 	};
-	const handlePress = (restaurantId: number) => {
+	const handlePress = (restaurantId: number): void => {
 		console.log('Restaurant clicked:', restaurantId);
 		router.push(`/home/restaurant/${restaurantId}`);
 	};
