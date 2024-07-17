@@ -3,8 +3,14 @@ import { COLORS } from '../constants';
 import React, { memo } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { LocalRestaurantsResponse } from 'types/types';
 
-const LocalRestaurantsComponent = ({ localRestaurants, isLoading }) => {
+const LocalRestaurantsComponent = ({ 
+	localRestaurants, isLoading 
+}: { 
+	localRestaurants: LocalRestaurantsResponse, 
+	isLoading: boolean
+}) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants;
 
 	const handlePress = (restaurant) => {
