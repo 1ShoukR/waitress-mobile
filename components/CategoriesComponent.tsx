@@ -2,9 +2,10 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'rea
 import React from 'react'
 import { COLORS } from '../constants';
 import { router } from 'expo-router';
+import { Category } from 'types/types';
 
-const CategoriesComponent = ({foodCategories}) => {
-  return (
+const CategoriesComponent = ({ foodCategories }: { foodCategories: Category[]}) => {
+	return (
 		<>
 			<Text style={styles.header}>Category</Text>
 			<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
@@ -23,7 +24,7 @@ const CategoriesComponent = ({foodCategories}) => {
 			</ScrollView>
 		</>
 	);
-}
+};
 
 export default CategoriesComponent
 
