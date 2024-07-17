@@ -13,12 +13,11 @@ const LocalRestaurantsComponent = ({
 }) => {
 	const localRestaurantsData = localRestaurants?.localRestaurants;
 
-	const handlePress = (restaurant) => {
-		console.log('Restaurant clicked:', restaurant.Name);
-		router.push(`/home/restaurant/${restaurant.RestaurantId}`);
+	const handlePress = (restaurantId: number): void => {
+		router.push(`/home/restaurant/${restaurantId}`);
 	};
 
-	const renderStars = (rating) => {
+	const renderStars = (rating: number): React.JSX.Element[] => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
 			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={COLORS.black} />);
@@ -33,25 +32,24 @@ const LocalRestaurantsComponent = ({
 				<ActivityIndicator size="large" />
 			) : (
 				<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollViewContentContainer}>
-					{localRestaurantsData.map((item) => (
-						<TouchableOpacity key={item.RestaurantId} onPress={() => handlePress(item)} style={styles.cardContainer}>
+					{localRestaurantsData!.map((item) => (
+						<TouchableOpacity key={item.RestaurantId} onPress={(): void => handlePress(item.RestaurantId)} style={styles.cardContainer}>
 							<View style={styles.card}>
 								<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
 								<View style={styles.cardContent}>
 									<Text style={styles.restaurantName}>{item?.Name}</Text>
 									<View style={styles.ratingContainer}>
-										{renderStars(item?.Ratings.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings.length)}
-										<Text style={styles.ratingText}>{item?.Ratings.length > 0 ? item?.Ratings.length + ' Reviews' : item?.Ratings.length + ' Review'}</Text>
+										{renderStars(item?.Ratings!.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings!.length)}
+										<Text style={styles.ratingText}>{item?.Ratings!.length > 0 ? item?.Ratings!.length + ' Reviews' : item?.Ratings!.length + ' Review'}</Text>
 									</View>
 									<Text style={styles.restaurantTags}>Tags</Text>
-									<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7 }}>
+									<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7, paddingBottom: 10 }}>
 										{item?.Categories?.map((category, index) => (
 											<TouchableOpacity key={index} onPress={() => router.push(`/category/${category.CategoryID}`)}>
 												<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category.CategoryName}</Text>
 											</TouchableOpacity>
 										))}
 									</View>
-									<Text style={styles.restaurantDetails}>{item?.Details}</Text>
 								</View>
 							</View>
 						</TouchableOpacity>
@@ -83,7 +81,6 @@ const styles = StyleSheet.create({
 	cardContainer: {
 		marginRight: 15,
 		borderRadius: 10,
-		backgroundColor: COLORS.cardBackground,
 		borderWidth: 1,
 		borderColor: '#ddd',
 		shadowColor: '#000',
