@@ -48,7 +48,8 @@ export interface LoginResponse {
 }
 
 export interface LocalRestaurantsResponse {
-	restaurants: Restaurant[];
+	restaurants?: Restaurant[];
+    localRestaurants?: Restaurant[];
 }
 
 export interface TopRestaurantResponse {
