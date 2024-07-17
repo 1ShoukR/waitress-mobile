@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { LoginRequestData, LoginResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
+import { LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData, { rejectValue: string }>('auth/doLogin', async (requestData, { rejectWithValue }) => {
 	const body = {
@@ -37,7 +37,7 @@ export const createUserAccountThunk = createAsyncThunk('auth/createUserAccountTh
 });
 
 
-export const getLocalRestaurants = createAsyncThunk('restaurant/getLocalRestaurants', async (locationData) => {
+export const getLocalRestaurants = createAsyncThunk<LocalRestaurantsResponse, LocationData>('restaurant/getLocalRestaurants', async (locationData: LocationData) => {
 	const body = {
 		latitude: locationData.latitude,
 		longitude: locationData.longitude,
