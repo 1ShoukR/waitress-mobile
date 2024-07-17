@@ -51,6 +51,10 @@ export interface LocalRestaurantsResponse {
 	restaurants: Restaurant[];
 }
 
+export interface TopRestaurantResponse {
+    restaurants: Restaurant[];
+}
+
 export interface Category {
 	categoryId: number;
 	categoryName: string;
@@ -115,4 +119,13 @@ export interface Restaurant {
 	ImageURL?: string;
 	AverageRating: number;
 	ReviewCount?: number;
+}
+
+export interface AllCategoriesResponse {
+	categories: Category[];
+}
+
+export type ApiKey = {
+    apiKey?: string;
+    apiToken?: string;
 }
