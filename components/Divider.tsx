@@ -1,7 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
-export const Divider = ({ width = 1, orientation = 'horizontal', color = '#DFE4EA', dividerStyle }) => {
+interface DividerProps {
+	width?: number | string;
+	orientation?: 'horizontal' | 'vertical';
+	color?: string;
+	dividerStyle?: object;
+}
+
+export const Divider = ({ width = 1, orientation = 'horizontal', color = '#DFE4EA', dividerStyle }: DividerProps) => {
 	const isHorizontal = orientation === 'horizontal';
 	const dividerStyles = [
 		styles.divider,
