@@ -4,18 +4,21 @@ export interface ClientConfig {
 }
 
 export type User = {
-    userId: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    authType: string;
-    latitude: number;
-    longitude: number;
-    address: string;
-    userType: string;
-    createdAt: string;
-    darkMode: boolean;
-}
+	userId: number;
+	firstName: string;
+	lastName: string;
+	email: string;
+	authType: string;
+	latitude: number;
+	longitude: number;
+	address: string;
+	Entity?: any;
+	Payments: any | null; // Replace with actual type if available
+	userType: string;
+	createdAt: string;
+	darkMode: boolean;
+	Reservations: Reservation[] | null;
+};
 export interface LocationData {
 	latitude: number;
 	longitude: number;
@@ -108,18 +111,50 @@ export interface Restaurant {
 	Phone: string;
 	Email: string;
 	Website?: string;
-	Categories: Category[];
+	Categories: Category[] | null;
 	NumberOfTables?: number;
 	Latitude?: number;
 	Longitude?: number;
-	Receipts: Receipt[];
-	Reservations?: Reservation[];
-	MenuItems?: MenuItem[];
+	Receipts: Receipt[] | null;
+	Reservations?: Reservation[] | null;
+	MenuItems?: MenuItem[] | null;
 	Owner: User;
-	Ratings?: Rating[];
+	Ratings?: Rating[] | null;
 	ImageURL?: string;
 	AverageRating: number;
 	ReviewCount?: number;
+}
+
+export interface MenuItem {
+	Category: string;
+	Description: string;
+	ImageURL: string;
+	IsAvailable: boolean;
+	MenuID: number;
+	NameOfItem: string;
+	Price: number;
+	Restaurant: {
+		Address: string;
+		AverageRating: number;
+		Categories: Category[] | null;
+		Email: string;
+		ImageURL: string | null;
+		Latitude: number | null;
+		Longitude: number | null;
+		MenuItems: MenuItem[] | null;
+		Name: string;
+		NumberOfTables: number | null;
+		Owner: User;
+		OwnerID: number;
+		Phone: string;
+		Ratings: Rating[] | null;
+		Receipts: Receipt[] | null;
+		Reservations: Reservation[] | null;
+		RestaurantId: number;
+		ReviewCount: number | null;
+		Website: string | null;
+	};
+	RestaurantID: number;
 }
 
 export interface AllCategoriesResponse {
@@ -129,4 +164,11 @@ export interface AllCategoriesResponse {
 export type ApiKey = {
     apiKey?: string;
     apiToken?: string;
+}
+
+export type Order = {
+	itemName: string;
+	quantity: number;
+	price: number;
+	restaurant: Restaurant;
 }
