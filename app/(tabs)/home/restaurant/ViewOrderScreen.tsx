@@ -3,7 +3,7 @@ import React from 'react'
 import ViewOrderComponent from '../../../../components/RestaurantRelatedComponents/ViewOrderComponent'
 import { COLORS } from '../../../../constants'
 
-const ViewOrderScreen = () => {
+const ViewOrderScreen = (): React.JSX.Element => {
   return (
     <View style={styles.container}>
       <ViewOrderComponent />
