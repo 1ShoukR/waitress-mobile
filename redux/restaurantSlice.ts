@@ -1,7 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getAllCategories, getLocalRestaurants, getSingleRestaurant, getTopRestaurants } from './thunk';
+import { Category, Restaurant } from 'types/types';
 
-const initialState = {
+interface RestaurantSlice {
+	localRestaurants: Restaurant[];
+	topRestaurants: Restaurant[];
+	singleRestaurant: Restaurant | null;
+	categories: Category[];
+	status: string;
+	error: string | null;
+}
+
+const initialState: RestaurantSlice = {
 	localRestaurants: [],
 	topRestaurants: [],
 	singleRestaurant: null,
