@@ -39,8 +39,8 @@ export async function client<T>(endpoint: string, { body, ...customConfig }: Cli
 		config.body = JSON.stringify(body);
 	}
 
-	let data: T;
-
+	let data: T = {} as T;
+	
 	try {
 		const response = await fetch(`${API_URL}${endpoint}`, config);
 		data = await response.json();
