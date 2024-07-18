@@ -3,13 +3,27 @@ import { Platform } from 'react-native';
 const API_URL = process.env.EXPO_PUBLIC_API_URL ? process.env.EXPO_PUBLIC_API_URL : 'http://localhost:8080';
 
 console.log('env', API_URL);
-export async function client(endpoint, { body, ...customConfig } = {}, token = null) {
-	const headers = { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'any' };
+
+interface CustomConfig extends RequestInit {
+	headers?: HeadersInit;
+	body?: BodyInit | null | undefined;
+}
+
+interface ClientOptions extends CustomConfig {
+	body?: BodyInit | null | undefined;
+}
+
+export async function client<T>(endpoint: string, { body, ...customConfig }: ClientOptions = {}, token: string | null = null): Promise<T> {
+	const headers: HeadersInit = {
+		'Content-Type': 'application/json',
+		'ngrok-skip-browser-warning': 'any',
+	};
+
 	if (token) {
 		headers.Authorization = `Bearer ${token}`;
 	}
 
-	const config = {
+	const config: RequestInit = {
 		method: body ? 'POST' : 'GET',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -25,7 +39,7 @@ export async function client(endpoint, { body, ...customConfig } = {}, token = n
 		config.body = JSON.stringify(body);
 	}
 
-	let data;
+	let data: T;
 
 	try {
 		const response = await fetch(`${API_URL}${endpoint}`, config);
@@ -35,14 +49,14 @@ export async function client(endpoint, { body, ...customConfig } = {}, token = n
 		}
 		throw new Error(response.statusText);
 	} catch (err) {
-		return Promise.reject(err.message ? err.message : data);
+		return Promise.reject((err as Error).message ? (err as Error).message : data);
 	}
 }
 
-client.get = function (endpoint, token = null, customConfig = {}) {
-	return client(endpoint, { ...customConfig, method: 'GET' }, token);
+client.get = function <T>(endpoint: string, token: string | null = null, customConfig: CustomConfig = {}): Promise<T> {
+	return client<T>(endpoint, { ...customConfig, method: 'GET' }, token);
 };
 
-client.post = function (endpoint, body, token = null, customConfig = {}) {
-	return client(endpoint, { ...customConfig, body: body, method: 'POST' }, token);
+client.post = function <T>(endpoint: string, body: BodyInit | null | undefined, token: string | null = null, customConfig: CustomConfig = {}): Promise<T> {
+	return client<T>(endpoint, { ...customConfig, body: body, method: 'POST' }, token);
 };
