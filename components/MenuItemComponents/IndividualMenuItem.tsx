@@ -3,23 +3,24 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useToast } from 'react-native-toast-notifications';
 import NumericInput from 'react-native-numeric-input';
 import { COLORS } from '../../constants';
-import { useDispatch, useSelector } from 'react-redux';
 import { updateOrderItem } from '../../redux/orderSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-const IndividualMenuItem = ({ menuItem }) => {
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { MenuItem } from 'types/types';
+const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Element => {
 	const placeholderImage = 'https://via.placeholder.com/150';
 	const screenWidth = Dimensions.get('window').width;
-	const fadeAnim = useRef(new Animated.Value(0)).current;
-	const slideAnim = useRef(new Animated.Value(100)).current; // Initial position below the screen
-	const [quantity, setQuantity] = useState(0);
-	const dispatch = useDispatch();
-	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
-	const orders = useSelector((state) => state?.orders.order);
+	const fadeAnim = useRef<Animated.Value>(new Animated.Value(0)).current;
+	const slideAnim = useRef<Animated.Value>(new Animated.Value(100)).current; // Initial position below the screen
+	const [quantity, setQuantity] = useState<number>(0);
+	const dispatch = useAppDispatch();
+	const singleRestaurant = useAppSelector((state) => state?.restaurant?.singleRestaurant);
+	const orders = useAppSelector((state) => state?.orders.order);
 	const toast = useToast();
 
 
-	useEffect(() => {
+	useEffect((): void => {
 		if (quantity > 0) {
 			Animated.timing(slideAnim, {
 				toValue: 0,
@@ -35,17 +36,17 @@ const IndividualMenuItem = ({ menuItem }) => {
 		}
 	}, [quantity]);
 
-	useEffect(() => {
+	useEffect((): void => {
 		console.log('Current Bag:', orders);
 	}, [orders]);
 
-	const handleAddToOrder = () => {
+	const handleAddToOrder = (): void => {
 		dispatch(
 			updateOrderItem({
 				itemName: menuItem.NameOfItem,
 				quantity: quantity,
 				price: Number((quantity * menuItem.Price).toFixed(2)),
-				restaurant: singleRestaurant,
+				restaurant: singleRestaurant!,
 			})
 		);
 		toast.show('Added to Order!', {
