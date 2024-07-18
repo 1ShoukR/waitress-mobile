@@ -16,6 +16,7 @@ import { Button } from 'react-native-paper';
 import { COLORS } from '../constants';
 import SignIn from '../components/SignIn';
 import { useSelector } from 'react-redux';
+import { useAppSelector } from 'redux/hooks';
 
 LogBox.ignoreAllLogs(); // Ignore all log notifications for testing/demo purposes
 
@@ -31,9 +32,9 @@ if that is the case, then they will not be able to access their account/see prev
 */
 
 
-const App = () => {
+const App = (): React.JSX.Element => {
 	const router = useRouter()
-	const globalDarkMode = useSelector((state) => state?.auth?.darkMode);
+	const globalDarkMode = useAppSelector((state) => state?.auth?.darkMode);
 	console.log('Dark Mode in App:', globalDarkMode);
 	return (
 		<>
@@ -46,10 +47,10 @@ const App = () => {
 			/>
 			<View style={{ flex: 1, padding: 16, backgroundColor: COLORS.primary }}>
 				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 500 }}>
-					<Button rippleColor='transparent' icon="account" mode="outlined" onPress={() => router.push('/SignupScreen')} style={[styles.button, {borderColor: globalDarkMode ? COLORS.white : COLORS.black }]} labelStyle={[styles.signInButtonLabel, {color: globalDarkMode ? COLORS.white : COLORS.black}]} contentStyle={{flexDirection: 'row-reverse'}}>
+					<Button rippleColor='transparent' icon="account" mode="outlined" onPress={(): void => router.push('/SignupScreen')} style={[styles.button, {borderColor: globalDarkMode ? COLORS.white : COLORS.black }]} labelStyle={[styles.signInButtonLabel, {color: globalDarkMode ? COLORS.white : COLORS.black}]} contentStyle={{flexDirection: 'row-reverse'}}>
 						Sign In
 					</Button>
-					<Button rippleColor='transparent' icon="near-me" title="Search Nearby" mode="outlined" onPress={() => console.log('Search Nearby Pressed')} style={[styles.button, {backgroundColor: COLORS.lightGray}]} labelStyle={[styles.signInButtonLabel, {color: globalDarkMode ? COLORS.white : COLORS.black}]} contentStyle={{flexDirection: 'row-reverse'}} >
+					<Button rippleColor='transparent' icon="near-me" mode="outlined" onPress={(): void => console.log('Search Nearby Pressed')} style={[styles.button, {backgroundColor: COLORS.lightGray}]} labelStyle={[styles.signInButtonLabel, {color: globalDarkMode ? COLORS.white : COLORS.black}]} contentStyle={{flexDirection: 'row-reverse'}} >
 						Search Nearby
 					</Button>
 				</View>
