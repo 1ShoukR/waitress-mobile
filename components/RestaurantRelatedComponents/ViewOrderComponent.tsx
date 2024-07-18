@@ -1,18 +1,16 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { COLORS } from '../../constants';
 import { Divider } from '../Divider';
+import { useAppSelector } from 'redux/hooks';
 
-const ViewOrderComponent = () => {
-	const userOrder = useSelector((state) => state?.orders?.order?.[0]);
-	const user = useSelector((state) => state?.auth);
+const ViewOrderComponent = (): React.JSX.Element => {
+	const userOrder = useAppSelector((state) => state?.orders?.order[0]);
+	const user = useAppSelector((state) => state?.auth);
 
-	// Extract restaurant name safely
 	const restaurantName = userOrder?.restaurant?.Name || 'Unknown Restaurant';
 
 	console.log('user', user);
-	console.log('userOrder', userOrder);
 
 	return (
 		<>
