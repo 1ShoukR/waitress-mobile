@@ -1,17 +1,20 @@
 import React from 'react';
 import { COLORS } from '../../constants';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { Divider } from '@components/Divider';
 import { useAppSelector } from 'redux/hooks';
 
 export const CheckoutInfoHeaderComponent = () => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
-	const restaurantName = useAppSelector((state) => state?.orders?.order[0]).restaurant?.Name || 'Unknown Restaurant';
-	const totalPrice = userOrders.reduce((acc, curr) => acc + curr.price, 0);
-	console.log('totalPrice', totalPrice);
-	const user = useAppSelector((state) => state?.auth);
+	const restaurant = useAppSelector((state) => state?.orders?.order[0]).restaurant;
+	const restaurantName = restaurant?.Name || 'Unknown Restaurant';
+	const subTotal = userOrders.reduce((acc, curr) => acc + curr.price, 0);
+	const menuItems = restaurant?.MenuItems!.slice(0, 5) || []; // Take the first 5 items as an example
+	console.log('menuItems', menuItems);
 
+	console.log('subTotal', subTotal);
 	console.log('userOrders', userOrders);
+
 	return (
 		<View style={styles.checkoutContainer}>
 			<View style={styles.infoHeader}>
@@ -32,6 +35,24 @@ export const CheckoutInfoHeaderComponent = () => {
 				))}
 			</View>
 			<Divider color={COLORS.black} />
+			<View style={styles.youMightAlsoLike}>
+				<Text style={{ fontWeight: 'bold', fontSize: 18, padding: 10 }}>You might also like</Text>
+				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+					{menuItems.map((item) => (
+						<TouchableOpacity onPress={() => console.log('add new item')} style={styles.card} key={item.NameOfItem}>
+							<Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.cardImage} />
+							<View style={styles.cardContent}>
+								<Text style={styles.cardTitle}>{item.NameOfItem}</Text>
+								<Text style={styles.cardPrice}>${item.Price}</Text>
+							</View>
+						</TouchableOpacity>
+					))}
+				</ScrollView>
+			</View>
+            <View style={styles.itemSubTotalContainer}>
+                <Text style={[styles.itemText,  { fontWeight: 'bold' }]}>Subtotal</Text>
+                <Text style={[styles.itemText,  { fontWeight: 'bold' }]}>${subTotal}</Text>
+            </View>
 		</View>
 	);
 };
@@ -71,14 +92,55 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		paddingVertical: 5, // Adds vertical padding between rows
-		paddingHorizontal: 10, // Adds horizontal padding within a row
+		paddingVertical: 5,
+		paddingHorizontal: 10,
 	},
 	itemDetails: {
 		flexDirection: 'row',
 	},
 	itemText: {
-		marginRight: 10, // Adds space between items in a row
-		// additional text styles
+		marginRight: 10,
+		fontSize: 18,
 	},
+	youMightAlsoLike: {
+		paddingVertical: 10,
+        paddingHorizontal: 5,
+	},
+	card: {
+		backgroundColor: '#fff',
+		borderRadius: 8,
+		marginRight: 10,
+		shadowColor: '#000',
+		shadowOpacity: 0.1,
+		shadowRadius: 5,
+		elevation: 3,
+		alignItems: 'center',
+		width: 200,
+	},
+	cardImage: {
+		width: '100%',
+		height: 100,
+		borderTopLeftRadius: 8,
+		borderTopRightRadius: 8,
+	},
+	cardContent: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: '100%',
+		padding: 10,
+		alignItems: 'center',
+	},
+	cardTitle: {
+		fontSize: 12,
+		fontWeight: '600',
+	},
+	cardPrice: {
+		fontSize: 14,
+		color: COLORS.secondary,
+	},
+	itemSubTotalContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+    }
 });
