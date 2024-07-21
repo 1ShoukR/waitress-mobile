@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import React from 'react';
 import { COLORS } from '../../constants';
 import { Divider } from '../Divider';
@@ -16,7 +16,9 @@ const ViewOrderComponent = (): React.JSX.Element => {
 
 	return (
 		<>
+		<ScrollView>
 			<CheckoutInfoHeaderComponent />
+		</ScrollView>
 		</>
 	);
 };
