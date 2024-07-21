@@ -30,7 +30,7 @@ export const CheckoutInfoHeaderComponent = () => {
 							<Text style={styles.itemText}>{order.quantity}</Text>
 							<Text style={styles.itemText}>{order.itemName}</Text>
 						</View>
-						<Text style={[styles.itemText, { fontWeight: 'bold' }]}>${order.price}</Text>
+						<Text style={[styles.itemText, { fontWeight: 'bold', color: COLORS.secondary }]}>${order.price}</Text>
 					</View>
 				))}
 			</View>
@@ -49,10 +49,10 @@ export const CheckoutInfoHeaderComponent = () => {
 					))}
 				</ScrollView>
 			</View>
-            <View style={styles.itemSubTotalContainer}>
-                <Text style={[styles.itemText,  { fontWeight: 'bold' }]}>Subtotal</Text>
-                <Text style={[styles.itemText,  { fontWeight: 'bold' }]}>${subTotal}</Text>
-            </View>
+			<View style={styles.itemSubTotalContainer}>
+				<Text style={[styles.itemText, { fontWeight: 'bold' }]}>Subtotal</Text>
+				<Text style={[styles.itemText, { fontWeight: 'bold' }]}>${subTotal}</Text>
+			</View>
 		</View>
 	);
 };
@@ -104,10 +104,10 @@ const styles = StyleSheet.create({
 	},
 	youMightAlsoLike: {
 		paddingVertical: 10,
-        paddingHorizontal: 5,
+		paddingHorizontal: 5,
 	},
 	card: {
-		backgroundColor: '#fff',
+		backgroundColor: COLORS.primary,
 		borderRadius: 8,
 		marginRight: 10,
 		shadowColor: '#000',
@@ -116,12 +116,14 @@ const styles = StyleSheet.create({
 		elevation: 3,
 		alignItems: 'center',
 		width: 200,
+		borderWidth: 1,
+		borderColor: COLORS.white, 
 	},
 	cardImage: {
 		width: '100%',
 		height: 100,
-		borderTopLeftRadius: 8,
-		borderTopRightRadius: 8,
+		borderTopLeftRadius: 6, 
+		borderTopRightRadius: 6, 
 	},
 	cardContent: {
 		flexDirection: 'row',
@@ -139,8 +141,8 @@ const styles = StyleSheet.create({
 		color: COLORS.secondary,
 	},
 	itemSubTotalContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        padding: 10,
-    }
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		padding: 10,
+	},
 });
