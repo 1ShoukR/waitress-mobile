@@ -27,8 +27,8 @@ export const CheckoutTotalComponent = (): React.JSX.Element => {
 			</View>
 			<Divider color={COLORS.black} />
 			<View style={styles.lineItem}>
-				<Text style={styles.label}>Total</Text>
-				<Text style={styles.value}>${totalPrice.toFixed(2)}</Text>
+				<Text style={[styles.label, { fontWeight: 'bold' }]}>Total</Text>
+				<Text style={[styles.value, { fontWeight: 'bold' }]}>${totalPrice.toFixed(2)}</Text>
 			</View>
 		</View>
 	);
