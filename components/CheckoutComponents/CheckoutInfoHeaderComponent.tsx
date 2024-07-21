@@ -30,7 +30,7 @@ export const CheckoutInfoHeaderComponent = () => {
 							<Text style={styles.itemText}>{order.quantity}</Text>
 							<Text style={styles.itemText}>{order.itemName}</Text>
 						</View>
-						<Text style={[styles.itemText, { fontWeight: 'bold', color: COLORS.secondary }]}>${order.price}</Text>
+						<Text style={[styles.itemText, { fontWeight: '500', color: COLORS.secondary }]}>${order.price}</Text>
 					</View>
 				))}
 			</View>
@@ -49,9 +49,11 @@ export const CheckoutInfoHeaderComponent = () => {
 					))}
 				</ScrollView>
 			</View>
-			<View style={styles.itemSubTotalContainer}>
-				<Text style={[styles.itemText, { fontWeight: 'bold' }]}>Subtotal</Text>
-				<Text style={[styles.itemText, { fontWeight: 'bold' }]}>${subTotal}</Text>
+			<View style={styles.clearOrderContainer}>
+				<Text style={[styles.itemText, { fontWeight: '500' }]}>Clear Order? </Text>
+                <TouchableOpacity>
+                    <Text style={[styles.itemText, { color: COLORS.secondary, fontWeight: '500' }]}>Clear</Text>
+                </TouchableOpacity>
 			</View>
 		</View>
 	);
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		color: COLORS.secondary,
 	},
-	itemSubTotalContainer: {
+	clearOrderContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		padding: 10,
