@@ -1,3 +1,4 @@
+import React from 'react';
 import { Stack, router } from 'expo-router';
 import { TouchableOpacity, View, Text, Platform } from 'react-native';
 import { COLORS } from '../../../constants';

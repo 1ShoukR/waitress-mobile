@@ -1,11 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { COLORS } from '../../constants';
-import { Divider } from '../Divider';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Divider } from '@components/Divider';
 import { useAppSelector } from 'redux/hooks';
-import { CheckoutInfoHeaderComponent } from '@components/CheckoutComponents/CheckoutInfoHeaderComponent';
 
-const ViewOrderComponent = (): React.JSX.Element => {
+export const CheckoutInfoHeaderComponent = () => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
 	const restaurantName = useAppSelector((state) => state?.orders?.order[0]).restaurant?.Name || 'Unknown Restaurant';
 	const totalPrice = userOrders.reduce((acc, curr) => acc + curr.price, 0);
@@ -13,15 +12,29 @@ const ViewOrderComponent = (): React.JSX.Element => {
 	const user = useAppSelector((state) => state?.auth);
 
 	console.log('userOrders', userOrders);
-
 	return (
-		<>
-			<CheckoutInfoHeaderComponent />
-		</>
+		<View style={styles.checkoutContainer}>
+			<View style={styles.infoHeader}>
+				<Text style={styles.infoText}>{`${restaurantName}`}</Text>
+				<TouchableOpacity onPress={() => console.log('add more items')}>
+					<Text style={styles.infoAddMoreText}>Add more items</Text>
+				</TouchableOpacity>
+			</View>
+			<View style={styles.menuItems}>
+				{userOrders.map((order) => (
+					<View style={styles.row} key={order.itemName}>
+						<View style={styles.itemDetails}>
+							<Text style={styles.itemText}>{order.quantity}</Text>
+							<Text style={styles.itemText}>{order.itemName}</Text>
+						</View>
+						<Text style={[styles.itemText, { fontWeight: 'bold' }]}>${order.price}</Text>
+					</View>
+				))}
+			</View>
+			<Divider color={COLORS.black} />
+		</View>
 	);
 };
-
-export default ViewOrderComponent;
 
 const styles = StyleSheet.create({
 	checkoutContainer: {
