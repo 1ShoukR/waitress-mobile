@@ -1,9 +1,11 @@
 import React from 'react';
 import { COLORS } from '../../constants';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useAppSelector } from 'redux/hooks';
 import { SERVICE_FEE, TAX_RATE } from 'lib/data';
 import { Divider } from '@components/Divider';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 export const CheckoutTotalComponent = (): React.JSX.Element => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
@@ -18,7 +20,12 @@ export const CheckoutTotalComponent = (): React.JSX.Element => {
 				<Text style={styles.value}>${subTotal.toFixed(2)}</Text>
 			</View>
 			<View style={styles.lineItem}>
-				<Text style={styles.label}>Service Fee</Text>
+				<View style={styles.serviceFeeContainer}>
+					<Text style={styles.label}>Service Fee</Text>
+                    <TouchableOpacity onPress={() => console.log('info')}>
+                        <FontAwesomeIcon icon={faCircleInfo} size={17} style={styles.icon} />
+                    </TouchableOpacity>
+				</View>
 				<Text style={styles.value}>${SERVICE_FEE.toFixed(2)}</Text>
 			</View>
 			<View style={styles.lineItem}>
@@ -47,9 +54,17 @@ const styles = StyleSheet.create({
 		width: '100%',
 		marginVertical: 5,
 	},
+	serviceFeeContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
 	label: {
 		fontSize: 16,
 		fontWeight: '600',
+	},
+	icon: {
+		marginLeft: 5,
+		color: COLORS.secondary, 
 	},
 	value: {
 		fontSize: 16,
