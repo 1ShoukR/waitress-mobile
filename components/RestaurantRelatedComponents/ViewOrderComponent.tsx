@@ -4,6 +4,7 @@ import { COLORS } from '../../constants';
 import { Divider } from '../Divider';
 import { useAppSelector } from 'redux/hooks';
 import { CheckoutInfoHeaderComponent } from '@components/CheckoutComponents/CheckoutInfoHeaderComponent';
+import { CheckoutTotalComponent } from '@components/CheckoutComponents/CheckoutTotalComponent';
 
 const ViewOrderComponent = (): React.JSX.Element => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
@@ -18,6 +19,7 @@ const ViewOrderComponent = (): React.JSX.Element => {
 		<>
 		<ScrollView>
 			<CheckoutInfoHeaderComponent />
+			<CheckoutTotalComponent />
 		</ScrollView>
 		</>
 	);
