@@ -24,6 +24,7 @@
     "redux/**/*",
     "styles/**/*",
     "types/**/*", 
+    "lib/**/*",
     "svg.d.ts"  
 , "env.d.ts"  ],
   "exclude": [
