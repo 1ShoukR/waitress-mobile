@@ -4,12 +4,12 @@ import { TouchableOpacity, View, Text, Platform } from 'react-native';
 import { COLORS } from '../../../constants';
 import { faArrowDown, faArrowLeft, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'redux/hooks';
 
 
 
 const HomeLayout = () => {
-    const globalDarkmode = useSelector((state) => state.auth.darkmode);
+    const globalDarkmode = useAppSelector((state) => state.auth.darkMode);
     return (
 			<>
 				<Stack>
