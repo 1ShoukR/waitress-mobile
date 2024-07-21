@@ -72,7 +72,7 @@ const SignIn = () => {
 					placeholder="Enter your password"
 					onChangeText={(text) => setPassword(text)}
 					secureTextEntry
-					right={<TextInput.Icon name="eye" />}
+					right={<TextInput.Icon icon="eye" />}
 					mode="flat"
 					autoCapitalize="none"
 					activeOutlineColor={COLORS.primary}
