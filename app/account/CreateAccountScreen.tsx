@@ -3,10 +3,10 @@ import React from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import { COLORS } from '../../constants';
 import CreateAccountComponent from '../../components/CreateAccountComponent';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'redux/hooks';
 
-const createScreen = () => {
-	const globalDarkmode = useSelector((state) => state.auth.darkmode);
+const createScreen = (): React.JSX.Element => {
+	const globalDarkmode = useAppSelector((state) => state.auth.darkMode);
 	return (
 		<>
 			<Stack.Screen
