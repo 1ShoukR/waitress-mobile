@@ -1,13 +1,12 @@
-import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { COLORS } from '../constants';
-import styles from '../styles/CreateAccount/createAccount.style';
-import React from 'react';
-import PressableButton from './PressableButton';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Location from 'expo-location';
 import { createUserAccountThunk } from '../redux/thunk';
 import { router } from 'expo-router';
+import { COLORS, FONT, SIZES } from '../constants';
+import PressableButton from './PressableButton';
 
 const stateInitials = [
 	'AL',
@@ -62,243 +61,234 @@ const stateInitials = [
 	'WY',
 ];
 
-const CreateAccountComponent = () => {
+const CreateAccountComponent: React.FC = () => {
 	const dispatch = useDispatch();
-	const [firstName, setFirstName] = React.useState('');
-	const [lastName, setLastName] = React.useState('');
-	const [email, setEmail] = React.useState('');
-	const [userAddress, setUserAddress] = React.useState({
-		latitude: null,
-		longitude: null,
+	const userObject = useSelector((state: any) => state?.auth);
+	const [form, setForm] = useState({
+		firstName: '',
+		lastName: '',
+		email: '',
+		password: '',
+		confirmPassword: '',
 		address: '',
-		state: '',
 		city: '',
+		state: '',
 		zip: '',
 	});
-	const [password, setPassword] = React.useState('');
-	const [confirmPassword, setConfirmPassword] = React.useState('');
-	const [nextForm, setNextForm] = React.useState(false);
-	const [addressForm, setAddressForm] = React.useState(false);
-	const [passwordError, setPasswordError] = React.useState('');
-	const [emailError, setEmailError] = React.useState('');
-	const [stateError, setStateError] = React.useState('');
+	const [step, setStep] = useState(1);
+	const [errors, setErrors] = useState<any>({});
 
-	const goNextForm = () => {
-		setNextForm(true);
+	const handleInputChange = (field: string, value: string) => {
+		setForm({ ...form, [field]: value });
 	};
 
-	const validateEmail = (email) => {
-		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailRegex.test(email)) {
-			setEmailError('Please enter a valid email address.');
-			return false;
-		}
-		setEmailError('');
-		return true;
-	};
+	const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-	const validatePassword = (password) => {
+	const validatePassword = (password: string) => {
 		const capitalLetterRegex = /[A-Z]/;
 		const lowercaseLetterRegex = /[a-z]/;
 		const numberRegex = /\d/;
 		const specialCharRegex = /[!@#$%^&*]/;
-
-		if (!capitalLetterRegex.test(password)) {
-			setPasswordError('Password must contain at least one capital letter.');
-			return false;
-		}
-
-		if (!lowercaseLetterRegex.test(password)) {
-			setPasswordError('Password must contain at least one lowercase letter.');
-			return false;
-		}
-
-		if (!numberRegex.test(password)) {
-			setPasswordError('Password must contain at least one number.');
-			return false;
-		}
-
-		if (!specialCharRegex.test(password)) {
-			setPasswordError('Password must contain at least one special symbol (e.g., !, @, #, $, etc.).');
-			return false;
-		}
-
-		setPasswordError('');
-		return true;
+		return capitalLetterRegex.test(password) && lowercaseLetterRegex.test(password) && numberRegex.test(password) && specialCharRegex.test(password);
 	};
 
-	const validateState = (state) => {
-		if (!stateInitials.includes(state.toUpperCase())) {
-			setStateError('Please enter a valid state abbreviation.');
-			return false;
+	const validateState = (state: string) => stateInitials.includes(state.toUpperCase());
+
+	const goToNextStep = () => {
+		let validationErrors: any = {};
+		if (step === 1) {
+			if (!form.firstName) validationErrors.firstName = 'First name is required.';
+			if (!form.lastName) validationErrors.lastName = 'Last name is required.';
+		} else if (step === 2) {
+			if (!validateEmail(form.email)) validationErrors.email = 'Please enter a valid email address.';
+			if (form.password !== form.confirmPassword) validationErrors.confirmPassword = 'Passwords do not match.';
+			if (!validatePassword(form.password)) validationErrors.password = 'Password must meet the required criteria.';
 		}
-		setStateError('');
-		return true;
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+		} else {
+			setErrors({});
+			setStep(step + 1);
+		}
 	};
 
-	const goAddressForm = () => {
-		if (!validateEmail(email)) {
-			return;
-		}
+	const handleSubmit = async () => {
+		let validationErrors: any = {};
+		if (!validateState(form.state)) validationErrors.state = 'Please enter a valid state abbreviation.';
 
-		if (password !== confirmPassword) {
-			setPasswordError('Passwords do not match');
-			return;
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+		} else {
+			setErrors({});
+			let results = await Location.geocodeAsync(form.address);
+			if (results.length > 0) {
+				const userAddress = {
+					latitude: results[0].latitude,
+					longitude: results[0].longitude,
+					address: form.address,
+					city: form.city,
+					state: form.state,
+					zip: form.zip,
+				};
+				dispatch(createUserAccountThunk({ ...form, userType: 'customer', userAddress }));
+				if (userObject && userObject.userId) {
+					router.push('/home/HomeTab');
+				}
+			} else {
+				setErrors({ address: 'Please enter a valid address' });
+			}
 		}
-
-		if (!validatePassword(password)) {
-			return;
-		}
-
-		setAddressForm(true);
 	};
-
-const handleSubmit = async () => {
-	if (!validateState(userAddress.state)) {
-		return;
-	}
-	let results = await Location.geocodeAsync(userAddress.address);
-	if (results.length > 0) {
-		const updatedUserAddress = {
-			...userAddress,
-			latitude: results[0].latitude,
-			longitude: results[0].longitude,
-		};
-		dispatch(createUserAccountThunk({
-				firstName: firstName,
-				lastName: lastName,
-				email: email,
-				password: password,
-				userType: 'customer',
-				userAddress: updatedUserAddress,
-			}));
-		const userObject = useSelector((state) => state?.auth);
-		if (userObject && userObject.userId) {
-			router.push('/home/HomeTab');
-		}
-		setUserAddress(updatedUserAddress);
-	} else {
-		setPasswordError('Please enter a valid address');
-	}
-};
 
 	return (
 		<ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', paddingBottom: 200 }}>
 			<KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={2} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
 				<View style={{ flex: 1, justifyContent: 'center' }}>
-					{!nextForm ? (
+					{step === 1 && (
 						<View style={styles.inputContainer}>
-							<View style={styles.brandingContainer}>
-								<Text style={{ ...styles.branding, marginBottom: 0, textAlign: 'left' }}>First,</Text>
-								<Text style={{ ...styles.branding, textAlign: 'left' }}>We're going to need your first and last name.</Text>
-							</View>
-							<TextInput autoFocus={true} autoCorrect={false} placeholder="Enter your First Name" value={firstName} onChangeText={(text) => setFirstName(text)} style={styles.input} />
-							<TextInput placeholder="Enter your last name" value={lastName} onChangeText={(text) => setLastName(text)} style={[styles.input, { width: 400 }]} />
-							<PressableButton onPress={goNextForm} title={'Next'} icon="arrow-right-bold" appendIcon={true} />
+							<Text style={styles.branding}>First, we're going to need your first and last name.</Text>
+							<TextInput
+								autoFocus
+								placeholder="Enter your First Name"
+								value={form.firstName}
+								onChangeText={(text) => handleInputChange('firstName', text)}
+								style={styles.input}
+								error={!!errors.firstName}
+							/>
+							{errors.firstName && <Text style={styles.errorText}>{errors.firstName}</Text>}
+							<TextInput placeholder="Enter your last name" value={form.lastName} onChangeText={(text) => handleInputChange('lastName', text)} style={styles.input} error={!!errors.lastName} />
+							{errors.lastName && <Text style={styles.errorText}>{errors.lastName}</Text>}
+							<PressableButton
+								onPress={goToNextStep}
+								title="Next"
+								icon="arrow-right-bold"
+								appendIcon
+								theme="secondary"
+								loadingDelay={1000}
+								shadowStyle={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 2.41, elevation: 2 }}
+							/>
 						</View>
-					) : !addressForm ? (
+					)}
+
+					{step === 2 && (
 						<View style={styles.inputContainer}>
-							<View style={styles.brandingContainer}>
-								<Text style={{ ...styles.branding, marginBottom: 0, textAlign: 'left' }}>Now,</Text>
-								<Text style={{ ...styles.branding, textAlign: 'left' }}>Let's set up your email and password</Text>
-							</View>
+							<Text style={styles.branding}>Now, let's set up your email and password</Text>
 							<TextInput
 								label="Email"
-								value={email}
+								value={form.email}
 								placeholder="Enter your email"
-								onChangeText={(text) => setEmail(text)}
+								onChangeText={(text) => handleInputChange('email', text)}
 								mode="flat"
 								activeOutlineColor={COLORS.secondary}
 								outlineColor={COLORS.gray800}
 								textColor={COLORS.gray800}
 								style={styles.input}
+								error={!!errors.email}
 							/>
-							{emailError ? <Text style={{ color: 'red', marginBottom: 10 }}>{emailError}</Text> : null}
+							{errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 							<TextInput
 								label="Password"
-								value={password}
+								value={form.password}
 								placeholder="Enter your password"
-								onChangeText={(text) => setPassword(text)}
+								onChangeText={(text) => handleInputChange('password', text)}
 								mode="flat"
 								activeOutlineColor={COLORS.primary}
 								outlineColor={COLORS.gray800}
 								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
+								style={styles.input}
 								returnKeyType="go"
-								secureTextEntry={true}
-								passwordRules="required: upper; required: lower; required: digit; max-consecutive: 2; minlength: 8;"
+								secureTextEntry
+								error={!!errors.password}
 							/>
-
 							<TextInput
 								label="Confirm Password"
-								value={confirmPassword}
+								value={form.confirmPassword}
 								placeholder="Confirm your password"
-								onChangeText={(text) => setConfirmPassword(text)}
+								onChangeText={(text) => handleInputChange('confirmPassword', text)}
 								mode="flat"
 								activeOutlineColor={COLORS.primary}
 								outlineColor={COLORS.gray800}
 								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
+								style={styles.input}
 								returnKeyType="go"
-								secureTextEntry={true}
+								secureTextEntry
+								error={!!errors.confirmPassword}
 							/>
-							{passwordError ? <Text style={{ color: 'red', marginBottom: 10 }}>{passwordError}</Text> : null}
-							<PressableButton onPress={goAddressForm} title={'Next'} icon="arrow-right-bold" appendIcon={true} />
+							{errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+							{errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword}</Text>}
+							<PressableButton
+								onPress={goToNextStep}
+								title="Next"
+								icon="arrow-right-bold"
+								appendIcon
+								theme="secondary"
+								loadingDelay={1000}
+								shadowStyle={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 2.41, elevation: 2 }}
+							/>
 						</View>
-					) : (
+					)}
+
+					{step === 3 && (
 						<View style={styles.inputContainer}>
 							<TextInput
 								label="Address"
-								value={userAddress.address}
+								value={form.address}
 								placeholder="Enter your address"
-								onChangeText={(text) => setUserAddress({ ...userAddress, address: text })}
+								onChangeText={(text) => handleInputChange('address', text)}
 								mode="flat"
 								activeOutlineColor={COLORS.secondary}
 								outlineColor={COLORS.gray800}
 								textColor={COLORS.gray800}
 								style={styles.input}
+								error={!!errors.address}
 							/>
 							<TextInput
 								label="City"
-								value={userAddress.city}
+								value={form.city}
 								placeholder="Enter your city"
-								onChangeText={(text) => setUserAddress({ ...userAddress, city: text })}
+								onChangeText={(text) => handleInputChange('city', text)}
 								mode="flat"
 								activeOutlineColor={COLORS.primary}
 								outlineColor={COLORS.gray800}
 								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								style={styles.input}
+								error={!!errors.city}
 							/>
 							<TextInput
 								label="State"
-								value={userAddress.state}
+								value={form.state}
 								placeholder="Enter your state initials (e.g., NY)"
-								onChangeText={(text) => {
-									setUserAddress({ ...userAddress, state: text });
-									validateState(text);
-								}}
+								onChangeText={(text) => handleInputChange('state', text)}
 								mode="flat"
 								activeOutlineColor={COLORS.primary}
 								outlineColor={COLORS.gray800}
 								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								style={styles.input}
+								error={!!errors.state}
 							/>
-							{stateError ? <Text style={{ color: 'red', marginBottom: 10 }}>{stateError}</Text> : null}
+							{errors.state && <Text style={styles.errorText}>{errors.state}</Text>}
 							<TextInput
 								label="Zip Code"
-								value={userAddress.zip}
+								value={form.zip}
 								placeholder="Enter your zip code"
-								onChangeText={(text) => setUserAddress({ ...userAddress, zip: text })}
+								onChangeText={(text) => handleInputChange('zip', text)}
 								mode="flat"
 								activeOutlineColor={COLORS.primary}
 								outlineColor={COLORS.gray800}
 								textColor={COLORS.tertiary}
-								style={[styles.input, { width: 400 }]}
-								returnKeyType="go"
+								style={styles.input}
+								error={!!errors.zip}
 							/>
-							<PressableButton onPress={handleSubmit} title={'Submit'} icon="account-arrow-right" appendIcon={true} />
+							<PressableButton
+								onPress={goToNextStep}
+								title="Next"
+								icon="arrow-right-bold"
+								appendIcon
+								theme="secondary"
+								loadingDelay={1000}
+								shadowStyle={{ shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.4, shadowRadius: 2.41, elevation: 2 }}
+							/>
 						</View>
 					)}
 				</View>
@@ -308,3 +298,60 @@ const handleSubmit = async () => {
 };
 
 export default CreateAccountComponent;
+
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		padding: 16,
+		paddingTop: 96,
+		width: 400,
+	},
+	branding: {
+		color: COLORS.lightModeText,
+		fontFamily: FONT.branding,
+		fontSize: 36,
+		marginBottom: SIZES.xxLarge,
+		paddingTop: 0,
+		textAlign: 'center',
+		top: 5,
+	},
+	headerContainer: {
+		flexDirection: 'row', // Aligns children side by side
+		alignItems: 'center', // Vertically centers the items
+		justifyContent: 'flex-start', // Aligns items to the start of the container
+		marginBottom: SIZES.xxLarge,
+		marginLeft: 90,
+	},
+	brandingContainer: {
+		justifyContent: 'center', // Centers the title vertically
+		marginRight: 20,
+		paddingRight: 20,
+		paddingLeft: 5,
+		paddingBottom: 10,
+	},
+	title: {
+		color: COLORS.primary,
+		fontSize: SIZES.xLarge,
+		fontWeight: '600',
+		marginBottom: SIZES.medium,
+	},
+	inputContainer: {
+		marginBottom: SIZES.medium,
+	},
+	input: {
+		//color: COLORS.gray800,
+		marginBottom: SIZES.small,
+		//outlineColor: COLORS.primary,
+		overflow: 'hidden',
+		backgroundColor: COLORS.gray100,
+	},
+	button: {
+		marginBottom: 16,
+		paddingVertical: 8,
+	},
+	errorText: {
+		color: 'red',
+		marginBottom: 10,
+	},
+});
