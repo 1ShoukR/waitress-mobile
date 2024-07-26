@@ -5,18 +5,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
 import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
-export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData, { rejectValue: string }>('auth/doLogin', async (requestData, { rejectWithValue }) => {
+export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData>('auth/doLogin', async (requestData: LoginRequestData) => {
 	const body = {
 		email: requestData.email,
 		password: requestData.password,
 		userAgent: requestData.userAgent,
 	};
-	try {
-		const data = await client.post('/api/auth/login', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+		const data = await client.post<LoginResponse>('/api/auth/login', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 		return data;
-	} catch (err: any) {
-		return rejectWithValue(err.message || 'Login failed');
-	}
 });
 
 export const createUserAccountThunk = createAsyncThunk<CreateAccountResponse, CreateAccountRequestData>('auth/createUserAccountThunk', async (requestData) => {
