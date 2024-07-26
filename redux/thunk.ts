@@ -73,6 +73,7 @@ export const updateUserLocation = createAsyncThunk<UserLocation, UpdateUserLocat
 	const data = await client.post <UserLocation>('/api/users/update-user-location', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
+
 export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaurant', async (requestData) => {
 	const formData = new FormData();
 	formData.append('apiToken', requestData.apiToken);
