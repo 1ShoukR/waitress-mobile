@@ -133,30 +133,31 @@ export interface MenuItem {
 	MenuID: number;
 	NameOfItem: string;
 	Price: number;
-	Restaurant: {
-		Address: string;
-		AverageRating: number;
-		Categories: Category[] | null;
-		Email: string;
-		ImageURL: string | null;
-		Latitude: number | null;
-		Longitude: number | null;
-		MenuItems: MenuItem[] | null;
-		Name: string;
-		NumberOfTables: number | null;
-		Owner: User;
-		OwnerID: number;
-		Phone: string;
-		Ratings: Rating[] | null;
-		Receipts: Receipt[] | null;
-		Reservations: Reservation[] | null;
-		RestaurantId: number;
-		ReviewCount: number | null;
-		Website: string | null;
-	};
+	Restaurant: RestaurantSummary;
 	RestaurantID: number;
 }
 
+export interface RestaurantSummary {
+	Address: string;
+	AverageRating: number;
+	Categories: Category[] | null;
+	Email: string;
+	ImageURL: string | null;
+	Latitude: number | null;
+	Longitude: number | null;
+	MenuItems: MenuItem[] | null;
+	Name: string;
+	NumberOfTables: number | null;
+	Owner: User;
+	OwnerID: number;
+	Phone: string;
+	Ratings: Rating[] | null;
+	Receipts: Receipt[] | null;
+	Reservations: Reservation[] | null;
+	RestaurantId: number;
+	ReviewCount: number | null;
+	Website: string | null;
+}
 export interface AllCategoriesResponse {
 	categories: Category[];
 }
@@ -171,4 +172,34 @@ export type Order = {
 	quantity: number;
 	price: number;
 	restaurant: Restaurant;
+}
+
+export interface CreateAccountResponse {
+	message: string;
+	user: {
+		email: string;
+		firstName: string;
+		lastName: string;
+		authType: string;
+		latitude: number;
+		longitude: number;
+		address: string;
+	};
+	token: string;
+}
+
+export interface CreateAccountRequestData {
+	firstName: string;
+	lastName: string;
+	email: string;
+	userType: string;
+	password: string;
+	userAddress: {
+		latitude: number;
+		longitude: number;
+		address: string;
+		city: string;
+		state: string;
+		zip: string;
+	};
 }
