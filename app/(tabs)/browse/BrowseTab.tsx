@@ -4,13 +4,14 @@ import React, {useEffect} from "react"
 import { useDispatch } from "react-redux";
 import { setLastTab } from "../../../redux/authSlice"; 
 
-const BrowseIndex = () => {
+const BrowseIndex = (): React.JSX.Element => {
     const dispatch = useDispatch()
-    const handleTabChange = (tabName) => {
+    const handleTabChange = (tabName: string) => {
         dispatch(setLastTab(tabName));
-        };
+    };
     useEffect(() => {
-        handleTabChange(tabName = 'BrowsTab')
+        let tabName = 'BrowsTab';
+        handleTabChange(tabName);
     })
     return (
         <SafeAreaProvider>
