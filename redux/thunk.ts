@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
+import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, SingleRestaurantRequest, SingleRestaurantResponse, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData>('auth/doLogin', async (requestData: LoginRequestData) => {
 	const body = {
@@ -70,15 +70,12 @@ export const updateUserLocation = createAsyncThunk<UserLocation, UpdateUserLocat
 		userId: requestData.userId,
 		address: requestData.address,
 	};
-	const data = await client.post <UserLocation>('/api/users/update-user-location', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	const data = await client.post<UserLocation>('/api/users/update-user-location', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 
-export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaurant', async (requestData) => {
-	const formData = new FormData();
-	formData.append('apiToken', requestData.apiToken);
-	formData.append('restaurantId', requestData.restaurantId);
-	const data = await client.post(`/api/restaurant/${requestData.restaurantId}/get`,  null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+export const getSingleRestaurant = createAsyncThunk<SingleRestaurantResponse, SingleRestaurantRequest>('restaurant/getSingleRestaurant', async (requestData) => {
+	const data = await client.post<SingleRestaurantResponse>(`/api/restaurant/${requestData.restaurantId}/get`, null, requestData.apiToken, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 

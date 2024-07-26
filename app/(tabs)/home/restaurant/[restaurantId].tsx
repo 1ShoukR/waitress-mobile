@@ -23,16 +23,18 @@ import { getSingleRestaurant } from '../../../../redux/thunk';
 import IndividualRestaurant from "../../../../components/RestaurantRelatedComponents/IndividualRestaurant"
 import { COLORS } from '../../../../constants';
 import ViewOrderButton from '../../../../components/RestaurantRelatedComponents/ViewOrderButton';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 const RestaurantPage = () => {
+	const apiToken = useAppSelector((state) => state.auth.apiToken);
 	const { restaurantId } = useLocalSearchParams();
-	const dispatch = useDispatch();
-  const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
+	const dispatch = useAppDispatch();
+  const singleRestaurant = useAppSelector((state) => state?.restaurant?.singleRestaurant);
 
   useEffect(() => {
     if (restaurantId) {
       console.log(`Fetching restaurant with ID: ${restaurantId}`);
-    	dispatch(getSingleRestaurant({ restaurantId }));
+    	dispatch(getSingleRestaurant({ restaurantId: restaurantId, apiToken: apiToken }));
     } else {
       console.log('Restaurant ID is undefined');
     }
@@ -43,7 +45,7 @@ const RestaurantPage = () => {
 			<Stack.Screen options={{ title: `${singleRestaurant?.Name}`, contentStyle: { backgroundColor: COLORS.primary } }} />
 			<SafeAreaView>
 				<ScrollView>
-					<IndividualRestaurant />
+					<IndividualRestaurant restaurantId/>
 				</ScrollView>
 				{singleRestaurant ? <ViewOrderButton /> : null}
 			</SafeAreaView>

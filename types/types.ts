@@ -215,3 +215,12 @@ export type InitialStateForm = {
 	state: string;
 	zip: string;
 }
+
+export interface SingleRestaurantRequest {
+	restaurantId: string | string[];
+	apiToken: string | null;
+}
+
+export interface SingleRestaurantResponse {
+	restaurant: Restaurant;
+}
