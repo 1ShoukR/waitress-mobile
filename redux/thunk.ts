@@ -34,13 +34,12 @@ export const createUserAccountThunk = createAsyncThunk<CreateAccountResponse, Cr
 		zip: requestData.userAddress.zip,
 	};
 
-	const response = await client.post<CreateAccountResponse>('/api/users/create', data, {
+	const response = await client.post<CreateAccountResponse>('/api/users/create', JSON.stringify(data), null, {
 		headers: { 'Content-Type': 'application/json', redirect: 'follow', referrerPolicy: 'no-referrer' },
 	});
 
 	return response;
 });
-
 
 export const getLocalRestaurants = createAsyncThunk<LocalRestaurantsResponse, LocationData>('restaurant/getLocalRestaurants', async (locationData: LocationData) => {
 	const body = {

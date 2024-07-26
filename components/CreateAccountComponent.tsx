@@ -84,7 +84,7 @@ const CreateAccountComponent = (): React.JSX.Element => {
 
 	const handleInputChange = (field: string, value: string) => setForm({ ...form, [field]: value });
 
-	const validateFields = (fields: string[]) => {
+	const validateFields = (fields: string[]): boolean => {
 		const validationErrors: { [key: string]: string } = {};
 		fields.forEach((field) => {
 			switch (field) {

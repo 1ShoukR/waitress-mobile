@@ -35,12 +35,14 @@ export async function client<T>(endpoint: string, { body, ...customConfig }: Cli
 		},
 	};
 
-	if (body) {
+	if (body && typeof body !== 'string') {
 		config.body = JSON.stringify(body);
+	} else {
+		config.body = body;
 	}
 
 	let data: T = {} as T;
-	
+
 	try {
 		const response = await fetch(`${API_URL}${endpoint}`, config);
 		data = await response.json();
@@ -58,5 +60,7 @@ client.get = function <T>(endpoint: string, token: string | null = null, customC
 };
 
 client.post = function <T>(endpoint: string, body: BodyInit | null | undefined, token: string | null = null, customConfig: CustomConfig = {}): Promise<T> {
-	return client<T>(endpoint, { ...customConfig, body: body, method: 'POST' }, token);
+	return client<T>(endpoint, { ...customConfig, body, method: 'POST' }, token);
 };
+
+export default client;
