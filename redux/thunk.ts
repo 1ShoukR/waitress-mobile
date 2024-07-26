@@ -47,7 +47,7 @@ export const getLocalRestaurants = createAsyncThunk<LocalRestaurantsResponse, Lo
 		longitude: locationData.longitude,
 		apiToken: locationData.apiToken,
 	};
-	const data = await client.post('/api/restaurant/local', body, null, { headers: { 'Content-Type': 'application/json' } });
+	const data = await client.post<LocalRestaurantsResponse>('/api/restaurant/local', JSON.stringify(body), null, { headers: { 'Content-Type': 'application/json' } });
 	return data;
 });
 
@@ -55,7 +55,7 @@ export const getTopRestaurants = createAsyncThunk<TopRestaurantResponse, ApiKey>
 	const body = {
 		apiToken: requestData.apiToken,
 	};
-	const data = await client.post('/api/restaurant/top10restaurants/', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	const data = await client.post<TopRestaurantResponse>('/api/restaurant/top10restaurants/', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 
@@ -63,7 +63,7 @@ export const getAllCategories = createAsyncThunk<AllCategoriesResponse, ApiKey>(
 	const body = {
 		apiToken: requestData.apiToken,
 	};
-	const data = await client.post('/api/restaurant/categories/get-all', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	const data = await client.post<AllCategoriesResponse>('/api/restaurant/categories/get-all', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 })
 
@@ -74,7 +74,7 @@ export const updateUserLocation = createAsyncThunk<UserLocation, UpdateUserLocat
 		userId: requestData.userId,
 		address: requestData.address,
 	};
-	const data = await client.post('/api/users/update-user-location', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	const data = await client.post <UserLocation>('/api/users/update-user-location', body, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 export const getSingleRestaurant = createAsyncThunk('restaurant/getSingleRestaurant', async (requestData) => {
