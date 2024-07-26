@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { COLORS, FONT, SIZES } from '../constants';
 import PressableButton from './PressableButton';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { InitialStateForm } from 'types/types';
 
 const stateInitials = [
 	'AL',
@@ -62,7 +63,7 @@ const stateInitials = [
 	'WY',
 ];
 
-const initialFormState = {
+const initialFormState: InitialStateForm = {
 	firstName: '',
 	lastName: '',
 	email: '',
