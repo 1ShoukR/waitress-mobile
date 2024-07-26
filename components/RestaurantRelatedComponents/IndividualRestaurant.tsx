@@ -1,24 +1,27 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { getSingleRestaurant } from '../../redux/thunk';
 import { COLORS } from '../../constants';
 import { router } from 'expo-router';
-import ViewOrderButton from './ViewOrderButton';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { MenuItem } from 'types/types';
 
-const IndividualRestaurant = ({ restaurantId }) => {
-	const dispatch = useDispatch();
-	const singleRestaurant = useSelector((state) => state?.restaurant?.singleRestaurant);
+const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[] | undefined }): React.JSX.Element => {
+	const dispatch = useAppDispatch();
+	const singleRestaurant = useAppSelector((state) => state?.restaurant?.singleRestaurant);
 	const placeholderImage = 'https://via.placeholder.com/150';
+	const apiToken = useAppSelector((state) => state.auth.apiToken);
 
 	useEffect(() => {
 		if (restaurantId) {
-			dispatch(getSingleRestaurant({ restaurantId }));
+			let stringId: string = restaurantId.toString();
+			dispatch(getSingleRestaurant({ restaurantId: stringId, apiToken: apiToken }));
 		}
 	}, [restaurantId]);
 	// Render stars based on rating
-	const renderStars = (rating) => {
+	const renderStars = (rating: number) => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
 			stars.push(<FontAwesome key={i} name={i <= rating ? 'star' : 'star-o'} size={18} color={COLORS.gray600} />);
@@ -27,10 +30,10 @@ const IndividualRestaurant = ({ restaurantId }) => {
 	};
 
 	// Categorize menu items into predefined categories
-	const categorizeMenuItems = (menuItems) => {
+	const categorizeMenuItems = (menuItems: MenuItem[]): { [key: string]: MenuItem[] } => {
 		// We can grab all the restaurant's categorires, and make the categories based on those here, rather than hardcoding them
 		// instead of const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
-		const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
+		const categories: { [key: string]: MenuItem[] } = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		menuItems.forEach((item) => {
 			const category = item.Category || 'Other';
 			if (categories[category]) {
@@ -42,8 +45,8 @@ const IndividualRestaurant = ({ restaurantId }) => {
 		return categories;
 	};
 
-	const categorizedMenuItems = singleRestaurant ? categorizeMenuItems(singleRestaurant.MenuItems) : {};
-	const categoryOrder = ['Appetizers', 'Mains', 'Desserts', 'Other'];
+	const categorizedMenuItems: {[key: string]: MenuItem[]} = singleRestaurant ? categorizeMenuItems(singleRestaurant.MenuItems!) : {};
+	const categoryOrder: string[] = ['Appetizers', 'Mains', 'Desserts', 'Other'];
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -57,8 +60,8 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									<Text style={styles.restaurantName}>{singleRestaurant.Name}</Text>
 									<View style={styles.ratingContainer}>
 										<TouchableOpacity onPress={() => console.log('take user to reviews page')} style={{ flexDirection: 'row' }}>
-											{renderStars(singleRestaurant.Ratings.reduce((sum, review) => sum + review.Rating, 0) / singleRestaurant.Ratings.length)}
-											<Text style={styles.ratingText}>{singleRestaurant.Ratings.length} Reviews</Text>
+											{renderStars(singleRestaurant.Ratings!.reduce((sum, review) => sum + review.Rating!, 0) / singleRestaurant.Ratings!.length)}
+											<Text style={styles.ratingText}>{singleRestaurant.Ratings!.length} Reviews</Text>
 										</TouchableOpacity>
 										<Text style={styles.restaurantAddress}>{singleRestaurant.Address}</Text>
 										<Text style={styles.restaurantDetails}>{`Phone: ${singleRestaurant.Phone}`}</Text>
@@ -67,7 +70,7 @@ const IndividualRestaurant = ({ restaurantId }) => {
 									<View style={styles.tagContainer}>
 										{singleRestaurant?.Categories?.map((category, index) => (
 											<TouchableOpacity onPress={() => router.push(`/home/category/${category.CategoryID}`)} key={index} style={styles.tag}>
-												<Text style={{ fontWeight: 'bold',  }}>{category?.CategoryName}</Text>
+												<Text style={{ fontWeight: 'bold' }}>{category?.CategoryName}</Text>
 											</TouchableOpacity>
 										))}
 									</View>

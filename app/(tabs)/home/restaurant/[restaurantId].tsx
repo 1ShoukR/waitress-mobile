@@ -45,7 +45,7 @@ const RestaurantPage = () => {
 			<Stack.Screen options={{ title: `${singleRestaurant?.Name}`, contentStyle: { backgroundColor: COLORS.primary } }} />
 			<SafeAreaView>
 				<ScrollView>
-					<IndividualRestaurant restaurantId/>
+					<IndividualRestaurant restaurantId={restaurantId} />
 				</ScrollView>
 				{singleRestaurant ? <ViewOrderButton /> : null}
 			</SafeAreaView>
