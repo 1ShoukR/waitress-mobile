@@ -15,7 +15,7 @@ const AccountScreen = () => {
 	}
 	return (
 		<SafeAreaView style={styles.safeArea}>
-			<ScrollView style={styles.scrollView} refreshControl={<RefreshControl refreshing={false} onRefresh={() => console.log('Refreshed!')} />}>
+			<ScrollView  refreshControl={<RefreshControl refreshing={false} onRefresh={() => console.log('Refreshed!')} />}>
 				<AccountScreenComponent />
 				<TouchableOpacity onPress={handleLogout}>
 					<View style={styles.logoutButton}>
