@@ -23,8 +23,8 @@ const TopRestaurantsComponent = ({
 		router.push(`/home/restaurant/${restaurantId}`);
 	};
 
-	const renderItem = ({ item }: {item: Restaurant}) => (
-		<TouchableOpacity onPress={(): void => handlePress(item.RestaurantId)} style={styles.cardContainer}>
+	const renderItem = ({ item }: { item: Restaurant }) => (
+		<TouchableOpacity key={item.RestaurantId} onPress={(): void => handlePress(item.RestaurantId)} style={styles.cardContainer}>
 			<View style={styles.card}>
 				<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
 				<View style={styles.cardContent}>
@@ -37,10 +37,8 @@ const TopRestaurantsComponent = ({
 					<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7, paddingBottom: 10 }}>
 						{item?.Categories?.map((category, index) => {
 							return (
-								<TouchableOpacity onPress={() => router.push(`/category/${category.CategoryID}`)}>
-									<Text key={index} style={{ fontSize: 12, color: COLORS.secondary }}>
-										{category.CategoryName}
-									</Text>
+								<TouchableOpacity key={index} onPress={() => router.push(`/category/${category.CategoryID}`)}>
+									<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category.CategoryName}</Text>
 								</TouchableOpacity>
 							);
 						})}

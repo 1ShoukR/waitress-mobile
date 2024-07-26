@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from 'react-native';
-import { Tabs, useRouter, Stack, useNavigation } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { setLastTab } from '../../redux/authSlice';
 import { COLORS } from '../../constants';
@@ -15,28 +15,20 @@ const TabLayout = () => {
 	const router = useRouter();
 	const dispatch = useDispatch();
 	const globalDarkmode = useAppSelector((state) => state.auth.darkMode);
-
 	const authType = useAppSelector((state) => state.auth.authType);
-	const [isAdmin, setIsAdmin] = useState<boolean>(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev' ? true : false);
-	const [visible, setVisible] = useState<boolean>(false);
+	const [isAdmin, setIsAdmin] = useState<boolean>(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev');
+	const [fadeAnim] = useState<Animated.Value>(new Animated.Value(0));
 	const setTabHeaderButtonAccountScreen = useAppSelector((state) => state?.routes?.showAccountTabBackButton);
 
-	const handleTabChange = (tabName: string): void => {
-		dispatch(setLastTab(tabName));
-	};
-
-	// Animated value for fading
-	const [fadeAnim] = useState<Animated.Value>(new Animated.Value(0));
-
-	useEffect((): void => {
+	useEffect(() => {
 		if (setTabHeaderButtonAccountScreen) {
 			Animated.timing(fadeAnim, {
 				toValue: 1,
-				duration: 500, // Duration of the fade-in
+				duration: 500,
 				useNativeDriver: true,
 			}).start();
 		} else {
-			fadeAnim.setValue(0); // Reset the animation value when not showing
+			fadeAnim.setValue(0);
 		}
 	}, [setTabHeaderButtonAccountScreen]);
 
@@ -64,7 +56,7 @@ const TabLayout = () => {
 							Home
 						</Text>
 					),
-					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'home' : 'home-outline'} />,
+					tabBarIcon: ({ focused, color }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'home' : 'home-outline'} />,
 				}}
 			/>
 			<Tabs.Screen
@@ -82,7 +74,7 @@ const TabLayout = () => {
 							Browse
 						</Text>
 					),
-					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'store-search' : 'store-search-outline'} />,
+					tabBarIcon: ({ focused, color }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'store-search' : 'store-search-outline'} />,
 				}}
 			/>
 			<Tabs.Screen
@@ -124,10 +116,10 @@ const TabLayout = () => {
 							Account
 						</Text>
 					),
-					tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
+					tabBarIcon: ({ focused, color }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
 				}}
 			/>
-			{isAdmin ? (
+			{isAdmin && (
 				<Tabs.Screen
 					name="admin/AdminTab"
 					options={{
@@ -149,10 +141,10 @@ const TabLayout = () => {
 								Admin
 							</Text>
 						),
-						tabBarIcon: ({ focused, color, size }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
+						tabBarIcon: ({ focused, color }) => <MaterialCommunityIcons color={color} size={28} name={focused ? 'account' : 'account-outline'} />,
 					}}
 				/>
-			) : null}
+			)}
 		</Tabs>
 	);
 };
