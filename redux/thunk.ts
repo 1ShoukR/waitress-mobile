@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { AllCategoriesResponse, ApiKey, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
+import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData, { rejectValue: string }>('auth/doLogin', async (requestData, { rejectWithValue }) => {
 	const body = {
@@ -19,21 +19,26 @@ export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData, { rejec
 	}
 });
 
-export const createUserAccountThunk = createAsyncThunk('auth/createUserAccountThunk', async (requestData) => {
-	const formData = new FormData();
-	formData.append('firstName', requestData.firstName);
-	formData.append('lastName', requestData.lastName);
-	formData.append('email', requestData.email);
-	formData.append('userType', requestData.userType);
-	formData.append('password', requestData.password);
-	formData.append('latitude', requestData.userAddress.latitude);
-	formData.append('longitude', requestData.userAddress.longitude);
-	formData.append('address', requestData.userAddress.address);
-	formData.append('city', requestData.userAddress.city);
-	formData.append('state', requestData.userAddress.state);
-	formData.append('zip', requestData.userAddress.zip);
-	const data = await client.post('/api/users/create', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	return data;
+export const createUserAccountThunk = createAsyncThunk<CreateAccountResponse, CreateAccountRequestData>('auth/createUserAccountThunk', async (requestData) => {
+	const data = {
+		firstName: requestData.firstName,
+		lastName: requestData.lastName,
+		email: requestData.email,
+		userType: requestData.userType,
+		password: requestData.password,
+		latitude: requestData.userAddress.latitude,
+		longitude: requestData.userAddress.longitude,
+		address: requestData.userAddress.address,
+		city: requestData.userAddress.city,
+		state: requestData.userAddress.state,
+		zip: requestData.userAddress.zip,
+	};
+
+	const response = await client.post<CreateAccountResponse>('/api/users/create', data, {
+		headers: { 'Content-Type': 'application/json', redirect: 'follow', referrerPolicy: 'no-referrer' },
+	});
+
+	return response;
 });
 
 
