@@ -7,7 +7,7 @@ import { createUserAccountThunk } from '../redux/thunk';
 import { router } from 'expo-router';
 import { COLORS, FONT, SIZES } from '../constants';
 import PressableButton from './PressableButton';
-import { useAppDispatch } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
 const stateInitials = [
 	'AL',
@@ -74,9 +74,9 @@ const initialFormState = {
 	zip: '',
 };
 
-const CreateAccountComponent: React.FC = () => {
+const CreateAccountComponent = (): React.JSX.Element => {
 	const dispatch = useAppDispatch();
-	const userObject = useSelector((state: any) => state?.auth);
+	const userObject = useAppSelector(state => state?.auth);
 	const [form, setForm] = useState(initialFormState);
 	const [step, setStep] = useState(1);
 	const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -110,12 +110,12 @@ const CreateAccountComponent: React.FC = () => {
 		return Object.keys(validationErrors).length === 0;
 	};
 
-	const goToNextStep = () => {
+	const goToNextStep = (): void => {
 		const fieldsToValidate = step === 1 ? ['firstName', 'lastName'] : ['email', 'password'];
 		if (validateFields(fieldsToValidate)) setStep(step + 1);
 	};
 
-	const handleSubmit = async () => {
+	const handleSubmit = async (): Promise<void> => {
 		if (validateFields(['state'])) {
 			const results = await Location.geocodeAsync(form.address);
 			if (results.length > 0) {
@@ -128,7 +128,7 @@ const CreateAccountComponent: React.FC = () => {
 		}
 	};
 
-	const renderStepContent = () => {
+	const renderStepContent = (): React.JSX.Element | null => {
 		switch (step) {
 			case 1:
 				return (
@@ -181,37 +181,37 @@ const CreateAccountComponent: React.FC = () => {
 			case 3:
 				return (
 					<>
-					<View style={[styles.inputContainer, {width: 400}]}>
-						<TextInput
-							label="Address"
-							value={form.address}
-							placeholder="Enter your address"
-							onChangeText={(text) => handleInputChange('address', text)}
-							mode="flat"
-							style={styles.input}
-							error={!!errors.address}
-						/>
-						<TextInput label="City" value={form.city} placeholder="Enter your city" onChangeText={(text) => handleInputChange('city', text)} mode="flat" style={styles.input} error={!!errors.city} />
-						<TextInput
-							label="State"
-							value={form.state}
-							placeholder="Enter your state initials (e.g., NY)"
-							onChangeText={(text) => handleInputChange('state', text)}
-							mode="flat"
-							style={styles.input}
-							error={!!errors.state}
-						/>
-						{errors.state && <Text style={styles.errorText}>{errors.state}</Text>}
-						<TextInput
-							label="Zip Code"
-							value={form.zip}
-							placeholder="Enter your zip code"
-							onChangeText={(text) => handleInputChange('zip', text)}
-							mode="flat"
-							style={styles.input}
-							error={!!errors.zip}
-						/>
-					</View>
+						<View style={[styles.inputContainer, { width: 400 }]}>
+							<TextInput
+								label="Address"
+								value={form.address}
+								placeholder="Enter your address"
+								onChangeText={(text) => handleInputChange('address', text)}
+								mode="flat"
+								style={styles.input}
+								error={!!errors.address}
+							/>
+							<TextInput label="City" value={form.city} placeholder="Enter your city" onChangeText={(text) => handleInputChange('city', text)} mode="flat" style={styles.input} error={!!errors.city} />
+							<TextInput
+								label="State"
+								value={form.state}
+								placeholder="Enter your state initials (e.g., NY)"
+								onChangeText={(text) => handleInputChange('state', text)}
+								mode="flat"
+								style={styles.input}
+								error={!!errors.state}
+							/>
+							{errors.state && <Text style={styles.errorText}>{errors.state}</Text>}
+							<TextInput
+								label="Zip Code"
+								value={form.zip}
+								placeholder="Enter your zip code"
+								onChangeText={(text) => handleInputChange('zip', text)}
+								mode="flat"
+								style={styles.input}
+								error={!!errors.zip}
+							/>
+						</View>
 					</>
 				);
 			default:
@@ -227,8 +227,8 @@ const CreateAccountComponent: React.FC = () => {
 						{renderStepContent()}
 						<PressableButton
 							onPress={step === 3 ? handleSubmit : goToNextStep}
-							title={step === 3 ? "Create Account" : "Next"}
-							icon={step === 3 ? "check" : "arrow-right"}
+							title={step === 3 ? 'Create Account' : 'Next'}
+							icon={step === 3 ? 'check' : 'arrow-right'}
 							appendIcon
 							theme="secondary"
 							loadingDelay={1000}
