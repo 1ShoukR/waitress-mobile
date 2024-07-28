@@ -264,7 +264,7 @@ export type InitialStateForm = {
 
 export interface SingleRestaurantRequest {
 	restaurantId: string | string[];
-	apiToken: string | null;
+	apiToken: string | null | undefined;
 }
 
 export interface SingleRestaurantResponse {
