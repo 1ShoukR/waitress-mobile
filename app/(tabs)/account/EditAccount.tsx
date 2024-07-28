@@ -3,7 +3,7 @@ import React from 'react'
 import { Stack } from 'expo-router'
 import EditAccountComponent from '../../../components/EditAccount/EditAccountComponent'
 
-const EditAccount = () => {
+const EditAccount = (): React.JSX.Element => {
   return (
     <>
       <EditAccountComponent />
