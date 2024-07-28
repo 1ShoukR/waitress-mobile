@@ -1,24 +1,32 @@
 import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { createUserAccountThunk, doLogin, setDarkMode, updateUserAccount, updateUserLocation, resetUpdateUserAccountStatus } from './thunk';
-import { DarkmodeRequest, Darkmoderesponse, LoginResponse } from 'types/types';
-interface AuthState { 
-	apiToken: string | null;
+import { DarkmodeRequest, Darkmoderesponse, LoginResponse, Reservation } from 'types/types';
+import { RootState } from './store';
+interface AuthState {
+	apiToken: string | null | undefined;
 	authType: string | null;
 	userId: number | null;
 	firstName: string | null;
 	lastName: string | null;
 	email: string | null;
 	userType: string | null;
-	loginStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; 
-	updateLocationStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; 
+	loginStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+	updateLocationStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 	error: string | unknown | null;
 	lastTab: string;
 	latitude: number | null;
 	longitude: number | null;
 	address: string | null;
 	createdAt: string | null;
+	updatedAt: string | null;
 	darkMode: boolean;
 	updateUserAccountStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
+	accessRevoked: boolean;
+	profileImage: string | null;
+	ratings: any | null;
+	reservations: Reservation[] | null;
+	phone: string | null;
+	token: string | null;
 }
 
 
@@ -28,6 +36,7 @@ const initialState: AuthState = {
 	userId: null,
 	firstName: null,
 	lastName: null,
+	token: null,
 	email: null,
 	userType: null,
 	loginStatus: 'idle', 
@@ -40,6 +49,12 @@ const initialState: AuthState = {
 	createdAt: null,
 	darkMode: false,
 	updateUserAccountStatus: 'idle',
+	updatedAt: null,
+	accessRevoked: false,
+	profileImage: null,
+	ratings: null,
+	reservations: null,
+	phone: null,
 };
 
 const authSlice = createSlice({
@@ -177,8 +192,8 @@ const authSlice = createSlice({
 			.addCase(resetUpdateUserAccountStatus.pending, (state) => {
 				state.updateUserAccountStatus = 'loading';
 			})
-			.addCase(resetUpdateUserAccountStatus.fulfilled, (state, action) => {
-				state.updateUserAccountStatus = action.payload;
+			.addCase(resetUpdateUserAccountStatus.fulfilled, (state) => {
+				state.updateUserAccountStatus = 'succeeded';
 			})
 			.addCase(resetUpdateUserAccountStatus.rejected, (state, action) => {
 				state.updateUserAccountStatus = 'failed';
@@ -190,5 +205,5 @@ const authSlice = createSlice({
 export const { loggedOut, setLastTab } = authSlice.actions;
 export default authSlice.reducer;
 
-export const selectApiToken = (state) => state.auth.apiToken;
+export const selectApiToken = (state: RootState) => state.auth.apiToken;
 // TODO: Add more selectors for new state fields like firstName, lastName, etc.
