@@ -1,41 +1,40 @@
-import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { Stack } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity, View, SafeAreaView, Image, TextInput, KeyboardAvoidingView, Platform, ScrollView, Alert } from 'react-native';
 import { COLORS } from '../../constants';
-import { useDispatch, useSelector } from 'react-redux';
 import { resetUpdateUserAccountStatus, updateUserAccount } from '../../redux/thunk';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
-const EditAccountComponent = () => {
-	const dispatch = useDispatch()
-	const signedInUser = useSelector((state) => state?.auth);
-	const updateUserStatus = useSelector((state) => state?.auth?.updateUserAccountStatus);
+const EditAccountComponent = (): React.JSX.Element => {
+	const dispatch = useAppDispatch()
+	const signedInUser = useAppSelector((state) => state?.auth);
+	const updateUserStatus = useAppSelector((state) => state?.auth?.updateUserAccountStatus);
 
 	const initialAddress = '123 Broadway St, New York, NY 10006';
-	const [street, setStreet] = useState('');
-	const [streetPlaceholder, setStreetPlaceholder] = useState('123 Broadway St, New York, NY 10006');
-	const [city, setCity] = useState('');
-	const [cityPlaceholder, setCityPlaceholder] = useState('');
-	const [zip, setZip] = useState('');
-	const [zipPlaceholder, setZipPlaceholder] = useState('');
-	const [state, setState] = useState('');
-	const [statePlaceholder, setStatePlaceholder] = useState('');
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [phone, setPhone] = useState('');
+	const [street, setStreet] = useState<string>('');
+	const [streetPlaceholder, setStreetPlaceholder] = useState<string>('123 Broadway St, New York, NY 10006');
+	const [city, setCity] = useState<string>('');
+	const [cityPlaceholder, setCityPlaceholder] = useState<string>('');
+	const [zip, setZip] = useState<string>('');
+	const [zipPlaceholder, setZipPlaceholder] = useState<string>('');
+	const [state, setState] = useState<string>('');
+	const [statePlaceholder, setStatePlaceholder] = useState<string>('');
+	const [name, setName] = useState<string>('');
+	const [email, setEmail] = useState<string>('');
+	const [phone, setPhone] = useState<string>('');
 
-  useEffect(() => {
+  useEffect((): void => {
 		if (signedInUser) {
-			const initialAddress = signedInUser?.address || '123 Broadway St, New York, NY 10006';
-			const addressParts = initialAddress.split(',');
+			const initialAddress: string = signedInUser?.address || '123 Broadway St, New York, NY 10006';
+			const addressParts: string[] = initialAddress.split(',');
 			setStreetPlaceholder(addressParts[0].trim());
 			setCityPlaceholder(addressParts[1].trim());
-			const stateZip = addressParts[2].trim().split(' ');
+			const stateZip: string[] = addressParts[2].trim().split(' ');
 			setStatePlaceholder(stateZip[0].trim());
 			setZipPlaceholder(stateZip[1].trim());
 		}
 	}, [signedInUser]);
 
-  useEffect(() => {
+  useEffect((): void => {
 		if (updateUserStatus === 'succeeded') {
 			Alert.alert('User account updated successfully', '', [
 				{
@@ -46,10 +45,11 @@ const EditAccountComponent = () => {
 		}
 	}, [updateUserStatus]);
 
-const handleSaveChanges = async () => {
-	let nameParts;
-	let firstName;
-	let lastName;
+
+const handleSaveChanges = async (): Promise<void> => {
+	let nameParts: string[] | null;
+	let firstName: string | null;
+	let lastName: string | null;
 
 	if (name) {
 		nameParts = name.split(' ');
@@ -60,12 +60,13 @@ const handleSaveChanges = async () => {
 		lastName = signedInUser?.lastName;
 	}
 
-	const finalEmail = email || signedInUser?.email;
-	const finalPhone = phone || signedInUser?.phone;
-	const finalStreet = street || streetPlaceholder;
-	const finalCity = city || signedInUser?.city || cityPlaceholder;
-	const finalZip = zip || zipPlaceholder;
-	const finalState = state || statePlaceholder;
+	const finalEmail: string | null = email || signedInUser?.email;
+	const finalPhone: string | null = phone || '555-555-5555';
+	const finalAddress: string | null = street || streetPlaceholder;
+	const finalCity: string | null = city || cityPlaceholder;
+	const finalZip: string | null = zip || zipPlaceholder;
+	const finalState: string | null = state || statePlaceholder;
+	console.log('signedInUser', signedInUser.userId);
 
 	dispatch(
 		updateUserAccount({
@@ -73,7 +74,7 @@ const handleSaveChanges = async () => {
 			lastName: lastName,
 			email: finalEmail,
 			phone: finalPhone,
-			street: finalStreet,
+			address: finalAddress,
 			city: finalCity,
 			zip: finalZip,
 			state: finalState,
@@ -182,7 +183,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		margin: 20,
 		borderRadius: 10,
-		backgroundColor: COLORS.cardBackground,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 10 },
 		shadowOpacity: 0.2,

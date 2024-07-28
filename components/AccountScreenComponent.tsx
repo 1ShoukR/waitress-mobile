@@ -1,17 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { COLORS } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowRight, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { router } from 'expo-router';
 import { setShowAccountTabBackButton } from '../redux/routesSlice';
 import { setDarkMode } from '../redux/thunk';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
-const AccountScreenComponent = () => {
-	const dispatch = useDispatch()
-	const isDev = useSelector((state) => state.auth.authType);
-	const [memberSince, setMemberSince] = React.useState('');
+const AccountScreenComponent = (): React.JSX.Element => {
+	const dispatch = useAppDispatch()
+	const user = useAppSelector((state) => state.auth);
+	const isDev = useAppSelector((state) => state.auth.authType);
+	const [memberSince, setMemberSince] = React.useState<string | null>('');
 	const [darkModeLocal, setDarkModeLocal] = React.useState(false);
 	const handleTabScreenHeaderButton = () => {
 		dispatch(setShowAccountTabBackButton(true))
@@ -19,12 +20,12 @@ const AccountScreenComponent = () => {
 	}
 	React.useEffect(() => {
 		if (user) {
-			setMemberSince(timeSinceCreatedAt(user?.createdAt));
+			setMemberSince(timeSinceCreatedAt(user?.createdAt!));
 		}
 	}, [user]);
 	const Divider = () => <View style={styles.divider} />; // New Divider component
-	const globalDarkMode = useSelector((state) => state.auth.darkMode);
-	const Section = ({ title, onPress, rightComponent }) => (
+	const globalDarkMode = useAppSelector((state) => state.auth.darkMode);
+	const Section = ({ title, onPress, rightComponent }: {title: string, onPress: () => void, rightComponent: React.JSX.Element}) => (
         <>
 		<TouchableOpacity style={styles.sectionContainer} onPress={onPress}>
 			<View style={styles.leftContainer}>
@@ -38,9 +39,9 @@ const AccountScreenComponent = () => {
 	);
 
 
-	const timeSinceCreatedAt = (createdAt) => {
-		const createdAtDate = new Date(createdAt);
-		const now = new Date();
+	const timeSinceCreatedAt = (createdAt: string): string => {
+		const createdAtDate = new Date(createdAt).getTime();
+		const now = new Date().getTime();
 		const diff = now - createdAtDate;
 		const seconds = Math.floor(diff / 1000);
 		const minutes = Math.floor(seconds / 60);
@@ -50,12 +51,11 @@ const AccountScreenComponent = () => {
 		return days > 0 ? `${days} days ago` : hours > 0 ? `${hours} hours ago` : minutes > 0 ? `${minutes} minutes ago` : `${seconds} seconds ago`;
 	};
 
-	const user = useSelector((state) => state.auth);
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.userInfoContainer}>
-				<TouchableOpacity onPress={() => console.log('Create future Image Upload Screen')}>
+				<TouchableOpacity onPress={(): void => console.log('Create future Image Upload Screen')}>
 					<Image source={{ uri: 'https://avatar.iran.liara.run/public/8' }} style={styles.userImage} />
 				</TouchableOpacity>
 				<Text style={styles.userName}>

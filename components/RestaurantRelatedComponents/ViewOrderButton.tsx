@@ -3,13 +3,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { COLORS } from '../../constants';
 import { Link, router } from 'expo-router';
+import { useAppSelector } from 'redux/hooks';
 
-const ViewOrderButton = () => {
-	const [modalVisible, setModalVisible] = useState(false);
-	const order = useSelector((state) => state?.orders?.order);
-	const fadeAnim = useRef(new Animated.Value(0)).current;
-	const slideAnim = useRef(new Animated.Value(100)).current; 
-	useEffect(() => {
+const ViewOrderButton = (): React.JSX.Element => {
+	const [modalVisible, setModalVisible] = useState<boolean>(false);
+	const order = useAppSelector((state) => state?.orders?.order);
+	const fadeAnim = useRef<Animated.Value>(new Animated.Value(0)).current;
+	const slideAnim = useRef<Animated.Value>(new Animated.Value(100)).current; 
+	useEffect((): void => {
 		if (order.length > 0) {
 			Animated.timing(slideAnim, {
 				toValue: 0,
