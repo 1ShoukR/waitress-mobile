@@ -1,14 +1,13 @@
 import React from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { COLORS } from '../../../constants';
-import { Tabs } from 'expo-router';
 import AccountScreenComponent from '../../../components/AccountScreenComponent';
-import { useDispatch } from 'react-redux';
 import { loggedOut } from '../../../redux/authSlice';
 import { router } from 'expo-router';
+import { useAppDispatch } from 'redux/hooks';
 
-const AccountScreen = () => {
-	const dispatch = useDispatch();
+const AccountScreen = (): React.JSX.Element => {
+	const dispatch = useAppDispatch();
 	const handleLogout = () => {
 		dispatch(loggedOut())
 		router.push('/')
