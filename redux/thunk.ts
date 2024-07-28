@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, SingleRestaurantRequest, SingleRestaurantResponse, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
+import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, Darkmoderesponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, SingleRestaurantRequest, SingleRestaurantResponse, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData>('auth/doLogin', async (requestData: LoginRequestData) => {
 	const body = {
@@ -79,7 +79,7 @@ export const getSingleRestaurant = createAsyncThunk<SingleRestaurantResponse, Si
 	return data;
 });
 
-export const setDarkMode = createAsyncThunk('auth/setDarkMode', async (darkMode) => {
+export const setDarkMode = createAsyncThunk<Darkmoderesponse, Darkmoderesponse>('auth/setDarkMode', async (darkMode) => {
 	return darkMode;
 });
 

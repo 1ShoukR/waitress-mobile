@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, SerializedError } from '@reduxjs/toolkit';
 import { createUserAccountThunk, doLogin, setDarkMode, updateUserAccount, updateUserLocation, resetUpdateUserAccountStatus } from './thunk';
-import { LoginResponse } from 'types/types';
+import { DarkmodeRequest, Darkmoderesponse, LoginResponse } from 'types/types';
 interface AuthState { 
 	apiToken: string | null;
 	authType: string | null;
@@ -11,13 +11,13 @@ interface AuthState {
 	userType: string | null;
 	loginStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; 
 	updateLocationStatus: 'idle' | 'loading' | 'succeeded' | 'failed'; 
-	error: string | unknown;
+	error: string | unknown | null;
 	lastTab: string;
 	latitude: number | null;
 	longitude: number | null;
 	address: string | null;
 	createdAt: string | null;
-	darkMode: boolean;
+	darkMode: Darkmoderesponse | boolean;
 	updateUserAccountStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 
@@ -80,7 +80,7 @@ const authSlice = createSlice({
 					state.error = 'Login failed. Please try again.';
 				}
 			})
-			.addCase(doLogin.rejected, (state, action: PayloadAction<string | undefined> & { error: SerializedError }) => {
+			.addCase(doLogin.rejected, (state, action) => {
 				state.loginStatus = 'failed';
 				state.error = 'message' in action ? action.message! : 'Login failed. Please try again.';
 			})
@@ -139,7 +139,7 @@ const authSlice = createSlice({
 			.addCase(setDarkMode.pending, (state) => {
 				state.darkMode = !state.darkMode;
 			})
-			.addCase(setDarkMode.fulfilled, (state, action) => {
+			.addCase(setDarkMode.fulfilled, (state, action: PayloadAction<Darkmoderesponse>) => {
 				state.darkMode = action.payload;
 			})
 			.addCase(setDarkMode.rejected, (state, action) => {
