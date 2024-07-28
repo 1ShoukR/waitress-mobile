@@ -17,7 +17,7 @@ interface AuthState {
 	longitude: number | null;
 	address: string | null;
 	createdAt: string | null;
-	darkMode: Darkmoderesponse | boolean;
+	darkMode: boolean;
 	updateUserAccountStatus: 'idle' | 'loading' | 'succeeded' | 'failed';
 }
 

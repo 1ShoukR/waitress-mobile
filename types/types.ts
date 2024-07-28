@@ -225,10 +225,6 @@ export interface SingleRestaurantResponse {
 	restaurant: Restaurant;
 }
 
-export type Darkmoderesponse = {
-	darkMode: boolean;
-}
+export type Darkmoderesponse = boolean
 
-export type DarkmodeRequest = {
-	darkMode: boolean;
-}
+export type DarkmodeRequest = boolean
