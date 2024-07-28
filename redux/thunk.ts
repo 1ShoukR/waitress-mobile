@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, Darkmoderesponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, SingleRestaurantRequest, SingleRestaurantResponse, TopRestaurantResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
+import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, Darkmoderesponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, SingleRestaurantRequest, SingleRestaurantResponse, TopRestaurantResponse, UpdateUserAccountRequest, UpdateUserAccountResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData>('auth/doLogin', async (requestData: LoginRequestData) => {
 	const body = {
@@ -83,19 +83,20 @@ export const setDarkMode = createAsyncThunk<Darkmoderesponse, Darkmoderesponse>(
 	return darkMode;
 });
 
-export const updateUserAccount = createAsyncThunk('auth/updateUserAccount', async (requestData) => {
-	const formData = new FormData();
-	formData.append('firstName', requestData.firstName);
-	formData.append('lastName', requestData.lastName);
-	formData.append('email', requestData.email);
-	formData.append('phone', requestData.phone);
-	formData.append('street', requestData.street);
-	formData.append('city', requestData.city);
-	formData.append('state', requestData.state);
-	formData.append('zip', requestData.zip);
-	formData.append('userId', requestData.userId);
-	const data = await client.post('/api/users/update-account-info', formData, null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	return data
+export const updateUserAccount = createAsyncThunk<UpdateUserAccountResponse, UpdateUserAccountRequest>('auth/updateUserAccount', async (requestData) => {
+	const data = {
+		firstName: requestData.firstName,
+		lastName: requestData.lastName,
+		email: requestData.email,
+		phone: requestData.phone,
+		street: requestData.address,
+		city: requestData.city,
+		state: requestData.state,
+		zip: requestData.zip,
+		userId: requestData.userId,
+	};
+	const response = await client.post<UpdateUserAccountResponse>('/api/users/update-account-info', JSON.stringify(data), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	return response;
 });
 
 export const resetUpdateUserAccountStatus = createAsyncThunk('auth/resetUpdateUserAccountStatus', async () => {

@@ -177,13 +177,59 @@ export type Order = {
 export interface CreateAccountResponse {
 	message: string;
 	user: {
-		email: string;
-		firstName: string;
-		lastName: string;
-		authType: string;
-		latitude: number;
-		longitude: number;
-		address: string;
+		Entity: {
+			FirstName: string;
+			LastName: string;
+			CreatedAt: string;
+			UpdatedAt: string;
+		};
+		UserID: number;
+		Email: string;
+		AuthType: string;
+		Latitude: number;
+		Longitude: number;
+		Address: string;
+		AccessRevoked: boolean;
+		ProfileImage: string;
+		Ratings: Rating[];
+		Reservations: Reservation[];
+	};
+	token: string;
+	apiToken?: string | null;
+}
+
+export interface UpdateUserAccountRequest {
+	firstName: string | null;
+	lastName: string | null;
+	email: string | null;
+	phone: string | null;
+	address: string | null;
+	city: string | null;
+	state: string | null;
+	zip: string | null;
+	userId: number | null;
+}
+
+export interface UpdateUserAccountResponse {
+	message: string;
+	user: {
+		UserID: number;
+		Entity: {
+			FirstName: string;
+			LastName: string;
+			CreatedAt: string;
+			UpdatedAt: string;
+		};
+		Email: string;
+		AuthType: string;
+		Latitude: number;
+		Longitude: number;
+		Phone: string | null; 
+		Address: string | null; 
+		AccessRevoked: boolean;
+		ProfileImage: string | null; 
+		Ratings: Rating[];
+		Reservations: Reservation[];
 	};
 	token: string;
 }
