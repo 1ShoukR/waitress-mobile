@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const ReserveScreen = () => {
+const ReserveScreen = (): React.JSX.Element => {
   return (
     <View>
       <Text>ReserveScreen</Text>

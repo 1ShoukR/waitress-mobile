@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'rea
 import { Divider } from '@components/Divider';
 import { useAppSelector } from 'redux/hooks';
 
-export const CheckoutInfoHeaderComponent = () => {
+export const CheckoutInfoHeaderComponent = (): React.JSX.Element => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
 	const restaurant = useAppSelector((state) => state?.orders?.order[0]).restaurant;
 	const restaurantName = restaurant?.Name || 'Unknown Restaurant';

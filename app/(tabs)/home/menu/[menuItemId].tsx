@@ -6,18 +6,20 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { client } from '../../../../api/client';
 import IndividualMenuItem from '../../../../components/MenuItemComponents/IndividualMenuItem';
 import { COLORS } from '../../../../constants'
+import { useAppSelector } from 'redux/hooks';
+import { MenuItem, MenuItemResponse } from 'types/types';
 
-const MenuItemDetails = () => {
+const MenuItemDetails = (): React.JSX.Element => {
 	const { menuItemId } = useLocalSearchParams();
-	const [menuItem, setMenuItem] = useState(null);
-	const [isLoading, setIsLoading] = useState(true);
-
+	const [menuItem, setMenuItem] = useState<MenuItemResponse["MenuItem"]>();
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const token =  useAppSelector((state) => state.auth.token);
 	useEffect(() => {
-		async function fetchMenuItem() {
+		async function fetchMenuItem(): Promise<void> {
 			try {
-				const response = await client.post(`/api/restaurant/menu/${menuItemId}/get`, null, {
-					headers: { redirect: 'follow', referrerPolicy: 'no-referrer' },
-				});
+				const headers = { redirect: 'follow', referrerPolicy: 'no-referrer' };
+				const response = await client.post<MenuItemResponse>(`/api/restaurant/menu/${menuItemId}/get`, null, token, { headers }
+				);
         		console.log('response', response)
 				setMenuItem(response.MenuItem);
 			} catch (error) {

@@ -7,7 +7,7 @@ import { COLORS, FONT, SIZES } from '../constants/theme';
 import Platter from '../assets/platter.svg';
 import { router } from 'expo-router';
 
-const HomepageButtons = () => {
+const HomepageButtons = (): React.JSX.Element => {
 	return (
 		<View style={styles.columnsContainer}>
 			<View style={styles.column}>

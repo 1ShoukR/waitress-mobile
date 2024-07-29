@@ -25,7 +25,7 @@ import { COLORS } from '../../../../constants';
 import ViewOrderButton from '../../../../components/RestaurantRelatedComponents/ViewOrderButton';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 
-const RestaurantPage = () => {
+const RestaurantPage = (): React.JSX.Element => {
 	const apiToken = useAppSelector((state) => state.auth.apiToken);
 	const { restaurantId } = useLocalSearchParams();
 	const dispatch = useAppDispatch();

@@ -8,7 +8,7 @@ import { useAppSelector } from 'redux/hooks';
 
 
 
-const HomeLayout = () => {
+const HomeLayout = (): React.JSX.Element => {
     const globalDarkmode = useAppSelector((state) => state.auth.darkMode);
     return (
 			<>

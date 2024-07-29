@@ -6,7 +6,7 @@ import { Stack, useNavigation } from 'expo-router';
 
 
 
-const BookingScreen = () => {
+const BookingScreen = (): React.JSX.Element => {
     const navigation = useNavigation()
     return (
         <>

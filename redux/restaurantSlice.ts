@@ -3,19 +3,19 @@ import { getAllCategories, getLocalRestaurants, getSingleRestaurant, getTopResta
 import { Category, Restaurant } from 'types/types';
 
 interface RestaurantSlice {
-	localRestaurants: Restaurant[];
-	topRestaurants: Restaurant[];
+	localRestaurants: Restaurant[] | null;
+	topRestaurants: Restaurant[] | null;
 	singleRestaurant: Restaurant | null;
-	categories: Category[];
-	status: string;
+	categories: Category[] | null;
+	status: string | null;
 	error: string | null;
 }
 
 const initialState: RestaurantSlice = {
-	localRestaurants: [],
-	topRestaurants: [],
+	localRestaurants: null,
+	topRestaurants: null,
 	singleRestaurant: null,
-	categories: [],
+	categories: null,
 	status: 'idle',
 	error: null,
 };
@@ -38,11 +38,11 @@ const restaurantSlice = createSlice({
 			})
 			.addCase(getLocalRestaurants.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.localRestaurants = action.payload;
+				state.localRestaurants = action.payload.restaurants || action.payload.localRestaurants || [];
 			})
 			.addCase(getLocalRestaurants.rejected, (state, action) => {
 				state.status = 'failed';
-				state.error = action.error.message;
+				state.error = action.error.message ?? null;
 			})
 			.addCase(getTopRestaurants.pending, (state) => {
 				state.status = 'loading';
@@ -50,11 +50,11 @@ const restaurantSlice = createSlice({
 			})
 			.addCase(getTopRestaurants.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.topRestaurants = action.payload;
+				state.topRestaurants = action.payload.restaurants || [];
 			})
 			.addCase(getTopRestaurants.rejected, (state, action) => {
 				state.status = 'failed';
-				state.error = action.error.message;
+				state.error = action.error.message ?? null;
 			})
 			.addCase(getSingleRestaurant.pending, (state) => {
 				state.status = 'loading';
@@ -62,11 +62,11 @@ const restaurantSlice = createSlice({
 			})
 			.addCase(getSingleRestaurant.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.singleRestaurant = action.payload;
+				state.singleRestaurant = action.payload.restaurant;
 			})
 			.addCase(getSingleRestaurant.rejected, (state, action) => {
 				state.status = 'failed';
-				state.error = action.error.message;
+				state.error = action.error.message ?? null;
 			})
 			.addCase(getAllCategories.pending, (state) => {
 				state.status = 'loading';
@@ -74,11 +74,11 @@ const restaurantSlice = createSlice({
 			})
 			.addCase(getAllCategories.fulfilled, (state, action) => {
 				state.status = 'succeeded';
-				state.categories = action.payload;
+				state.categories = action.payload.categories;
 			})
 			.addCase(getAllCategories.rejected, (state, action) => {
 				state.status = 'failed';
-				state.error = action.error.message;
+				state.error = action.error.message ?? null;
 			});
 	},
 });

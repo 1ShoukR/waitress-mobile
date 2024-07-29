@@ -12,7 +12,7 @@ import SvgVersion from "../../../assets/svgVersion.svg"
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { UserLocation } from 'types/types';
 
-const HomeIndex = () => {
+const HomeIndex = (): React.JSX.Element => {
 	const [refreshing, setRefreshing] = useState(false);
 	const user = useAppSelector((state) => state?.auth);
 	const [userLocation, setUserLocation] = useState<UserLocation | null>(user && user.latitude && user.longitude ? { latitude: user.latitude, longitude: user.longitude, address: '' } : null);

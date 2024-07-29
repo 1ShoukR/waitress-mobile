@@ -52,9 +52,8 @@ export interface LoginResponse {
 
 export interface LocalRestaurantsResponse {
 	restaurants?: Restaurant[];
-    localRestaurants?: Restaurant[];
+	localRestaurants?: Restaurant[];
 }
-
 export interface TopRestaurantResponse {
     restaurants: Restaurant[];
 }
@@ -274,3 +273,7 @@ export interface SingleRestaurantResponse {
 export type Darkmoderesponse = boolean
 
 export type DarkmodeRequest = boolean
+
+export interface MenuItemResponse {
+	MenuItem: MenuItem;
+};

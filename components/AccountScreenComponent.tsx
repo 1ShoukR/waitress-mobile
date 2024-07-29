@@ -13,7 +13,7 @@ const AccountScreenComponent = (): React.JSX.Element => {
 	const user = useAppSelector((state) => state.auth);
 	const isDev = useAppSelector((state) => state.auth.authType);
 	const [memberSince, setMemberSince] = React.useState<string | null>('');
-	const [darkModeLocal, setDarkModeLocal] = React.useState(false);
+	const [darkModeLocal, setDarkModeLocal] = React.useState<boolean>(false);
 	const handleTabScreenHeaderButton = () => {
 		dispatch(setShowAccountTabBackButton(true))
 
