@@ -34,22 +34,24 @@ const styles = StyleSheet.create({
 	title: {
 		color: COLORS.primary,
 		fontSize: SIZES.xLarge,
-		fontWeight: 600,
+		fontWeight: '600',
 		marginBottom: SIZES.medium,
 	},
 	inputContainer: {
 		marginBottom: SIZES.medium,
 	},
 	input: {
-		//color: COLORS.gray800,
 		marginBottom: SIZES.small,
-		//outlineColor: COLORS.primary,
 		overflow: 'hidden',
 		backgroundColor: COLORS.lightModeText,
 	},
 	button: {
 		marginBottom: 16,
 		paddingVertical: 8,
+	},
+	errorText: {
+		color: 'red',
+		marginBottom: 10,
 	},
 });
 
