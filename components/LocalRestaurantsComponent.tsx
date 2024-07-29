@@ -32,7 +32,7 @@ const LocalRestaurantsComponent = ({
 				<ActivityIndicator size="large" />
 			) : (
 				<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollViewContentContainer}>
-					{localRestaurantsData!.map((item) => (
+					{localRestaurantsData?.map((item) => (
 						<TouchableOpacity key={item.RestaurantId} onPress={(): void => handlePress(item.RestaurantId)} style={styles.cardContainer}>
 							<View style={styles.card}>
 								<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
@@ -46,7 +46,7 @@ const LocalRestaurantsComponent = ({
 									<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7, paddingBottom: 10 }}>
 										{item?.Categories?.map((category, index) => (
 											<TouchableOpacity key={index} onPress={() => router.push(`/category/${category.CategoryID}`)}>
-												<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category.CategoryName}</Text>
+												<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category?.CategoryName}</Text>
 											</TouchableOpacity>
 										))}
 									</View>

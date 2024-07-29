@@ -3,7 +3,7 @@
  */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { client } from '../api/client';
-import { AllCategoriesResponse, ApiKey, CreateAccountRequestData, CreateAccountResponse, Darkmoderesponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, SingleRestaurantRequest, SingleRestaurantResponse, TopRestaurantResponse, UpdateUserAccountRequest, UpdateUserAccountResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
+import { AllCategoriesResponse, ApiKey, Category, CreateAccountRequestData, CreateAccountResponse, Darkmoderesponse, LocalRestaurantsResponse, LocationData, LoginRequestData, LoginResponse, Restaurant, SingleRestaurantRequest, SingleRestaurantResponse, TopRestaurantResponse, UpdateUserAccountRequest, UpdateUserAccountResponse, UpdateUserLocationRequest, UserLocation } from 'types/types';
 
 export const doLogin = createAsyncThunk<LoginResponse, LoginRequestData>('auth/doLogin', async (requestData: LoginRequestData) => {
 	const body = {
@@ -37,29 +37,30 @@ export const createUserAccountThunk = createAsyncThunk<CreateAccountResponse, Cr
 	return response;
 });
 
-export const getLocalRestaurants = createAsyncThunk<LocalRestaurantsResponse, LocationData>('restaurant/getLocalRestaurants', async (locationData: LocationData) => {
+export const getLocalRestaurants = createAsyncThunk<Restaurant[], LocationData>('restaurant/getLocalRestaurants', async (locationData: LocationData) => {
 	const body = {
 		latitude: locationData.latitude,
 		longitude: locationData.longitude,
 		apiToken: locationData.apiToken,
 	};
-	const data = await client.post<LocalRestaurantsResponse>('/api/restaurant/local', JSON.stringify(body), null, { headers: { 'Content-Type': 'application/json' } });
+	const data = await client.post<Restaurant[]>('/api/restaurant/local', JSON.stringify(body), null, { headers: { 'Content-Type': 'application/json' } });
 	return data;
 });
 
-export const getTopRestaurants = createAsyncThunk<TopRestaurantResponse, ApiKey>('restaurant/getTopRestaurants', async (requestData) => {
+export const getTopRestaurants = createAsyncThunk<Restaurant[], ApiKey>('restaurant/getTopRestaurants', async (requestData) => {
 	const body = {
 		apiToken: requestData.apiToken,
 	};
-	const data = await client.post<TopRestaurantResponse>('/api/restaurant/top10restaurants/', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	const data = await client.post<Restaurant[]>('/api/restaurant/top10restaurants/', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 
-export const getAllCategories = createAsyncThunk<AllCategoriesResponse, ApiKey>('restaurant/getAllCategories', async (requestData) => {
+export const getAllCategories = createAsyncThunk<Category[], ApiKey>('restaurant/getAllCategories', async (requestData) => {
 	const body = {
 		apiToken: requestData.apiToken,
 	};
-	const data = await client.post<AllCategoriesResponse>('/api/restaurant/categories/get-all', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	const data = await client.post<Category[]>('/api/restaurant/categories/get-all', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	console.log(data);
 	return data;
 })
 
@@ -74,8 +75,8 @@ export const updateUserLocation = createAsyncThunk<UserLocation, UpdateUserLocat
 	return data;
 });
 
-export const getSingleRestaurant = createAsyncThunk<SingleRestaurantResponse, SingleRestaurantRequest>('restaurant/getSingleRestaurant', async (requestData) => {
-	const data = await client.post<SingleRestaurantResponse>(`/api/restaurant/${requestData.restaurantId}/get`, null, requestData.apiToken, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+export const getSingleRestaurant = createAsyncThunk<Restaurant, SingleRestaurantRequest>('restaurant/getSingleRestaurant', async (requestData) => {
+	const data = await client.post<Restaurant>(`/api/restaurant/${requestData.restaurantId}/get`, null, requestData.apiToken, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
 	return data;
 });
 

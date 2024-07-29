@@ -10,13 +10,13 @@ const CategoriesComponent = ({ foodCategories }: { foodCategories: Category[]}) 
 			<Text style={styles.header}>Category</Text>
 			<ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
 				<View style={styles.genreWrapper}>
-					{foodCategories.map((category, index) => (
+					{foodCategories?.map((category, index) => (
 						<TouchableOpacity onPress={() => router.push(`/home/category/${category.CategoryID}`)} key={index} style={styles.genre}>
 							{/* Need to add SVG images of categories, 
 							then remove background color and have 
 							just the image and text 
 							*/}
-							<Image source={{ uri: category.ImageUrl }} />
+							<Image source={{ uri: category.ImageURL ?? 'default_image_url_here' }} />
 							<Text style={{ fontWeight: 'bold' }}>{category.CategoryName}</Text>
 						</TouchableOpacity>
 					))}

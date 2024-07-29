@@ -61,7 +61,7 @@ export interface TopRestaurantResponse {
 export interface Category {
 	CategoryID: number;
 	CategoryName: string;
-	ImageUrl: string;
+	ImageURL: string | null;
 }
 
 export interface Receipt {
@@ -110,17 +110,17 @@ export interface Restaurant {
 	Phone: string;
 	Email: string;
 	Website?: string;
-	Categories: Category[] | null;
+	Categories?: Category[];
 	NumberOfTables?: number;
 	Latitude?: number;
 	Longitude?: number;
-	Receipts: Receipt[] | null;
-	Reservations?: Reservation[] | null;
-	MenuItems?: MenuItem[] | null;
+	Receipts?: Receipt[];
+	Reservations?: Reservation[];
+	MenuItems?: MenuItem[];
 	Owner: User;
-	Ratings?: Rating[] | null;
+	Ratings?: Rating[];
 	ImageURL?: string;
-	AverageRating: number;
+	AverageRating?: number;
 	ReviewCount?: number;
 }
 

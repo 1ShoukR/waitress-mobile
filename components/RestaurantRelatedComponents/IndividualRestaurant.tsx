@@ -34,7 +34,7 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 		// We can grab all the restaurant's categorires, and make the categories based on those here, rather than hardcoding them
 		// instead of const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		const categories: { [key: string]: MenuItem[] } = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
-		menuItems.forEach((item) => {
+		menuItems?.forEach((item) => {
 			const category = item.Category || 'Other';
 			if (categories[category]) {
 				categories[category].push(item);
@@ -60,8 +60,8 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 									<Text style={styles.restaurantName}>{singleRestaurant.Name}</Text>
 									<View style={styles.ratingContainer}>
 										<TouchableOpacity onPress={() => console.log('take user to reviews page')} style={{ flexDirection: 'row' }}>
-											{renderStars(singleRestaurant.Ratings!.reduce((sum, review) => sum + review.Rating!, 0) / singleRestaurant.Ratings!.length)}
-											<Text style={styles.ratingText}>{singleRestaurant.Ratings!.length} Reviews</Text>
+											{renderStars(singleRestaurant.Ratings!?.reduce((sum, review) => sum + review.Rating!, 0) / singleRestaurant.Ratings!?.length)}
+											<Text style={styles.ratingText}>{singleRestaurant.Ratings!?.length} Reviews</Text>
 										</TouchableOpacity>
 										<Text style={styles.restaurantAddress}>{singleRestaurant.Address}</Text>
 										<Text style={styles.restaurantDetails}>{`Phone: ${singleRestaurant.Phone}`}</Text>
@@ -88,7 +88,7 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 									{categoryOrder.map(
 										(category) =>
 											categorizedMenuItems[category] &&
-											categorizedMenuItems[category].length > 0 && (
+											categorizedMenuItems[category]?.length > 0 && (
 												<View key={category} style={styles.menuCategory}>
 													<Text style={styles.menuCategoryTitle}>{category}</Text>
 													{categorizedMenuItems[category].map((item) => (

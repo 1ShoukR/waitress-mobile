@@ -18,18 +18,17 @@ const HomePageComponent = () => {
 	const apiToken = useAppSelector((state) => state?.auth?.apiToken);
 	const foodCategories = useAppSelector((state) => state?.restaurant?.categories);
 
-
-	React.useEffect((): ( () => void ) => {
+	React.useEffect((): (() => void) => {
 		let isMounted: boolean = true;
 		const fetchData = async (): Promise<void> => {
 			setIsLoading(true);
 			try {
 				const promises = [
-							dispatch(getLocalRestaurants({ latitude: user.latitude!, longitude: user.longitude!, apiToken: user.apiToken! })),
-							dispatch(getTopRestaurants({ apiToken: user.apiToken! })),
-							dispatch(getAllCategories({ apiToken: user.apiToken! })),
-						] as const;
-						await Promise.all(promises);
+					dispatch(getLocalRestaurants({ latitude: user.latitude!, longitude: user.longitude!, apiToken: user.apiToken! })),
+					dispatch(getTopRestaurants({ apiToken: user.apiToken! })),
+					dispatch(getAllCategories({ apiToken: user.apiToken! })),
+				] as const;
+				await Promise.all(promises);
 			} catch (error: unknown) {
 				console.error('Error fetching data:', error);
 			} finally {
@@ -43,7 +42,6 @@ const HomePageComponent = () => {
 			isMounted = false;
 		};
 	}, [user.latitude, user.longitude, useAppDispatch, apiToken]);
-	const categories = useAppSelector((state) => state?.restaurant?.categories);
 
 	return (
 		<View style={styles.container}>
