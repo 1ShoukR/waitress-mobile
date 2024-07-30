@@ -52,24 +52,9 @@ const HomeLayout = (): React.JSX.Element => {
                                 )
                             }
                             }} />
-                    <Stack.Screen name="restaurant/ViewOrderScreen" 
+                    <Stack.Screen name="restaurant/modal" 
                     options={{
-                        presentation: 'modal',
-                        title: 'Checkout',
-                        headerStyle: {
-                            backgroundColor: COLORS.primary,
-                        },
-                        headerLeft: () => {
-                            return (
-                                <TouchableOpacity onPress={() => router.back()}>
-                                    <FontAwesomeIcon icon={faChevronDown} size={25}/>
-                                </TouchableOpacity>
-                            )
-                        }
-                        }} />
-                    <Stack.Screen name="modal-stack" 
-                    options={{
-                        presentation: 'modal',
+                        presentation: 'fullScreenModal',
                         title: 'Place Order',
                         headerStyle: {
                             backgroundColor: COLORS.primary,
