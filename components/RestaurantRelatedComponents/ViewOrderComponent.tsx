@@ -1,14 +1,13 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet,  ScrollView } from 'react-native';
 import React from 'react';
 import { COLORS } from '../../constants';
-import { Divider } from '../Divider';
 import { useAppSelector } from 'redux/hooks';
 import { CheckoutInfoHeaderComponent } from '@components/CheckoutComponents/CheckoutInfoHeaderComponent';
 import { CheckoutTotalComponent } from '@components/CheckoutComponents/CheckoutTotalComponent';
 
 const ViewOrderComponent = (): React.JSX.Element => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
-	const restaurantName = useAppSelector((state) => state?.orders?.order[0]).restaurant?.Name || 'Unknown Restaurant';
+	const restaurantName = useAppSelector((state) => state?.orders?.order[0]!).restaurant?.Name || 'Unknown Restaurant';
 	const totalPrice = userOrders.reduce((acc, curr) => acc + curr.price, 0);
 	console.log('totalPrice', totalPrice);
 	const user = useAppSelector((state) => state?.auth);

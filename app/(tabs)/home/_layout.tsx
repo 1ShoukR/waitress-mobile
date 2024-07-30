@@ -67,6 +67,21 @@ const HomeLayout = (): React.JSX.Element => {
                             )
                         }
                         }} />
+                    <Stack.Screen name="modal-stack" 
+                    options={{
+                        presentation: 'modal',
+                        title: 'Place Order',
+                        headerStyle: {
+                            backgroundColor: COLORS.primary,
+                        },
+                        headerLeft: () => {
+                            return (
+                                <TouchableOpacity onPress={() => router.back()}>
+                                    <FontAwesomeIcon icon={faChevronDown} size={25}/>
+                                </TouchableOpacity>
+                            )
+                        }
+                        }} />
 				</Stack>
 			</>
 		);

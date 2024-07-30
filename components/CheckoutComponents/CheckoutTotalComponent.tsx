@@ -6,6 +6,7 @@ import { SERVICE_FEE, TAX_RATE } from 'lib/data';
 import { Divider } from '@components/Divider';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { CheckoutButton } from './CheckoutButton';
 
 export const CheckoutTotalComponent = (): React.JSX.Element => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
@@ -22,9 +23,9 @@ export const CheckoutTotalComponent = (): React.JSX.Element => {
 			<View style={styles.lineItem}>
 				<View style={styles.serviceFeeContainer}>
 					<Text style={styles.label}>Service Fee</Text>
-                    <TouchableOpacity onPress={() => console.log('info')}>
-                        <FontAwesomeIcon icon={faCircleInfo} size={17} style={styles.icon} />
-                    </TouchableOpacity>
+					<TouchableOpacity onPress={() => console.log('info')}>
+						<FontAwesomeIcon icon={faCircleInfo} size={17} style={styles.icon} />
+					</TouchableOpacity>
 				</View>
 				<Text style={styles.value}>${SERVICE_FEE.toFixed(2)}</Text>
 			</View>
@@ -37,6 +38,7 @@ export const CheckoutTotalComponent = (): React.JSX.Element => {
 				<Text style={[styles.label, { fontWeight: 'bold' }]}>Total</Text>
 				<Text style={[styles.value, { fontWeight: 'bold' }]}>${totalPrice.toFixed(2)}</Text>
 			</View>
+			<CheckoutButton totalPrice={totalPrice} />
 		</View>
 	);
 };
