@@ -1,37 +1,31 @@
 {
-  "compilerOptions": {
-    "jsx": "react",
-    "target": "es5",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": [
-        "./components/*"
-      ]
-    }
-  },
-  "include": [
-    "app/**/*",
-    "api/**/*",
-    "assets/**/*",
-    "components/**/*",
-    "constants/**/*",
-    "patches/**/*",
-    "redux/**/*",
-    "styles/**/*",
-    "types/**/*", 
-    "lib/**/*",
-    "svg.d.ts"  
-, "env.d.ts"  ],
-  "exclude": [
-    "node_modules",
-    "android",
-    ".expo",
-    ".expo-shared"
-  ],
-  "extends": "expo/tsconfig.base"
+	"compilerOptions": {
+		"jsx": "react",
+		"target": "es5",
+		"module": "commonjs",
+		"strict": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"baseUrl": ".",
+		"paths": {
+			"@components/*": ["./components/*"]
+		},
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"noImplicitReturns": true,
+		"alwaysStrict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true
+	},
+	"include": ["app/**/*", "api/**/*", "assets/**/*", "components/**/*", "constants/**/*", "patches/**/*", "redux/**/*", "styles/**/*", "types/**/*", "lib/**/*", "svg.d.ts", "env.d.ts"],
+	"exclude": ["node_modules", "android", ".expo", ".expo-shared"],
+	"extends": "expo/tsconfig.base"
 }
