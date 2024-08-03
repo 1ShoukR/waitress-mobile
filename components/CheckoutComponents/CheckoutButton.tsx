@@ -2,14 +2,21 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { COLORS } from '../../constants';
 import { router } from 'expo-router';
-
+import { setPlaceOrderScreenHeaderIcon } from 'redux/miscSlice';
+import { useAppDispatch } from 'redux/hooks';
+import { faArrowLeft, faChevronDown, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 export const CheckoutButton = ({ totalPrice }: { totalPrice: number }) => {
+	const dispatch = useAppDispatch()
+    const handleNavigation = async () => {
+			await dispatch(setPlaceOrderScreenHeaderIcon(faArrowLeft));
+			router.push('/home/restaurant/modal/PlaceOrderScreen');
+		};
 	
 	return (
 		<>
 			<View style={[styles.checkoutButtonContainer]}>
-				<TouchableOpacity style={styles.checkoutButton} onPress={(): void => router.push('/home/restaurant/modal/PlaceOrderScreen')}>
+				<TouchableOpacity style={styles.checkoutButton} onPress={handleNavigation}>
 					<Text style={styles.checkoutText}>Place Your Order</Text>
 				</TouchableOpacity>
 			</View>
