@@ -4,7 +4,7 @@ import { COLORS } from '../../constants';
 import { router } from 'expo-router';
 import { setPlaceOrderScreenHeaderIcon } from 'redux/miscSlice';
 import { useAppDispatch } from 'redux/hooks';
-import { faArrowLeft, faChevronDown, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export const CheckoutButton = ({ totalPrice }: { totalPrice: number }) => {
 	const dispatch = useAppDispatch()
