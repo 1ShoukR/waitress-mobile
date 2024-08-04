@@ -9,8 +9,8 @@
     "scheme": "waitress-mobile",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#F0EAD6"
     },
     "assetBundlePatterns": [
       "**/*"
