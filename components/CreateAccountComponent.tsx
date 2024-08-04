@@ -118,7 +118,10 @@ const CreateAccountComponent = (): React.JSX.Element => {
 
 	const handleSubmit = async (): Promise<void> => {
 		if (validateFields(['state'])) {
-			const results = await Location.geocodeAsync(form.address);
+			console.log('Form:', form);
+			const addr = `${form.address}, ${form.city}, ${form.state} ${form.zip}`;
+			const results = await Location.geocodeAsync(addr);
+			console.log('Results:', results);
 			if (results.length > 0) {
 				const userAddress = { latitude: results[0].latitude, longitude: results[0].longitude, ...form };
 				dispatch(createUserAccountThunk({ ...form, userType: 'customer', userAddress: userAddress }));
