@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shoukr.waitressmobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -50,11 +51,11 @@
         "expo-build-properties",
         {
           "android": {
-						"compileSdkVersion": 35,
-						"targetSdkVersion": 35,
-						"buildToolsVersion": "35.0.0",
-						"usesCleartextTraffic": true
-					}
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0",
+            "usesCleartextTraffic": true
+          }
         }
       ]
     ]
