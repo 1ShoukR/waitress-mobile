@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "waitress-mobile",
-    "slug": "waitress-mobile",
+    "name": "Waitress",
+    "slug": "Waitress",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "waitress-mobile",
+    "scheme": "Waitress",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
