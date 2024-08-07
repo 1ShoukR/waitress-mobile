@@ -6,7 +6,7 @@ import { useAppSelector } from 'redux/hooks';
 
 export const CheckoutInfoHeaderComponent = (): React.JSX.Element => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
-	const restaurant = useAppSelector((state) => state?.orders?.order[0]).restaurant;
+	const restaurant = useAppSelector((state) => state?.orders?.order[0]!).restaurant;
 	const restaurantName = restaurant?.Name || 'Unknown Restaurant';
 	const subTotal = userOrders.reduce((acc, curr) => acc + curr.price, 0);
 	const menuItems = restaurant?.MenuItems!.slice(0, 5) || []; // Take the first 5 items as an example

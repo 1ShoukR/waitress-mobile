@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Animated, TouchableOpacity } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { COLORS } from '../../constants';
 import { Link, router } from 'expo-router';
 import { useAppSelector } from 'redux/hooks';
@@ -28,7 +27,7 @@ const ViewOrderButton = (): React.JSX.Element => {
 	return (
 		<>
 			<Animated.View style={[styles.addToBagContainer, { transform: [{ translateY: slideAnim }] }]}>
-				<TouchableOpacity style={styles.addToBagButton} onPress={() => router.push("/home/restaurant/ViewOrderScreen")}>
+				<TouchableOpacity style={styles.addToBagButton} onPress={() => router.push("/home/restaurant/modal/ViewOrderScreen")}>
 					<Text style={styles.addToBagText}>View Order ({`${order.length}`})</Text>
 				</TouchableOpacity>
 			</Animated.View>

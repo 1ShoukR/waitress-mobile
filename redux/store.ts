@@ -3,6 +3,7 @@ import authSlice from './authSlice';
 import restaurantSlice from './restaurantSlice';
 import routesSlice from './routesSlice';
 import orderSlice from './orderSlice';
+import miscSlice from './miscSlice';
 
 
 const store = configureStore({
@@ -10,7 +11,8 @@ const store = configureStore({
 		auth: authSlice,
 		restaurant: restaurantSlice,
 		routes: routesSlice,
-		orders: orderSlice
+		orders: orderSlice,
+		misc: miscSlice,
 	},
 });
 

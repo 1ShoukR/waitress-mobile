@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Stack, router } from 'expo-router';
-import { TouchableOpacity, View, Text, Platform } from 'react-native';
+import { TouchableOpacity, View, Platform } from 'react-native';
 import { COLORS } from '../../../constants';
-import { faArrowDown, faArrowLeft, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faArrowLeft, faChevronDown, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { useAppSelector } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { ExpoRouter } from 'expo-router/types/expo-router';
+import { setPlaceOrderScreenHeaderIcon } from 'redux/miscSlice';
 
 
 
 const HomeLayout = (): React.JSX.Element => {
     const globalDarkmode = useAppSelector((state) => state.auth.darkMode);
+    const dispatch = useAppDispatch();
+    const icon = useAppSelector((state) => state.misc.PlaceOrderScreenHeaderIcon);
+	const handleIconChange = async () => {
+		console.log('icon', icon);
+		await dispatch(setPlaceOrderScreenHeaderIcon(faChevronDown));
+		router.back();
+	};
+
     return (
 			<>
 				<Stack>
@@ -52,32 +62,17 @@ const HomeLayout = (): React.JSX.Element => {
                                 )
                             }
                             }} />
-                    <Stack.Screen name="restaurant/ViewOrderScreen" 
+                    <Stack.Screen name="restaurant/modal" 
                     options={{
-                        presentation: 'modal',
-                        title: 'Checkout',
-                        headerStyle: {
-                            backgroundColor: COLORS.primary,
-                        },
-                        headerLeft: () => {
-                            return (
-                                <TouchableOpacity onPress={() => router.back()}>
-                                    <FontAwesomeIcon icon={faChevronDown} size={25}/>
-                                </TouchableOpacity>
-                            )
-                        }
-                        }} />
-                    <Stack.Screen name="modal-stack" 
-                    options={{
-                        presentation: 'modal',
+                        presentation: 'fullScreenModal',
                         title: 'Place Order',
                         headerStyle: {
                             backgroundColor: COLORS.primary,
                         },
                         headerLeft: () => {
                             return (
-                                <TouchableOpacity onPress={() => router.back()}>
-                                    <FontAwesomeIcon icon={faChevronDown} size={25}/>
+                                <TouchableOpacity onPress={handleIconChange}>
+                                    <FontAwesomeIcon icon={icon} size={25}/>
                                 </TouchableOpacity>
                             )
                         }

@@ -1,22 +1,23 @@
 {
   "expo": {
-    "name": "waitress-mobile",
+    "name": "Waitress",
     "slug": "waitress-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "waitress-mobile",
+    "scheme": "Waitress",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#F0EAD6"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.shoukr.waitressmobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -50,11 +51,11 @@
         "expo-build-properties",
         {
           "android": {
-						"compileSdkVersion": 35,
-						"targetSdkVersion": 35,
-						"buildToolsVersion": "35.0.0",
-						"usesCleartextTraffic": true
-					}
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0",
+            "usesCleartextTraffic": true
+          }
         }
       ]
     ]
