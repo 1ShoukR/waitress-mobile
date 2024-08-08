@@ -79,7 +79,7 @@ const ConfirmOrderScreen = () => {
 						keyboardType="numeric"
 						onChangeText={(text) => {
 							setCustomTip(text);
-							setSelectedTip(null);
+							setSelectedTip(undefined);
 						}}
 					/>
 				</View>
