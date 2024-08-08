@@ -7,7 +7,7 @@ import { COLORS } from '../../../../../constants';
 
 const fakeWaiter = {
 	name: 'John Doe',
-	image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d', // Example image URL
+	image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d', 
 };
 
 const ConfirmOrderScreen = () => {
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
 		borderTopRightRadius: 0,
 	},
 	restaurantInfo: {
-		padding: 16,
+		padding: 15,
 		borderBottomLeftRadius: 10,
 		borderBottomRightRadius: 10,
 	},
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
 	},
 	section: {
 		marginVertical: 20,
-		paddingHorizontal: 16,
+		paddingHorizontal: 10,
 	},
 	sectionTitle: {
 		fontSize: 20,
