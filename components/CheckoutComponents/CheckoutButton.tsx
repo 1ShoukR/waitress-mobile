@@ -17,7 +17,7 @@ export const CheckoutButton = ({ totalPrice }: { totalPrice: number }) => {
 		<>
 			<View style={[styles.checkoutButtonContainer]}>
 				<TouchableOpacity style={styles.checkoutButton} onPress={handleNavigation}>
-					<Text style={styles.checkoutText}>Place Your Order</Text>
+					<Text style={styles.checkoutText}>Proceed to Checkout</Text>
 				</TouchableOpacity>
 			</View>
 		</>

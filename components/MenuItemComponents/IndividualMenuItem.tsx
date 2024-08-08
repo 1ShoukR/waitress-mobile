@@ -47,6 +47,7 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 				quantity: quantity,
 				price: Number((quantity * menuItem.Price).toFixed(2)),
 				restaurant: singleRestaurant!,
+				imageUrl: menuItem.ImageURL || placeholderImage,
 			})
 		);
 		toast.show('Added to Order!', {

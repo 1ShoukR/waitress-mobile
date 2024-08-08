@@ -17,7 +17,6 @@ export default function Layout() {
 	const dispatch = useAppDispatch()
 	const icon = useAppSelector((state) => state.misc.PlaceOrderScreenHeaderIcon);
 	const handleIconChange = async () => {
-		console.log('icon', icon)
 		await dispatch(setPlaceOrderScreenHeaderIcon(faChevronDown));
 		router.back();
 	}
@@ -27,7 +26,8 @@ export default function Layout() {
 			<Stack.Screen name="modal-screen-2" /> */}
 			<Stack.Screen name="ViewOrderScreen" options={{ headerShown: false }} />
 			<Stack.Screen name="PlaceOrderScreen" options={{ 
-				headerShown: false, 
+				headerShown: false,
+				title: 'Confirm Your Order', 
 				headerLeft: () => {
 					return (
 						<Pressable
