@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet } from 'react-native'
 import React from 'react'
 import ViewOrderComponent from '../../../../../components/RestaurantRelatedComponents/ViewOrderComponent'
 import { COLORS } from '../../../../../constants'
 
 const ViewOrderScreen = (): React.JSX.Element => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ViewOrderComponent />
-    </View>
+    </SafeAreaView>
   )
 }
 

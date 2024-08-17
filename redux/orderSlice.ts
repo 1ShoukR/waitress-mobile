@@ -28,14 +28,14 @@ const orderSlice = createSlice({
 			state.error = action.payload;
 		},
 		updateOrderItem: (state, action: PayloadAction<Order>) => {
-			const { itemName, quantity, price, restaurant } = action.payload;
+			const { itemName, quantity, price, restaurant, imageUrl } = action.payload;
 			const existingItem = state.order.find((order) => order.itemName === itemName);
 			if (existingItem) {
 				existingItem.quantity = quantity;
 				existingItem.price = price;
 				existingItem.restaurant = restaurant;
 			} else {
-				state.order.push({ itemName, quantity, price, restaurant });
+				state.order.push({ itemName, quantity, price, restaurant, imageUrl: imageUrl });
 			}
 		},
 	},

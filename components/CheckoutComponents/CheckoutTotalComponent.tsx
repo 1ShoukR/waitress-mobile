@@ -8,11 +8,19 @@ import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { CheckoutButton } from './CheckoutButton';
 
-export const CheckoutTotalComponent = (): React.JSX.Element => {
+export const CheckoutTotalComponent = ({ customTip, selectedTip }: { customTip: string; selectedTip: number | undefined }): React.JSX.Element => {
 	const userOrders = useAppSelector((state) => state?.orders?.order);
 	const subTotal = userOrders.reduce((acc, curr) => acc + curr.price, 0);
 	const salesTax = subTotal * TAX_RATE;
-	const totalPrice = subTotal + SERVICE_FEE + salesTax;
+	let tipAmount = 0;
+
+	if (selectedTip) {
+		tipAmount = subTotal * (selectedTip / 100);
+	} else if (customTip) {
+		tipAmount = Number(customTip);
+	}
+
+	const totalPrice = subTotal + SERVICE_FEE + salesTax + tipAmount;
 
 	return (
 		<View style={styles.container}>
@@ -33,6 +41,12 @@ export const CheckoutTotalComponent = (): React.JSX.Element => {
 				<Text style={styles.label}>Sales Tax</Text>
 				<Text style={styles.value}>${salesTax.toFixed(2)}</Text>
 			</View>
+			{tipAmount > 0 && (
+				<View style={styles.lineItem}>
+					<Text style={styles.label}>Tip</Text>
+					<Text style={styles.value}>${tipAmount.toFixed(2)}</Text>
+				</View>
+			)}
 			<Divider color={COLORS.black} />
 			<View style={styles.lineItem}>
 				<Text style={[styles.label, { fontWeight: 'bold' }]}>Total</Text>
@@ -66,7 +80,7 @@ const styles = StyleSheet.create({
 	},
 	icon: {
 		marginLeft: 5,
-		color: COLORS.secondary, 
+		color: COLORS.secondary,
 	},
 	value: {
 		fontSize: 16,

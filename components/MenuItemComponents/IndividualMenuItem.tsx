@@ -11,7 +11,6 @@ import { MenuItem } from 'types/types';
 const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Element => {
 	const placeholderImage = 'https://via.placeholder.com/150';
 	const screenWidth = Dimensions.get('window').width;
-	const fadeAnim = useRef<Animated.Value>(new Animated.Value(0)).current;
 	const slideAnim = useRef<Animated.Value>(new Animated.Value(100)).current; // Initial position below the screen
 	const [quantity, setQuantity] = useState<number>(0);
 	const dispatch = useAppDispatch();
@@ -47,6 +46,7 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 				quantity: quantity,
 				price: Number((quantity * menuItem.Price).toFixed(2)),
 				restaurant: singleRestaurant!,
+				imageUrl: menuItem.ImageURL || placeholderImage,
 			})
 		);
 		toast.show('Added to Order!', {

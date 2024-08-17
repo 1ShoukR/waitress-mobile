@@ -171,6 +171,7 @@ export type Order = {
 	quantity: number;
 	price: number;
 	restaurant: Restaurant;
+	imageUrl: string;
 }
 
 export interface CreateAccountResponse {
