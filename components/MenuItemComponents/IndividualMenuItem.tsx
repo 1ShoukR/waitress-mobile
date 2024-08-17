@@ -72,7 +72,7 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 					{menuItem.ImageURL ? (
 						<Image
 							source={{
-								uri: 'https://www.allrecipes.com/thmb/QSsjryxShEx1L6o0HLer1Nn4jwA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/54165-balsamic-bruschetta-DDMFS-4x3-e2b55b5ca39b4c1783e524a2461634ea.jpg',
+								uri: menuItem.ImageURL,
 							}}
 							style={[styles.image, { width: screenWidth, height: screenWidth / 1.8 }]}
 						/>
