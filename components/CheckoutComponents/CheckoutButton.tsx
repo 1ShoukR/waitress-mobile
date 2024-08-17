@@ -27,7 +27,7 @@ export const CheckoutButton = ({ totalPrice }: { totalPrice: number }) => {
 const styles = StyleSheet.create({
 	checkoutButtonContainer: {
 		position: 'absolute',
-		top: 200,
+		top: 170,
 		left: 20,
 		right: 20,
 		alignItems: 'center',
