@@ -126,7 +126,7 @@ const TabLayout = () => {
 						headerStyle: {
 							backgroundColor: COLORS.primary,
 						},
-						title: 'Admin',
+						title: 'Admin Dashboard',
 						headerTitleStyle: {
 							color: globalDarkmode ? COLORS.lightModeText : COLORS.black,
 						},
