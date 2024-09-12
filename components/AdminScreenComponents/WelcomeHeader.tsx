@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { useAppSelector } from 'redux/hooks';
 import { COLORS } from '../../constants';
 
-export const WelcomeHeader = ({isRefreshing}: {isRefreshing: boolean}): React.JSX.Element => {
+export const WelcomeHeader = ({ isRefreshing }: {isRefreshing: boolean}): React.JSX.Element => {
     const firstName = useAppSelector((state) => state?.auth?.firstName);
     
     const cards = [
