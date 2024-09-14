@@ -278,3 +278,11 @@ export type DarkmodeRequest = boolean
 export interface MenuItemResponse {
 	MenuItem: MenuItem;
 };
+
+export type Staff = {
+    id: string;
+    name: string;
+    role: string;
+    status: string;
+    totalTips: number;
+    };

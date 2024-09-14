@@ -11,6 +11,7 @@ export const RestaurantListComponent = ({ restaurant }: { restaurant: Restaurant
     const dispatch = useAppDispatch()
     const handleRestaurantPress = () => {
         dispatch(setShowAdminTabBackButton(true))
+        console.log('restaurant CLICK', restaurant)
         router.push(`/admin/restaurant/${restaurant.RestaurantId}`)
     }
   return (
