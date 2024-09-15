@@ -30,6 +30,20 @@ const AdminLayout = (): React.JSX.Element => {
                             )
                         }
                         }} />
+                <Stack.Screen name="restaurant/floorplan/NewFloorplan" options={{ 
+                        title: 'New Floorplan',
+                        headerStyle: {
+                            backgroundColor: globalDarkmode ? COLORS.black : COLORS.white
+                        },
+                        headerTintColor: globalDarkmode ? COLORS.lightModeText : COLORS.black
+                    }} />
+                <Stack.Screen name="restaurant/floorplan/[floorplanId]" options={{ 
+                        title: 'New Floorplan',
+                        headerStyle: {
+                            backgroundColor: globalDarkmode ? COLORS.black : COLORS.white
+                        },
+                        headerTintColor: globalDarkmode ? COLORS.lightModeText : COLORS.black
+                    }} />
             </Stack>
         </>
     )

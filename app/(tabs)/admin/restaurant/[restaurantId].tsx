@@ -5,6 +5,9 @@ import { COLORS } from "../../../../constants";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import { getSingleRestaurant } from "redux/thunk";
 import { StaffManagement } from "@components/AdminScreenComponents/StaffManagement";
+import { ReservationManagement } from "@components/AdminScreenComponents/ReservationManagement";
+import { FloorplanManagement } from "@components/AdminScreenComponents/FloorplanManagement";
+import { MenuManagement } from "@components/AdminScreenComponents/MenuManagement";
 
 const IndividualRestaurantAdminScreen = () => {
   const token = useAppSelector((state) => state.auth.apiToken);
@@ -22,10 +25,10 @@ const IndividualRestaurantAdminScreen = () => {
     <ScrollView style={styles.container}>
       <Text style={styles.header}>{restaurant.Name}</Text>
       <StaffManagement restaurant={restaurant} />
-      {/*
       <ReservationManagement restaurant={restaurant} />
-      <FloorPlanManagement restaurant={restaurant} />
+      <FloorplanManagement restaurant={restaurant} />
       <MenuManagement restaurant={restaurant} />
+      {/*
       <FinancialOverview restaurant={restaurant} />
       <AnalyticsOverview restaurant={restaurant} /> */}
     </ScrollView>
