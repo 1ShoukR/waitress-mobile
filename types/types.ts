@@ -124,18 +124,6 @@ export interface Restaurant {
 	ReviewCount?: number;
 }
 
-export interface MenuItem {
-	Category: string;
-	Description: string;
-	ImageURL: string;
-	IsAvailable: boolean;
-	MenuID: number;
-	NameOfItem: string;
-	Price: number;
-	Restaurant: RestaurantSummary;
-	RestaurantID: number;
-}
-
 export interface RestaurantSummary {
 	Address: string;
 	AverageRating: number;
