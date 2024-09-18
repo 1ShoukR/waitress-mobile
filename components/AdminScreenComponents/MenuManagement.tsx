@@ -14,7 +14,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
-import { Restaurant, MenuItem } from 'types/types';
+import { Restaurant, MenuItem, Category } from 'types/types';
 
 export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
   const [menuItems, setMenuItems] = useState<MenuItem[] | undefined>(restaurant.MenuItems);
@@ -23,7 +23,7 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
   const [itemName, setItemName] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState('');
-  const [itemCategory, setItemCategory] = useState('');
+  const [itemCategory, setItemCategory] = useState<Category | undefined>(undefined);
   const [itemImageUrl, setItemImageUrl] = useState('');
 
   const addItem = () => {
@@ -31,40 +31,40 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
     setItemName('');
     setItemDescription('');
     setItemPrice('');
-    setItemCategory('');
+    setItemCategory(undefined);
     setItemImageUrl('');
     setModalVisible(true);
   };
 
   const editItem = (item: MenuItem) => {
     setCurrentItem(item);
-    setItemName(item.NameOfItem);
-    setItemDescription(item.Description);
-    setItemPrice(item.Price.toString());
-    setItemCategory(item.Category);
-    setItemImageUrl(item.ImageURL);
+    setItemName(item.nameOfItem);
+    setItemDescription(item.description);
+    setItemPrice(item.price.toString());
+    setItemCategory(item.category);
+    setItemImageUrl(item.imageUrl);
     setModalVisible(true);
   };
 
   const deleteItem = (menuItemId: number) => {
-    setMenuItems(menuItems!.filter(item => item.MenuID !== menuItemId));
+    setMenuItems(menuItems!.filter(item => item.menuItemId !== menuItemId));
   };
 
   const saveItem = () => {
     const newItem: MenuItem = {
-      MenuID: currentItem?.MenuID || Math.max(...menuItems!.map(item => item.MenuID), 0) + 1,
-      RestaurantID: restaurant.RestaurantId,
-      NameOfItem: itemName,
-      Price: parseFloat(itemPrice),
-      IsAvailable: true,
-      Category: itemCategory,
-      ImageURL: itemImageUrl,
-      Description: itemDescription,
-      Restaurant: restaurant,
+      menuItemId: currentItem?.menuItemId || Math.max(...menuItems!.map(item => item.menuItemId), 0) + 1,
+      restaurantId: restaurant.RestaurantId,
+      nameOfItem: itemName,
+      price: parseFloat(itemPrice),
+      isAvailable: true,
+      category: itemCategory || {} as Category,
+      imageUrl: itemImageUrl,
+      description: itemDescription,
+      restaurant: restaurant,
     };
 
     if (currentItem) {
-      setMenuItems(menuItems!.map(item => item.MenuID === currentItem.MenuID ? newItem : item));
+      setMenuItems(menuItems!.map(item => item.menuItemId === currentItem.menuItemId ? newItem : item));
     } else {
       setMenuItems([...menuItems!, newItem]);
     }
@@ -74,18 +74,18 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
 
   const renderMenuItem = ({ item }: { item: MenuItem }) => (
     <View style={styles.menuItem}>
-      <Image source={{ uri: item.ImageURL }} style={styles.menuItemImage} />
+      <Image source={{ uri: item.imageUrl }} style={styles.menuItemImage} />
       <View style={styles.menuItemInfo}>
-        <Text style={styles.menuItemName}>{item.NameOfItem}</Text>
-        <Text style={styles.menuItemDescription}>{item.Description}</Text>
-        <Text style={styles.menuItemPrice}>${item.Price.toFixed(2)}</Text>
-        <Text style={styles.menuItemCategory}>{item.Category}</Text>
+        <Text style={styles.menuItemName}>{item.nameOfItem}</Text>
+        <Text style={styles.menuItemDescription}>{item.description}</Text>
+        <Text style={styles.menuItemPrice}>${item.price.toFixed(2)}</Text>
+        <Text style={styles.menuItemCategory}>{item.category.CategoryName}</Text>
       </View>
       <View style={styles.menuItemActions}>
         <TouchableOpacity onPress={() => editItem(item)} style={styles.editButton}>
           <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteItem(item.MenuID)} style={styles.deleteButton}>
+        <TouchableOpacity onPress={() => deleteItem(item.menuItemId)} style={styles.deleteButton}>
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -98,7 +98,7 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
       <FlatList
         data={menuItems}
         renderItem={renderMenuItem}
-        keyExtractor={(item) => item.MenuID.toString()}
+        keyExtractor={(item) => item.menuItemId.toString()}
         style={styles.menuList}
       />
       <TouchableOpacity style={styles.addButton} onPress={addItem}>
@@ -141,8 +141,8 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
                 />
                 <TextInput
                   style={styles.input}
-                  value={itemCategory}
-                  onChangeText={setItemCategory}
+                  value={itemCategory?.CategoryName}
+                  onChangeText={(text) => setItemCategory(prev => ({ ...prev, CategoryName: text } as Category))}
                   placeholder="Category"
                 />
                 <TextInput
