@@ -274,3 +274,20 @@ export type Staff = {
     status: string;
     totalTips: number;
     };
+
+export type Table = {
+	id: number;
+	type: string;
+	min: number;
+	max: number;
+	shape: string;
+	x: number;
+	y: number;
+};
+
+export type TableProps = {
+	id: number;
+	onSelect: (id: number) => void;
+	x: number;
+	y: number;
+  };

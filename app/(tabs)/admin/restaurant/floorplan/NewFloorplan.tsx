@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Animated, PanResponder, Dimensions } from 'react-native';
 import Svg, { Line } from 'react-native-svg';
 import { COLORS } from '../../../../../constants'; 
+import { Table, TableProps } from 'types/types';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -34,14 +35,7 @@ const GridBackground = ({ gridSize = 20, size = FLOOR_PLAN_SIZE }: GridBackgroun
   );
 };
 
-type TableProps = {
-  id: number;
-  onSelect: (id: number) => void;
-  x: number;
-  y: number;
-};
-
-const Table = ({ id, onSelect, x, y }: TableProps) => {
+const TableImage = ({ id, onSelect, x, y }: TableProps) => {
   return (
     <TouchableOpacity style={[styles.table, { left: x, top: y }]} onPress={() => onSelect(id)}>
       <Text>{id}</Text>
@@ -101,15 +95,6 @@ const DraggableFloorPlan = ({ children, onAddTable }: DraggableFloorPlanProps) =
   );
 };
 
-type Table = {
-  id: number;
-  type: string;
-  min: number;
-  max: number;
-  shape: string;
-  x: number;
-  y: number;
-};
 
 const NewFloorplanScreen = () => {
   const [tables, setTables] = useState<Table[]>([]);
@@ -159,7 +144,7 @@ const NewFloorplanScreen = () => {
       <View style={styles.content}>
         <DraggableFloorPlan onAddTable={addTable}>
           {tables.map(table => (
-            <Table key={table.id} id={table.id} onSelect={selectTable} x={table.x} y={table.y} />
+            <TableImage key={table.id} id={table.id} onSelect={selectTable} x={table.x} y={table.y} />
           ))}
         </DraggableFloorPlan>
         
