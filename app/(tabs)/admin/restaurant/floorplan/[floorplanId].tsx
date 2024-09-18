@@ -9,11 +9,17 @@ const AdminIndividualFloorplanView = () => {
 
   return (
     <View>
-      <Text>[AdminIndividualFloorplanView ]</Text>
+      <Text style={styles.container}>[AdminIndividualFloorplanView ]</Text>
     </View>
   )
 }
 
 export default AdminIndividualFloorplanView 
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})

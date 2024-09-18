@@ -7,7 +7,7 @@ import { client } from '../../../../api/client';
 import IndividualMenuItem from '../../../../components/MenuItemComponents/IndividualMenuItem';
 import { COLORS } from '../../../../constants'
 import { useAppSelector } from 'redux/hooks';
-import { MenuItem, MenuItemResponse } from 'types/types';
+import { MenuItemResponse } from 'types/types';
 
 const MenuItemDetails = (): React.JSX.Element => {
 	const { menuItemId } = useLocalSearchParams();
@@ -36,13 +36,13 @@ const MenuItemDetails = (): React.JSX.Element => {
 			<>
 				<Stack.Screen
 					options={{
-						title: `${menuItem?.NameOfItem ? menuItem.NameOfItem : 'Loading'}`,
+						title: `${menuItem?.nameOfItem ? menuItem.nameOfItem : 'Loading'}`,
 						headerStyle: {
 							backgroundColor: COLORS.primary,
 						},
 						headerLeft: () => (
 							<Pressable
-								style={({ pressed }) => [
+								style={() => [
 									{
 										backgroundColor: COLORS.primary,
 										// padding: 10,
@@ -73,13 +73,13 @@ const MenuItemDetails = (): React.JSX.Element => {
 	return (
 		<>
 		<Stack.Screen  options={{
-			title: `${menuItem.NameOfItem}`,
+			title: `${menuItem.nameOfItem}`,
 			headerStyle: {
 				backgroundColor: COLORS.primary,
 			},
 			headerLeft: () => (
 				<Pressable
-					style={({ pressed }) => [
+					style={() => [
 						{
 							backgroundColor: COLORS.primary,
 							// padding: 10,

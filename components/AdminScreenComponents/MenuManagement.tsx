@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,27 +12,31 @@ import {
   Platform,
   ScrollView,
   TouchableWithoutFeedback,
-  Keyboard
-} from 'react-native';
-import { Restaurant, MenuItem, Category } from 'types/types';
+  Keyboard,
+} from "react-native";
+import { Restaurant, MenuItem, Category } from "types/types";
 
 export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
-  const [menuItems, setMenuItems] = useState<MenuItem[] | undefined>(restaurant.MenuItems);
+  const [menuItems, setMenuItems] = useState<MenuItem[] | undefined>(
+    restaurant.MenuItems
+  );
   const [modalVisible, setModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState<MenuItem | null>(null);
-  const [itemName, setItemName] = useState('');
-  const [itemDescription, setItemDescription] = useState('');
-  const [itemPrice, setItemPrice] = useState('');
-  const [itemCategory, setItemCategory] = useState<Category | undefined>(undefined);
-  const [itemImageUrl, setItemImageUrl] = useState('');
+  const [itemName, setItemName] = useState("");
+  const [itemDescription, setItemDescription] = useState("");
+  const [itemPrice, setItemPrice] = useState("");
+  const [itemCategory, setItemCategory] = useState<Category | undefined>(
+    undefined
+  );
+  const [itemImageUrl, setItemImageUrl] = useState("");
 
   const addItem = () => {
     setCurrentItem(null);
-    setItemName('');
-    setItemDescription('');
-    setItemPrice('');
+    setItemName("");
+    setItemDescription("");
+    setItemPrice("");
     setItemCategory(undefined);
-    setItemImageUrl('');
+    setItemImageUrl("");
     setModalVisible(true);
   };
 
@@ -47,24 +51,30 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
   };
 
   const deleteItem = (menuItemId: number) => {
-    setMenuItems(menuItems!.filter(item => item.menuItemId !== menuItemId));
+    setMenuItems(menuItems!.filter((item) => item.menuItemId !== menuItemId));
   };
 
   const saveItem = () => {
     const newItem: MenuItem = {
-      menuItemId: currentItem?.menuItemId || Math.max(...menuItems!.map(item => item.menuItemId), 0) + 1,
+      menuItemId:
+        currentItem?.menuItemId ||
+        Math.max(...menuItems!.map((item) => item.menuItemId), 0) + 1,
       restaurantId: restaurant.RestaurantId,
       nameOfItem: itemName,
       price: parseFloat(itemPrice),
       isAvailable: true,
-      category: itemCategory || {} as Category,
+      category: itemCategory || ({} as Category),
       imageUrl: itemImageUrl,
       description: itemDescription,
       restaurant: restaurant,
     };
 
     if (currentItem) {
-      setMenuItems(menuItems!.map(item => item.menuItemId === currentItem.menuItemId ? newItem : item));
+      setMenuItems(
+        menuItems!.map((item) =>
+          item.menuItemId === currentItem.menuItemId ? newItem : item
+        )
+      );
     } else {
       setMenuItems([...menuItems!, newItem]);
     }
@@ -79,13 +89,21 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
         <Text style={styles.menuItemName}>{item.nameOfItem}</Text>
         <Text style={styles.menuItemDescription}>{item.description}</Text>
         <Text style={styles.menuItemPrice}>${item.price.toFixed(2)}</Text>
-        <Text style={styles.menuItemCategory}>{item.category.CategoryName}</Text>
+        <Text style={styles.menuItemCategory}>
+          {item.category.CategoryName}
+        </Text>
       </View>
       <View style={styles.menuItemActions}>
-        <TouchableOpacity onPress={() => editItem(item)} style={styles.editButton}>
+        <TouchableOpacity
+          onPress={() => editItem(item)}
+          style={styles.editButton}
+        >
           <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteItem(item.menuItemId)} style={styles.deleteButton}>
+        <TouchableOpacity
+          onPress={() => deleteItem(item.menuItemId)}
+          style={styles.deleteButton}
+        >
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -118,7 +136,9 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.modalContent}>
               <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <Text style={styles.modalTitle}>{currentItem ? 'Edit Item' : 'Add New Item'}</Text>
+                <Text style={styles.modalTitle}>
+                  {currentItem ? "Edit Item" : "Add New Item"}
+                </Text>
                 <TextInput
                   style={styles.input}
                   value={itemName}
@@ -142,7 +162,11 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
                 <TextInput
                   style={styles.input}
                   value={itemCategory?.CategoryName}
-                  onChangeText={(text) => setItemCategory(prev => ({ ...prev, CategoryName: text } as Category))}
+                  onChangeText={(text) =>
+                    setItemCategory(
+                      (prev) => ({ ...prev, CategoryName: text } as Category)
+                    )
+                  }
                   placeholder="Category"
                 />
                 <TextInput
@@ -152,10 +176,16 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
                   placeholder="Image URL"
                 />
                 <View style={styles.modalButtons}>
-                  <TouchableOpacity style={styles.saveButton} onPress={saveItem}>
+                  <TouchableOpacity
+                    style={styles.saveButton}
+                    onPress={saveItem}
+                  >
                     <Text style={styles.buttonText}>Save</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.cancelButton} onPress={() => setModalVisible(false)}>
+                  <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={() => setModalVisible(false)}
+                  >
                     <Text style={styles.buttonText}>Cancel</Text>
                   </TouchableOpacity>
                 </View>
@@ -172,21 +202,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
   },
   menuList: {
     flex: 1,
   },
   menuItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: "#e0e0e0",
   },
   menuItemImage: {
     width: 80,
@@ -199,76 +229,76 @@ const styles = StyleSheet.create({
   },
   menuItemName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   menuItemDescription: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginTop: 4,
   },
   menuItemPrice: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#4CAF50',
+    fontWeight: "bold",
+    color: "#4CAF50",
     marginTop: 4,
   },
   menuItemCategory: {
     fontSize: 14,
-    color: '#666',
-    fontStyle: 'italic',
+    color: "#666",
+    fontStyle: "italic",
     marginTop: 4,
   },
   menuItemActions: {
-    justifyContent: 'space-around',
+    justifyContent: "space-around",
   },
   editButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
     padding: 8,
     borderRadius: 4,
     marginBottom: 8,
   },
   deleteButton: {
-    backgroundColor: '#F44336',
+    backgroundColor: "#F44336",
     padding: 8,
     borderRadius: 4,
   },
   addButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     padding: 16,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
-    width: '90%',
-    maxHeight: '80%',
+    width: "90%",
+    maxHeight: "80%",
   },
   scrollViewContent: {
     flexGrow: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   modalTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     height: 40,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 16,
@@ -276,25 +306,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   modalButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
   },
   saveButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     padding: 12,
     borderRadius: 8,
     flex: 1,
     marginRight: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   cancelButton: {
-    backgroundColor: '#F44336',
+    backgroundColor: "#F44336",
     padding: 12,
     borderRadius: 8,
     flex: 1,
     marginLeft: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
 });
 

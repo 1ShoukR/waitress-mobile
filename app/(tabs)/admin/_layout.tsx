@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Stack, router } from 'expo-router';
-import { TouchableOpacity, View, Platform } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import {COLORS} from '../../../constants';
 import { useAppSelector } from 'redux/hooks';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
