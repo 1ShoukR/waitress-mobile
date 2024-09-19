@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Animated, PanResponder, Dimensions } from 'react-native';
-import Svg, { Line } from 'react-native-svg';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Animated, PanResponder, Dimensions, Modal, TextInput } from 'react-native';
+import Svg, { Line, Rect, Circle } from 'react-native-svg';
 import { COLORS } from '../../../../../constants'; 
 import { Table, TableProps } from 'types/types';
 
@@ -35,10 +35,12 @@ const GridBackground = ({ gridSize = 20, size = FLOOR_PLAN_SIZE }: GridBackgroun
   );
 };
 
-const TableImage = ({ id, onSelect, x, y }: TableProps) => {
+const TableImage = ({ id, onSelect, x, y, shape }: TableProps & { shape: string }) => {
   return (
     <TouchableOpacity style={[styles.table, { left: x, top: y }]} onPress={() => onSelect(id)}>
-      <Text>{id}</Text>
+      {shape === 'square' && <View style={styles.squareTable} />}
+      {shape === 'round' && <View style={styles.roundTable} />}
+      <Text style={styles.tableText}>{id}</Text>
     </TouchableOpacity>
   );
 };
@@ -83,7 +85,6 @@ const DraggableFloorPlan = ({ children, onAddTable }: DraggableFloorPlanProps) =
       <TouchableOpacity
         style={styles.addTableButton}
         onPress={() => {
-            console.log('pan', pan.x._value, pan.y);
           const x = -pan.x._value + windowWidth / 2;
           const y = -pan.y._value + windowHeight / 2;
           onAddTable(x, y);
@@ -95,21 +96,20 @@ const DraggableFloorPlan = ({ children, onAddTable }: DraggableFloorPlanProps) =
   );
 };
 
-
 const NewFloorplanScreen = () => {
   const [tables, setTables] = useState<Table[]>([]);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
-  const [sidebarWidth] = useState(new Animated.Value(0));
+  const [modalVisible, setModalVisible] = useState(false);
 
   const addTable = (x: number, y: number) => {
     const newTable: Table = { 
-      id: Date.now(), 
+      id: tables.length + 1, 
       type: 'Dining Room', 
       min: 1, 
       max: 2, 
       shape: 'square', 
-      x: x - 25, // Adjust for table width/2
-      y: y - 25  // Adjust for table height/2
+      x: x - 25, 
+      y: y - 25 
     };
     setTables(prevTables => [...prevTables, newTable]);
   };
@@ -118,21 +118,21 @@ const NewFloorplanScreen = () => {
     const table = tables.find(t => t.id === id);
     if (table) {
       setSelectedTable(table);
-      Animated.timing(sidebarWidth, {
-        toValue: 200,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
+      setModalVisible(true);
     }
   };
 
-  const closeSidebar = () => {
+  const closeModal = () => {
     setSelectedTable(null);
-    Animated.timing(sidebarWidth, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
+    setModalVisible(false);
+  };
+
+  const updateTable = (field: keyof Table, value: any) => {
+    if (selectedTable) {
+      const updatedTable = { ...selectedTable, [field]: value };
+      setSelectedTable(updatedTable);
+      setTables(prevTables => prevTables.map(t => t.id === updatedTable.id ? updatedTable : t));
+    }
   };
 
   return (
@@ -144,23 +144,85 @@ const NewFloorplanScreen = () => {
       <View style={styles.content}>
         <DraggableFloorPlan onAddTable={addTable}>
           {tables.map(table => (
-            <TableImage key={table.id} id={table.id} onSelect={selectTable} x={table.x} y={table.y} />
+            <TableImage key={table.id} id={table.id} onSelect={selectTable} x={table.x} y={table.y} shape={table.shape} />
           ))}
         </DraggableFloorPlan>
         
-        <Animated.View style={[styles.sidebar, { width: sidebarWidth }]}>
-          {selectedTable && (
-            <View>
-              <TouchableOpacity onPress={closeSidebar} style={styles.closeButton}>
-                <Text>Close</Text>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={closeModal}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalTitle}>Edit table</Text>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Table ID</Text>
+                <TextInput
+                  style={styles.input}
+                  value={selectedTable ? selectedTable.id.toString() : ''}
+                  editable={false}
+                />
+                <Text style={styles.maxCount}>{selectedTable ? `${selectedTable.id}/40` : ''}</Text>
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Table Type</Text>
+                <TextInput
+                  style={styles.input}
+                  value={selectedTable ? selectedTable.type : ''}
+                  onChangeText={(text) => updateTable('type', text)}
+                />
+              </View>
+              <View style={styles.rowContainer}>
+                <View style={styles.halfInputContainer}>
+                  <Text style={styles.label}>Min</Text>
+                  <View style={styles.numberInput}>
+                    <TouchableOpacity onPress={() => updateTable('min', Math.max(1, (selectedTable?.min || 1) - 1))}>
+                      <Text style={styles.numberControlText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.numberText}>{selectedTable?.min}</Text>
+                    <TouchableOpacity onPress={() => updateTable('min', (selectedTable?.min || 1) + 1)}>
+                      <Text style={styles.numberControlText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.halfInputContainer}>
+                  <Text style={styles.label}>Max</Text>
+                  <View style={styles.numberInput}>
+                    <TouchableOpacity onPress={() => updateTable('max', Math.max(1, (selectedTable?.max || 2) - 1))}>
+                      <Text style={styles.numberControlText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.numberText}>{selectedTable?.max}</Text>
+                    <TouchableOpacity onPress={() => updateTable('max', (selectedTable?.max || 2) + 1)}>
+                      <Text style={styles.numberControlText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Shape</Text>
+                <View style={styles.shapeContainer}>
+                  <TouchableOpacity
+                    style={[styles.shapeButton, selectedTable?.shape === 'square' && styles.selectedShape]}
+                    onPress={() => updateTable('shape', 'square')}
+                  >
+                    <View style={styles.squareShape} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.shapeButton, selectedTable?.shape === 'round' && styles.selectedShape]}
+                    onPress={() => updateTable('shape', 'round')}
+                  >
+                    <View style={styles.roundShape} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                <Text style={styles.closeButtonText}>Close</Text>
               </TouchableOpacity>
-              <Text style={styles.sidebarTitle}>Edit table</Text>
-              <Text>Table ID: {selectedTable.id}</Text>
-              <Text>Type: {selectedTable.type}</Text>
-              <Text>Min: {selectedTable.min} Max: {selectedTable.max}</Text>
             </View>
-          )}
-        </Animated.View>
+          </View>
+        </Modal>
       </View>
       
       <View style={styles.footer}>
@@ -174,6 +236,7 @@ const NewFloorplanScreen = () => {
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -202,34 +265,6 @@ const styles = StyleSheet.create({
   draggableFloorPlan: {
     width: FLOOR_PLAN_SIZE,
     height: FLOOR_PLAN_SIZE,
-  },
-  sidebar: {
-    backgroundColor: COLORS.white,
-    padding: 16,
-    borderLeftWidth: 1,
-    borderLeftColor: COLORS.black,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    bottom: 0,
-    zIndex: 2,
-  },
-  sidebarTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  closeButton: {
-    alignSelf: 'flex-end',
-    padding: 8,
-  },
-  table: {
-    width: 50,
-    height: 50,
-    backgroundColor: COLORS.lightGray,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
   },
   footer: {
     flexDirection: 'row',
@@ -264,6 +299,139 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'stretch',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: '80%',
+    maxWidth: 400,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  inputContainer: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: '#666',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    padding: 10,
+    fontSize: 16,
+  },
+  maxCount: {
+    position: 'absolute',
+    right: 10,
+    top: 35,
+    color: '#999',
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  halfInputContainer: {
+    width: '48%',
+  },
+  numberInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    padding: 5,
+  },
+  numberControlText: {
+    fontSize: 24,
+    paddingHorizontal: 10,
+    color: COLORS.primary,
+  },
+  numberText: {
+    fontSize: 18,
+  },
+  shapeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  shapeButton: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+  },
+  selectedShape: {
+    borderColor: COLORS.primary,
+    backgroundColor: COLORS.primaryLight,
+  },
+  squareShape: {
+    width: 30,
+    height: 30,
+    backgroundColor: COLORS.primary,
+  },
+  roundShape: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: COLORS.primary,
+  },
+  closeButton: {
+    backgroundColor: COLORS.primary,
+    borderRadius: 5,
+    padding: 10,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  table: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+  },
+  squareTable: {
+    width: 40,
+    height: 40,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.black,
+  },
+  roundTable: {
+    width: 40,
+    height: 40,
+    backgroundColor: COLORS.white,
+    borderWidth: 1,
+    borderColor: COLORS.black,
+    borderRadius: 20,
+  },
+  tableText: {
+    position: 'absolute',
+    fontSize: 12,
   },
 });
 

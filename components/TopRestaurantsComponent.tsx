@@ -57,7 +57,7 @@ const TopRestaurantsComponent = ({
 				<FlatList
 					data={topRestaurants}
 					renderItem={renderItem}
-					keyExtractor={(item) => item.RestaurantId.toString()}
+					keyExtractor={(item) => item?.RestaurantId?.toString()}
 					horizontal
 					showsHorizontalScrollIndicator={false}
 				/>

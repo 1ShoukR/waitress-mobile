@@ -54,7 +54,7 @@ const AdminScreen = (): React.JSX.Element => {
                 <FlatList
                     data={data}
                     renderItem={renderRestaurantItem}
-                    keyExtractor={(item) => item.RestaurantId.toString()}
+                    keyExtractor={(item) => item?.RestaurantId?.toString()}
                     ListHeaderComponent={renderHeader}
                     refreshControl={
                         <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />

@@ -44,7 +44,7 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
     setCurrentItem(item);
     setItemName(item.nameOfItem);
     setItemDescription(item.description);
-    setItemPrice(item.price.toString());
+    setItemPrice(item?.price?.toString());
     setItemCategory(item.category);
     setItemImageUrl(item.imageUrl);
     setModalVisible(true);
@@ -116,7 +116,7 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
       <FlatList
         data={menuItems}
         renderItem={renderMenuItem}
-        keyExtractor={(item) => item.menuItemId.toString()}
+        keyExtractor={(item) => item?.menuItemId?.toString()}
         style={styles.menuList}
       />
       <TouchableOpacity style={styles.addButton} onPress={addItem}>

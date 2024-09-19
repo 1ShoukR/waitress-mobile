@@ -16,7 +16,7 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 
 	useEffect(() => {
 		if (restaurantId) {
-			let stringId: string = restaurantId.toString();
+			let stringId: string = restaurantId?.toString();
 			dispatch(getSingleRestaurant({ restaurantId: stringId, apiToken: apiToken }));
 		}
 	}, [restaurantId]);
@@ -35,7 +35,7 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 		// instead of const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		const categories: { [key: string]: MenuItem[] } = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		menuItems?.forEach((item) => {
-			const category = item.Category || 'Other';
+			const category = item.category.CategoryID || 'Other';
 			if (categories[category]) {
 				categories[category].push(item);
 			} else {
@@ -92,13 +92,13 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 												<View key={category} style={styles.menuCategory}>
 													<Text style={styles.menuCategoryTitle}>{category}</Text>
 													{categorizedMenuItems[category].map((item) => (
-														<TouchableOpacity key={item.MenuID} onPress={() => router.push(`/home/menu/${item.MenuID}`)}>
+														<TouchableOpacity key={item?.menuItemId} onPress={() => router.push(`/home/menu/${item.menuItemId}`)}>
 															<View style={styles.menuItem}>
-																<Image source={{ uri: item.ImageURL }} style={styles.menuItemImage} />
+																<Image source={{ uri: item?.imageUrl }} style={styles.menuItemImage} />
 																<View style={styles.menuItemDetails}>
-																	<Text style={styles.menuItemName}>{item.NameOfItem}</Text>
+																	<Text style={styles.menuItemName}>{item.nameOfItem}</Text>
 																	<Text style={styles.menuItemDescription}>{'This is a mock description.'}</Text>
-																	<Text style={styles.menuItemPrice}>{`$${item.Price.toFixed(2)}`}</Text>
+																	<Text style={styles.menuItemPrice}>{`$${item?.price?.toFixed(2)}`}</Text>
 																</View>
 															</View>
 														</TouchableOpacity>
