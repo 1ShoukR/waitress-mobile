@@ -42,11 +42,11 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 	const handleAddToOrder = (): void => {
 		dispatch(
 			updateOrderItem({
-				itemName: menuItem.NameOfItem,
+				itemName: menuItem.nameOfItem,
 				quantity: quantity,
-				price: Number((quantity * menuItem.Price).toFixed(2)),
+				price: Number((quantity * menuItem?.price)?.toFixed(2)),
 				restaurant: singleRestaurant!,
-				imageUrl: menuItem.ImageURL || placeholderImage,
+				imageUrl: menuItem?.imageUrl || placeholderImage,
 			})
 		);
 		toast.show('Added to Order!', {
@@ -69,19 +69,19 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 		<>
 			<ScrollView>
 				<View style={styles.cardContainer}>
-					{menuItem.ImageURL ? (
+					{menuItem?.imageUrl ? (
 						<Image
 							source={{
-								uri: menuItem.ImageURL,
+								uri: menuItem?.imageUrl,
 							}}
 							style={[styles.image, { width: screenWidth, height: screenWidth / 1.8 }]}
 						/>
 					) : null}
 					<View style={styles.textContainer}>
-						<Text style={styles.itemName}>{menuItem.NameOfItem}</Text>
-						<Text style={styles.itemPrice}>${menuItem.Price}</Text>
+						<Text style={styles.itemName}>{menuItem?.nameOfItem}</Text>
+						<Text style={styles.itemPrice}>${menuItem?.price}</Text>
 					</View>
-					<Text style={styles.itemDescription}>{menuItem.Description}</Text>
+					<Text style={styles.itemDescription}>{menuItem?.description}</Text>
 					<View style={styles.quantityContainer}>
 						<Text style={{ marginTop: 12, fontSize: 15, paddingLeft: 10 }}>How many would you like?</Text>
 						<View style={{ paddingRight: 10 }}>
@@ -105,7 +105,7 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 				<TouchableOpacity onPress={handleAddToOrder}>
 					<View style={styles.addToBagButton}>
 						<Text style={styles.addToBagText}>Add to Order</Text>
-						<Text style={styles.addToBagTotal}>{`${quantity}x $${(quantity * menuItem.Price).toFixed(2)}`}</Text>
+						<Text style={styles.addToBagTotal}>{`${quantity}x $${(quantity * menuItem.price)?.toFixed(2)}`}</Text>
 					</View>
 				</TouchableOpacity>
 			</Animated.View>

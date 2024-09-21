@@ -26,7 +26,7 @@ export const CheckoutTotalComponent = ({ customTip, selectedTip }: { customTip: 
 		<View style={styles.container}>
 			<View style={styles.lineItem}>
 				<Text style={styles.label}>Subtotal</Text>
-				<Text style={styles.value}>${subTotal.toFixed(2)}</Text>
+				<Text style={styles.value}>${subTotal?.toFixed(2)}</Text>
 			</View>
 			<View style={styles.lineItem}>
 				<View style={styles.serviceFeeContainer}>
@@ -35,22 +35,22 @@ export const CheckoutTotalComponent = ({ customTip, selectedTip }: { customTip: 
 						<FontAwesomeIcon icon={faCircleInfo} size={17} style={styles.icon} />
 					</TouchableOpacity>
 				</View>
-				<Text style={styles.value}>${SERVICE_FEE.toFixed(2)}</Text>
+				<Text style={styles.value}>${SERVICE_FEE?.toFixed(2)}</Text>
 			</View>
 			<View style={styles.lineItem}>
 				<Text style={styles.label}>Sales Tax</Text>
-				<Text style={styles.value}>${salesTax.toFixed(2)}</Text>
+				<Text style={styles.value}>${salesTax?.toFixed(2)}</Text>
 			</View>
 			{tipAmount > 0 && (
 				<View style={styles.lineItem}>
 					<Text style={styles.label}>Tip</Text>
-					<Text style={styles.value}>${tipAmount.toFixed(2)}</Text>
+					<Text style={styles.value}>${tipAmount?.toFixed(2)}</Text>
 				</View>
 			)}
 			<Divider color={COLORS.black} />
 			<View style={styles.lineItem}>
 				<Text style={[styles.label, { fontWeight: 'bold' }]}>Total</Text>
-				<Text style={[styles.value, { fontWeight: 'bold' }]}>${totalPrice.toFixed(2)}</Text>
+				<Text style={[styles.value, { fontWeight: 'bold' }]}>${totalPrice?.toFixed(2)}</Text>
 			</View>
 			<CheckoutButton totalPrice={totalPrice} />
 		</View>

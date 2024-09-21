@@ -21,7 +21,7 @@ export const RestaurantListComponent = ({ restaurant }: { restaurant: Restaurant
         <Text style={styles.name}>{restaurant.Name}</Text>
         <View style={styles.ratingContainer}>
           <Ionicons name="star" size={16} color="#FFD700" />
-          <Text style={styles.rating}>{restaurant.AverageRating!.toFixed(1)}</Text>
+          <Text style={styles.rating}>{restaurant?.AverageRating?.toFixed(1)}</Text>
         </View>
         <Text style={styles.address}>{restaurant.Address}</Text>
         <View style={styles.detailsContainer}>

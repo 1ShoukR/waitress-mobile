@@ -88,7 +88,7 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
       <View style={styles.menuItemInfo}>
         <Text style={styles.menuItemName}>{item.nameOfItem}</Text>
         <Text style={styles.menuItemDescription}>{item.description}</Text>
-        <Text style={styles.menuItemPrice}>${item.price.toFixed(2)}</Text>
+        <Text style={styles.menuItemPrice}>${item?.price?.toFixed(2)}</Text>
         <Text style={styles.menuItemCategory}>
           {item.category.CategoryName}
         </Text>
