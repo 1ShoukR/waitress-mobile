@@ -90,7 +90,7 @@ export const MenuManagement = ({ restaurant }: { restaurant: Restaurant }) => {
         <Text style={styles.menuItemDescription}>{item.description}</Text>
         <Text style={styles.menuItemPrice}>${item?.price?.toFixed(2)}</Text>
         <Text style={styles.menuItemCategory}>
-          {item.category.CategoryName}
+          {item.category?.CategoryName}
         </Text>
       </View>
       <View style={styles.menuItemActions}>

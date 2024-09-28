@@ -38,7 +38,7 @@ const TopRestaurantsComponent = ({
 						{item?.Categories?.map((category, index) => {
 							return (
 								<TouchableOpacity key={index} onPress={() => router.push(`/category/${category.CategoryID}`)}>
-									<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category.CategoryName}</Text>
+									<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category?.CategoryName}</Text>
 								</TouchableOpacity>
 							);
 						})}

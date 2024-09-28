@@ -17,7 +17,7 @@ const CategoriesComponent = ({ foodCategories }: { foodCategories: Category[]}) 
 							just the image and text 
 							*/}
 							<Image source={{ uri: category.ImageURL ?? 'default_image_url_here' }} />
-							<Text style={{ fontWeight: 'bold' }}>{category.CategoryName}</Text>
+							<Text style={{ fontWeight: 'bold' }}>{category?.CategoryName}</Text>
 						</TouchableOpacity>
 					))}
 				</View>
