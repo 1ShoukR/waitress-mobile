@@ -277,7 +277,6 @@ export type Staff = {
 
 export type Table = {
 	id: number;
-	type: string;
 	min: number;
 	max: number;
 	shape: string;
