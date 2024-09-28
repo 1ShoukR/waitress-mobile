@@ -59,9 +59,6 @@ const NewFloorplanScreen = () => {
     // Implement your save logic here
   };
 
-  const handleToolbarPress = () => {
-    console.log("Toolbar pressed");
-  };
 
   return (
     <View style={styles.container}>
