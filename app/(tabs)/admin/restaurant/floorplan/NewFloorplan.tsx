@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,13 +7,30 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import { Canvas } from "@react-three/fiber/native";
+import { Canvas, useThree, useFrame, ThreeEvent } from "@react-three/fiber/native";
 import { OrthographicCamera } from "@react-three/drei/native";
-import { useFrame } from "@react-three/fiber/native";
-import { OrthographicCamera as ThreeOrthographicCamera, Vector3 } from "three";
+import { OrthographicCamera as ThreeOrthographicCamera, Vector3, Raycaster } from "three";
 import { COLORS } from "../../../../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck, faPlus, faX } from "@fortawesome/free-solid-svg-icons";
+import Svg, { Circle, Rect } from 'react-native-svg';
+import { Table } from "types/types";
+
+function CircleSvgComponent(props: any) {
+  return (
+    <Svg height="60" width="60" viewBox="0 0 100 100" {...props}>
+      <Circle cx="50" cy="50" r="45" stroke="black" strokeWidth="2.5" fill="white" />
+    </Svg>
+  );
+}
+
+function RectSvgComponent(props: any) {
+  return (
+    <Svg height="60" width="60" viewBox="0 0 100 100" {...props}>
+      <Rect x="15" y="15" width="70" height="70" stroke="red" strokeWidth="2" fill="white" />
+    </Svg>
+  );
+}
 
 const Grid = ({ size, divisions }: { size: number; divisions: number }) => {
   const stretchedSize = size * 1.3;
@@ -26,7 +43,45 @@ const Grid = ({ size, divisions }: { size: number; divisions: number }) => {
   );
 };
 
-const Scene = () => {
+const InteractiveShape = ({ table, onPress }: {table: Table, onPress: (table: Table) => void}) => {
+  const { raycaster, camera, size } = useThree();
+  const mesh = useRef();
+
+  const handlePress = useCallback((event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
+    const x = (event.clientX / size.width) * 2 - 1;
+    const y = -(event.clientY / size.height) * 2 + 1;
+    raycaster.setFromCamera({ x, y }, camera);
+    const intersects = raycaster.intersectObject(mesh?.current!);
+    if (mesh.current) {
+      if (intersects.length > 0) {
+        onPress(table);
+      }
+    }
+    if (intersects.length > 0) {
+      onPress(table);
+    }
+  }, [table, onPress, raycaster, camera, size]);
+
+  if (table.shape === 'circle') {
+    return (
+      <mesh ref={mesh} position={[table.x, table.y, 0]} onPointerDown={handlePress}>
+        <circleGeometry args={[1, 32]} />
+        <meshBasicMaterial color="grey" />
+      </mesh>
+    );
+  } else if (table.shape === 'rectangle') {
+    return (
+      <mesh ref={mesh} position={[table.x, table.y, 0]} onPointerDown={handlePress}>
+        <boxGeometry args={[1.8, 1.8, 0.1]} />
+        <meshBasicMaterial color="grey" />
+      </mesh>
+    );
+  }
+  return null;
+};
+
+const Scene = ({ tables, onTablePress }: {tables: Table[], onTablePress: (table: Table) => void}) => {
   const cameraRef = useRef<ThreeOrthographicCamera>(null);
 
   useFrame(() => {
@@ -45,7 +100,9 @@ const Scene = () => {
       />
       <ambientLight intensity={0.5} />
       <Grid size={20} divisions={26} />
-      {/* Add your floor plan objects here */}
+      {tables.map((table) => (
+        <InteractiveShape key={table.id} table={table} onPress={onTablePress} />
+      ))}
     </>
   );
 };
@@ -53,18 +110,34 @@ const Scene = () => {
 const NewFloorplanScreen = () => {
   const [floorPlanName, setFloorPlanName] = useState<string>("");
   const [showToolbar, setShowToolbar] = useState<boolean>(false);
+  const [tables, setTables] = useState<Table[]>([]);
 
   const handleSave = () => {
     console.log(`Saved: ${floorPlanName}`);
     // Implement your save logic here
   };
 
+  const addTable = (shape: string) => {
+    const newTable: Table = {
+      id: Date.now(), 
+      min: 2,
+      max: 4,
+      shape: shape,
+      x: Math.random() * 10 - 5, 
+      y: Math.random() * 10 - 5, 
+    };
+    setTables([...tables, newTable]);
+  };
+
+  const handleTablePress = (table: Table) => {
+    console.log('Table pressed:', table);
+    // Implement your table press logic here
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>New Floorplan</Text>
-
         <TextInput
           style={styles.input}
           value={floorPlanName}
@@ -79,23 +152,33 @@ const NewFloorplanScreen = () => {
       </View>
 
       <Canvas style={styles.canvas}>
-        <Scene />
+        <Scene tables={tables} onTablePress={handleTablePress} />
       </Canvas>
-      {!showToolbar ? (
-        <TouchableOpacity
-          style={styles.floatingButton}
-          onPress={() => setShowToolbar(true)}
-        >
-          <FontAwesomeIcon icon={faPlus} color="#fff" size={20} />
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={[styles.floatingButton, { backgroundColor: COLORS.danger }]}
-          onPress={() => setShowToolbar(false)}
-        >
-          <FontAwesomeIcon icon={faX} color="#fff" size={20} />
-        </TouchableOpacity>
-      )}
+      <View style={styles.toolbarContainer}>
+        {!showToolbar ? (
+          <TouchableOpacity
+            style={[styles.floatingButton, {bottom: 10, right: 5}]}
+            onPress={() => setShowToolbar(true)}
+          >
+            <FontAwesomeIcon icon={faPlus} color="#fff" size={20} />
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.toolbarContent}>
+            <TouchableOpacity style={styles.svgButton} onPress={() => addTable('circle')}>
+              <CircleSvgComponent />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.svgButton} onPress={() => addTable('rectangle')}>
+              <RectSvgComponent />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.floatingButton, { backgroundColor: COLORS.danger }]}
+              onPress={() => setShowToolbar(false)}
+            >
+              <FontAwesomeIcon icon={faX} color="#fff" size={20} />
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </View>
   );
 };
@@ -105,10 +188,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F0F0F0",
   },
-  floatingButton: {
+  toolbarContainer: {
     position: "absolute",
     bottom: 20,
     right: 20,
+  },
+  toolbarContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 25,
+    padding: 5,
+  },
+  svgButton: {
+    marginRight: 5,
+  },
+  floatingButton: {
     backgroundColor: COLORS.success,
     padding: 16,
     borderRadius: 50,
@@ -138,21 +232,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
     backgroundColor: "#FFFFFF",
   },
-  saveButton: {
-    backgroundColor: "#4CAF50",
-    padding: 10,
-    borderRadius: 5,
-  },
   checkButton: {
     backgroundColor: "#4CAF50",
     padding: 8,
     borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
-  },
-  saveButtonText: {
-    color: "#FFFFFF",
-    fontWeight: "bold",
   },
   canvas: {
     flex: 1,

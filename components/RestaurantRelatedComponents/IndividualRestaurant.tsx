@@ -35,7 +35,7 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 		// instead of const categories = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		const categories: { [key: string]: MenuItem[] } = { Appetizers: [], Mains: [], Desserts: [], Other: [] };
 		menuItems?.forEach((item) => {
-			const category = item.category.CategoryID || 'Other';
+			const category = item?.category?.CategoryID || 'Other';
 			if (categories[category]) {
 				categories[category].push(item);
 			} else {
