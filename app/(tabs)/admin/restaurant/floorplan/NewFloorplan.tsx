@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck, faPlus, faX } from "@fortawesome/free-solid-svg-icons";
 import Svg, { Circle, Rect } from 'react-native-svg';
 import { Table } from "types/types";
+import { useLocalSearchParams } from "expo-router";
 
 function CircleSvgComponent(props: any) {
   return (
@@ -111,15 +112,19 @@ const NewFloorplanScreen = () => {
   const [floorPlanName, setFloorPlanName] = useState<string>("");
   const [showToolbar, setShowToolbar] = useState<boolean>(false);
   const [tables, setTables] = useState<Table[]>([]);
+  const { restaurantId } = useLocalSearchParams()
 
   const handleSave = () => {
     console.log(`Saved: ${floorPlanName}`);
-    // Implement your save logic here
+    const data = {
+      name: floorPlanName,
+      tables: tables,
+    }
+    console.log('Data:', data);
   };
 
   const addTable = (shape: string) => {
     const newTable: Table = {
-      id: Date.now(), 
       min: 2,
       max: 4,
       shape: shape,

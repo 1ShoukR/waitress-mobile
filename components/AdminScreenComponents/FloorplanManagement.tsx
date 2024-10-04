@@ -26,7 +26,7 @@ export const FloorplanManagement = ({ restaurant }: { restaurant: Restaurant }) 
   );
 
   const addNewFloorplan = () => {
-    router.push('/admin/restaurant/floorplan/NewFloorplan');
+    router.push({pathname:'/admin/restaurant/floorplan/NewFloorplan', params: {restaurantId: restaurant.RestaurantId}}, );
   };
 
   return (
