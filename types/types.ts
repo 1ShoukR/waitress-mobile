@@ -276,12 +276,17 @@ export type Staff = {
     };
 
 export type Table = {
-	id: number;
+	tableId?: number;
 	min: number;
 	max: number;
 	shape: string;
 	x: number;
 	y: number;
+	locationDescription?: string;
+	floorplanId?: number;
+	restaurantId?: number;
+	reservationId?: number;
+
 };
 
 export type TableProps = {
