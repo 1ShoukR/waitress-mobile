@@ -16,6 +16,8 @@ import { faCheck, faPlus, faX } from "@fortawesome/free-solid-svg-icons";
 import Svg, { Circle, Rect } from 'react-native-svg';
 import { Table } from "types/types";
 import { useLocalSearchParams } from "expo-router";
+import client from "api/client";
+import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 function CircleSvgComponent(props: any) {
   return (
@@ -114,9 +116,11 @@ const NewFloorplanScreen = () => {
   const [showToolbar, setShowToolbar] = useState<boolean>(false);
   const [tables, setTables] = useState<Table[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const token = useAppSelector((state) => state.auth.apiToken)
+  console.log('Token:', token);
   const { restaurantId } = useLocalSearchParams()
 
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log(`Saved: ${floorPlanName} to restaurant ${restaurantId}`);
     if (!floorPlanName || floorPlanName === ' ') {
       alert('Please provde a label for the floorplan.')
@@ -126,6 +130,9 @@ const NewFloorplanScreen = () => {
       tables: tables,
       restaurantId: restaurantId
     }
+    console.log('Data:', data);
+    const response = await client.post(`/api/restaurant/${restaurantId}/floorplan/new`, JSON.stringify(data), token )
+    console.log('Response:', response);
     console.log('Data:', data);
   };
 
