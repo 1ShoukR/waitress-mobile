@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Canvas, useThree, useFrame, ThreeEvent } from "@react-three/fiber/native";
 import { OrthographicCamera } from "@react-three/drei/native";
-import { OrthographicCamera as ThreeOrthographicCamera, Vector3, Raycaster } from "three";
+import { OrthographicCamera as ThreeOrthographicCamera, Vector3, Raycaster, Vector2, Mesh } from "three";
 import { COLORS } from "../../../../../constants";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCheck, faPlus, faX } from "@fortawesome/free-solid-svg-icons";
@@ -46,13 +46,14 @@ const Grid = ({ size, divisions }: { size: number; divisions: number }) => {
 
 const InteractiveShape = ({ table, onPress }: {table: Table, onPress: (table: Table) => void}) => {
   const { raycaster, camera, size } = useThree();
-  const mesh = useRef();
+  const mesh = useRef<Mesh>(null);
 
   const handlePress = useCallback((event: ThreeEvent<PointerEvent>) => {
     event.stopPropagation();
     const x = (event.clientX / size.width) * 2 - 1;
     const y = -(event.clientY / size.height) * 2 + 1;
-    raycaster.setFromCamera({ x, y }, camera);
+    const pointer = new Vector2(x, y);
+    raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObject(mesh?.current!);
     if (mesh.current) {
       if (intersects.length > 0) {
@@ -102,7 +103,7 @@ const Scene = ({ tables, onTablePress }: {tables: Table[], onTablePress: (table:
       <ambientLight intensity={0.5} />
       <Grid size={20} divisions={26} />
       {tables.map((table) => (
-        <InteractiveShape key={table.id} table={table} onPress={onTablePress} />
+        <InteractiveShape key={table.floorplanId} table={table} onPress={onTablePress} />
       ))}
     </>
   );
@@ -112,13 +113,18 @@ const NewFloorplanScreen = () => {
   const [floorPlanName, setFloorPlanName] = useState<string>("");
   const [showToolbar, setShowToolbar] = useState<boolean>(false);
   const [tables, setTables] = useState<Table[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const { restaurantId } = useLocalSearchParams()
 
   const handleSave = () => {
-    console.log(`Saved: ${floorPlanName}`);
+    console.log(`Saved: ${floorPlanName} to restaurant ${restaurantId}`);
+    if (!floorPlanName || floorPlanName === ' ') {
+      alert('Please provde a label for the floorplan.')
+    }
     const data = {
       name: floorPlanName,
       tables: tables,
+      restaurantId: restaurantId
     }
     console.log('Data:', data);
   };
@@ -136,6 +142,7 @@ const NewFloorplanScreen = () => {
 
   const handleTablePress = (table: Table) => {
     console.log('Table pressed:', table);
+    setShowModal(true);
     // Implement your table press logic here
   };
 
@@ -151,7 +158,7 @@ const NewFloorplanScreen = () => {
         />
         <View style={styles.inputContainer}>
           <TouchableOpacity style={styles.checkButton} onPress={handleSave}>
-            <FontAwesomeIcon icon={faCheck} color="#fff" size={15} />
+            <Text style={{color: COLORS.white, fontWeight: 'bold'}}>Save</Text>
           </TouchableOpacity>
         </View>
       </View>
