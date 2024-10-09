@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Modal,
 } from "react-native";
 import { Canvas, useThree, useFrame, ThreeEvent } from "@react-three/fiber/native";
 import { OrthographicCamera } from "@react-three/drei/native";
@@ -32,6 +33,46 @@ function RectSvgComponent(props: any) {
     <Svg height="60" width="60" viewBox="0 0 100 100" {...props}>
       <Rect x="15" y="15" width="70" height="70" stroke="red" strokeWidth="2" fill="white" />
     </Svg>
+  );
+}
+
+const TableModal = ({ visible, onClose, onSave, onDelete, table }: { visible: boolean, onClose: () => void, onSave: (min: number, max: number) => void, onDelete: () => void, table: Table | null }) => {
+  const [min, setMin] = useState(table?.min?.toString() || "");
+  const [max, setMax] = useState(table?.max?.toString() || "");
+
+  return (
+    <Modal visible={visible} transparent animationType="fade">
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalText}>Table Details</Text>
+          <TextInput
+            style={styles.modalInput}
+            placeholder="Min"
+            value={min}
+            onChangeText={setMin}
+            keyboardType="numeric"
+          />
+          <TextInput
+            style={styles.modalInput}
+            placeholder="Max"
+            value={max}
+            onChangeText={setMax}
+            keyboardType="numeric"
+          />
+          <View style={styles.modalButtonContainer}>
+            <TouchableOpacity style={styles.modalButton} onPress={() => onSave(parseInt(min), parseInt(max))}>
+              <Text style={styles.modalButtonText}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.modalButton} onPress={onDelete}>
+              <Text style={styles.modalButtonText}>Delete</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Text style={styles.closeButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
   );
 }
 
@@ -116,6 +157,7 @@ const NewFloorplanScreen = () => {
   const [showToolbar, setShowToolbar] = useState<boolean>(false);
   const [tables, setTables] = useState<Table[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const token = useAppSelector((state) => state.auth.apiToken)
   console.log('Token:', token);
   const { restaurantId } = useLocalSearchParams()
@@ -149,8 +191,31 @@ const NewFloorplanScreen = () => {
 
   const handleTablePress = (table: Table) => {
     console.log('Table pressed:', table);
+    setSelectedTable(table);
     setShowModal(true);
-    // Implement your table press logic here
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedTable(null);
+  };
+
+  const handleSaveTable = (min: number, max: number) => {
+    if (selectedTable) {
+      const updatedTables = tables.map(table => 
+        table === selectedTable ? { ...table, min, max } : table
+      );
+      setTables(updatedTables);
+    }
+    handleCloseModal();
+  };
+
+  const handleDeleteTable = () => {
+    if (selectedTable) {
+      const updatedTables = tables.filter(table => table !== selectedTable);
+      setTables(updatedTables);
+    }
+    handleCloseModal();
   };
 
   return (
@@ -198,6 +263,13 @@ const NewFloorplanScreen = () => {
           </View>
         )}
       </View>
+      <TableModal
+        visible={showModal}
+        onClose={handleCloseModal}
+        onSave={handleSaveTable}
+        onDelete={handleDeleteTable}
+        table={selectedTable}
+      />
     </View>
   );
 };
@@ -260,6 +332,55 @@ const styles = StyleSheet.create({
   },
   canvas: {
     flex: 1,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
+  modalText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
+  modalButton: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  modalButtonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  closeButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    textAlign: 'center',
   },
 });
 
