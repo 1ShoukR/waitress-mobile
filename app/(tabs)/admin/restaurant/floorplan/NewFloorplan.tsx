@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 function CircleSvgComponent(props: any) {
   return (
+    // TODO: Refine circle to be better looking
     <Svg height="60" width="60" viewBox="0 0 100 100" {...props}>
       <Circle cx="50" cy="50" r="45" stroke="black" strokeWidth="2.5" fill="white" />
     </Svg>
@@ -30,6 +31,7 @@ function CircleSvgComponent(props: any) {
 
 function RectSvgComponent(props: any) {
   return (
+    //  TODO: Refine square to be better looking
     <Svg height="60" width="60" viewBox="0 0 100 100" {...props}>
       <Rect x="15" y="15" width="70" height="70" stroke="red" strokeWidth="2" fill="white" />
     </Svg>
@@ -41,21 +43,25 @@ const TableModal = ({ visible, onClose, onSave, onDelete, table }: { visible: bo
   const [max, setMax] = useState(table?.max?.toString() || "");
 
   return (
+    // TODO: make it to where individual table min and max clear when modal is closed
+    // TODO: Refine the modal to be more visually appealing
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalText}>Table Details</Text>
           <TextInput
             style={styles.modalInput}
-            placeholder="Min"
+            placeholder={`Current Min: ${table?.min}`}
+            placeholderTextColor={COLORS.gray}
             value={min}
             onChangeText={setMin}
             keyboardType="numeric"
           />
           <TextInput
             style={styles.modalInput}
-            placeholder="Max"
+            placeholder={`Current Max: ${table?.max}`}
             value={max}
+            placeholderTextColor={COLORS.gray}
             onChangeText={setMax}
             keyboardType="numeric"
           />
@@ -77,8 +83,9 @@ const TableModal = ({ visible, onClose, onSave, onDelete, table }: { visible: bo
 }
 
 const Grid = ({ size, divisions }: { size: number; divisions: number }) => {
-  const stretchedSize = size * 1.3;
+  const stretchedSize = size * 1.45;
   return (
+    // TODO: There is an issue where the bottom of the grid seeps through shapes. Need to fix
     <gridHelper
       args={[stretchedSize, divisions, COLORS.black, COLORS.gray]}
       rotation={[Math.PI / 2.5, 0, 0]}
@@ -163,6 +170,10 @@ const NewFloorplanScreen = () => {
   const { restaurantId } = useLocalSearchParams()
 
   const handleSave = async () => {
+    // TODO: Add validation to make sure floorplan name is not empty
+    // TODO: Add validation to make sure tables are not empty
+    // TODO: Make sure tables have a isReserved property
+    // TODO: Create custom toast component to show success or error messages
     console.log(`Saved: ${floorPlanName} to restaurant ${restaurantId}`);
     if (!floorPlanName || floorPlanName === ' ') {
       alert('Please provde a label for the floorplan.')
@@ -202,6 +213,7 @@ const NewFloorplanScreen = () => {
 
   const handleSaveTable = (min: number, max: number) => {
     if (selectedTable) {
+      console.log('Table:', selectedTable);
       const updatedTables = tables.map(table => 
         table === selectedTable ? { ...table, min, max } : table
       );
@@ -247,6 +259,7 @@ const NewFloorplanScreen = () => {
             <FontAwesomeIcon icon={faPlus} color="#fff" size={20} />
           </TouchableOpacity>
         ) : (
+          // TODO: Add more shapes to the toolbar, specifically windows, walls, and doorts
           <View style={styles.toolbarContent}>
             <TouchableOpacity style={styles.svgButton} onPress={() => addTable('circle')}>
               <CircleSvgComponent />
