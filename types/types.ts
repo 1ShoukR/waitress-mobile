@@ -286,6 +286,7 @@ export type Table = {
 	floorplanId?: number;
 	restaurantId?: number;
 	reservationId?: number;
+	isReserved?: boolean;
 
 };
 
