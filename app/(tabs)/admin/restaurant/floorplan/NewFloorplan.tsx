@@ -1,12 +1,11 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  Dimensions,
   Modal,
+  StyleSheet,
 } from "react-native";
 import { Canvas, useThree, useFrame, ThreeEvent } from "@react-three/fiber/native";
 import { OrthographicCamera } from "@react-three/drei/native";
@@ -22,7 +21,6 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 
 function CircleSvgComponent(props: any) {
   return (
-    // TODO: Refine circle to be better looking
     <Svg height="60" width="60" viewBox="0 0 100 100" {...props}>
       <Circle cx="50" cy="50" r="45" stroke="black" strokeWidth="2.5" fill="white" />
     </Svg>
@@ -31,42 +29,67 @@ function CircleSvgComponent(props: any) {
 
 function RectSvgComponent(props: any) {
   return (
-    //  TODO: Refine square to be better looking
     <Svg height="60" width="60" viewBox="0 0 100 100" {...props}>
       <Rect x="15" y="15" width="70" height="70" stroke="red" strokeWidth="2" fill="white" />
     </Svg>
   );
 }
 
-const TableModal = ({ visible, onClose, onSave, onDelete, table }: { visible: boolean, onClose: () => void, onSave: (min: number, max: number) => void, onDelete: () => void, table: Table | null }) => {
-  const [min, setMin] = useState(table?.min?.toString() || "");
-  const [max, setMax] = useState(table?.max?.toString() || "");
+const TableModal = ({ visible, onClose, onSave, onDelete, table }: { 
+  visible: boolean, 
+  onClose: () => void, 
+  onSave: (tableId: number | undefined, min: number, max: number, locationDescription: string) => void, 
+  onDelete: () => void, 
+  table: Table | null 
+}) => {
+  const [localMin, setLocalMin] = useState("");
+  const [localMax, setLocalMax] = useState("");
+  const [localDescription, setLocalDescription] = useState("");
+
+  useEffect(() => {
+    if (table) {
+      setLocalMin(table.min.toString());
+      setLocalMax(table.max.toString());
+      setLocalDescription(table.locationDescription || "");
+    }
+  }, [table]);
+
+  const handleSave = () => {
+    if (table) {
+      onSave(table.tableId, parseInt(localMin), parseInt(localMax), localDescription);
+    }
+  };
 
   return (
-    // TODO: make it to where individual table min and max clear when modal is closed
-    // TODO: Refine the modal to be more visually appealing
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalText}>Table Details</Text>
           <TextInput
             style={styles.modalInput}
-            placeholder={`Current Min: ${table?.min}`}
+            placeholder="Minimum Capacity"
             placeholderTextColor={COLORS.gray}
-            value={min}
-            onChangeText={setMin}
+            value={localMin}
+            onChangeText={setLocalMin}
             keyboardType="numeric"
           />
           <TextInput
             style={styles.modalInput}
-            placeholder={`Current Max: ${table?.max}`}
-            value={max}
+            placeholder="Maximum Capacity"
             placeholderTextColor={COLORS.gray}
-            onChangeText={setMax}
+            value={localMax}
+            onChangeText={setLocalMax}
             keyboardType="numeric"
           />
+          <TextInput
+            style={styles.modalInput}
+            placeholder="Location Description"
+            placeholderTextColor={COLORS.gray}
+            value={localDescription}
+            onChangeText={setLocalDescription}
+          />
           <View style={styles.modalButtonContainer}>
-            <TouchableOpacity style={styles.modalButton} onPress={() => onSave(parseInt(min), parseInt(max))}>
+            <TouchableOpacity style={styles.modalButton} onPress={handleSave}>
               <Text style={styles.modalButtonText}>Save</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.modalButton} onPress={onDelete}>
@@ -85,7 +108,6 @@ const TableModal = ({ visible, onClose, onSave, onDelete, table }: { visible: bo
 const Grid = ({ size, divisions }: { size: number; divisions: number }) => {
   const stretchedSize = size * 1.45;
   return (
-    // TODO: There is an issue where the bottom of the grid seeps through shapes. Need to fix
     <gridHelper
       args={[stretchedSize, divisions, COLORS.black, COLORS.gray]}
       rotation={[Math.PI / 2.5, 0, 0]}
@@ -105,11 +127,6 @@ const InteractiveShape = ({ table, onPress }: {table: Table, onPress: (table: Ta
     const pointer = new Vector2(x, y);
     raycaster.setFromCamera(pointer, camera);
     const intersects = raycaster.intersectObject(mesh?.current!);
-    if (mesh.current) {
-      if (intersects.length > 0) {
-        onPress(table);
-      }
-    }
     if (intersects.length > 0) {
       onPress(table);
     }
@@ -153,7 +170,7 @@ const Scene = ({ tables, onTablePress }: {tables: Table[], onTablePress: (table:
       <ambientLight intensity={0.5} />
       <Grid size={20} divisions={26} />
       {tables.map((table) => (
-        <InteractiveShape key={table.floorplanId} table={table} onPress={onTablePress} />
+        <InteractiveShape key={table.tableId} table={table} onPress={onTablePress} />
       ))}
     </>
   );
@@ -166,27 +183,33 @@ const NewFloorplanScreen = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
   const token = useAppSelector((state) => state.auth.apiToken)
-  console.log('Token:', token);
   const { restaurantId } = useLocalSearchParams()
 
   const handleSave = async () => {
-    // TODO: Add validation to make sure floorplan name is not empty
-    // TODO: Add validation to make sure tables are not empty
-    // TODO: Make sure tables have a isReserved property
-    // TODO: Create custom toast component to show success or error messages
-    console.log(`Saved: ${floorPlanName} to restaurant ${restaurantId}`);
-    if (!floorPlanName || floorPlanName === ' ') {
-      alert('Please provde a label for the floorplan.')
+    if (!floorPlanName || floorPlanName.trim() === '') {
+      alert('Please provide a label for the floorplan.');
+      return;
     }
+
+    if (tables.length === 0) {
+      alert('Please add at least one table to the floorplan.');
+      return;
+    }
+
     const data = {
       name: floorPlanName,
       tables: tables,
       restaurantId: restaurantId
     }
-    console.log('Data:', data);
-    const response = await client.post(`/api/restaurant/${restaurantId}/floorplan/new`, JSON.stringify(data), token )
-    console.log('Response:', response);
-    console.log('Data:', data);
+
+    try {
+      const response = await client.post(`/api/restaurant/${restaurantId}/floorplan/new`, JSON.stringify(data), token);
+      console.log('Response:', response);
+      // Handle successful save (e.g., show a success message, navigate to a different screen)
+    } catch (error) {
+      console.error('Error saving floorplan:', error);
+      alert('Failed to save floorplan. Please try again.');
+    }
   };
 
   const addTable = (shape: string) => {
@@ -195,13 +218,17 @@ const NewFloorplanScreen = () => {
       max: 4,
       shape: shape,
       x: Math.random() * 10 - 5, 
-      y: Math.random() * 10 - 5, 
+      y: Math.random() * 10 - 5,
+      locationDescription: "",
+      floorplanId: undefined,
+      restaurantId: Number(restaurantId),
+      isReserved: false,
+      tableId: Date.now() // Use a temporary unique identifier
     };
     setTables([...tables, newTable]);
   };
 
   const handleTablePress = (table: Table) => {
-    console.log('Table pressed:', table);
     setSelectedTable(table);
     setShowModal(true);
   };
@@ -211,20 +238,17 @@ const NewFloorplanScreen = () => {
     setSelectedTable(null);
   };
 
-  const handleSaveTable = (min: number, max: number) => {
-    if (selectedTable) {
-      console.log('Table:', selectedTable);
-      const updatedTables = tables.map(table => 
-        table === selectedTable ? { ...table, min, max } : table
-      );
-      setTables(updatedTables);
-    }
+  const handleSaveTable = (tableId: number | undefined, min: number, max: number, locationDescription: string) => {
+    const updatedTables = tables.map(table => 
+      table.tableId === tableId ? { ...table, min, max, locationDescription } : table
+    );
+    setTables(updatedTables);
     handleCloseModal();
   };
 
   const handleDeleteTable = () => {
     if (selectedTable) {
-      const updatedTables = tables.filter(table => table !== selectedTable);
+      const updatedTables = tables.filter(table => table.tableId !== selectedTable.tableId);
       setTables(updatedTables);
     }
     handleCloseModal();
@@ -259,7 +283,6 @@ const NewFloorplanScreen = () => {
             <FontAwesomeIcon icon={faPlus} color="#fff" size={20} />
           </TouchableOpacity>
         ) : (
-          // TODO: Add more shapes to the toolbar, specifically windows, walls, and doorts
           <View style={styles.toolbarContent}>
             <TouchableOpacity style={styles.svgButton} onPress={() => addTable('circle')}>
               <CircleSvgComponent />
