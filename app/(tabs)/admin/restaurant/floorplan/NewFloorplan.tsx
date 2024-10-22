@@ -182,6 +182,7 @@ const NewFloorplanScreen = () => {
   const [tables, setTables] = useState<Table[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [selectedTable, setSelectedTable] = useState<Table | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const token = useAppSelector((state) => state.auth.apiToken)
   const { restaurantId } = useLocalSearchParams()
 
@@ -201,11 +202,13 @@ const NewFloorplanScreen = () => {
       tables: tables,
       restaurantId: restaurantId
     }
+    console.log('Data:', data);
 
     try {
+      //TODO: Save the floorplan to the server
+      //TODO: when a status of 200 happens, navigage back to floorplan list
       const response = await client.post(`/api/restaurant/${restaurantId}/floorplan/new`, JSON.stringify(data), token);
       console.log('Response:', response);
-      // Handle successful save (e.g., show a success message, navigate to a different screen)
     } catch (error) {
       console.error('Error saving floorplan:', error);
       alert('Failed to save floorplan. Please try again.');
