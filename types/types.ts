@@ -290,6 +290,15 @@ export type Table = {
 
 };
 
+export type Floorplan = {
+	floorplanId: number;
+	restaurantId: number;
+	floorplanName: string;
+	tableCount: number;
+	tables: Table[];
+	
+}
+
 export type TableProps = {
 	id: number;
 	onSelect: (id: number) => void;
