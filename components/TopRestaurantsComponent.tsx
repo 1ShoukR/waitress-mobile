@@ -38,7 +38,7 @@ const TopRestaurantsComponent = ({
 						{item?.Categories?.map((category, index) => {
 							return (
 								<TouchableOpacity key={index} onPress={() => router.push(`/category/${category.CategoryID}`)}>
-									<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category.CategoryName}</Text>
+									<Text style={{ fontSize: 12, color: COLORS.secondary }}>{category?.CategoryName}</Text>
 								</TouchableOpacity>
 							);
 						})}
@@ -57,7 +57,7 @@ const TopRestaurantsComponent = ({
 				<FlatList
 					data={topRestaurants}
 					renderItem={renderItem}
-					keyExtractor={(item) => item.RestaurantId.toString()}
+					keyExtractor={(item) => item?.RestaurantId?.toString()}
 					horizontal
 					showsHorizontalScrollIndicator={false}
 				/>

@@ -82,15 +82,15 @@ export interface Reservation {
 }
 
 export interface MenuItem {
-	menuItemId: number;
-    restaurantId: number;
-    nameOfItem: string;
-    price: number;
-    isAvailable: boolean;
-    category: Category;
-    imageUrl: string;
-    description: string;
-    restaurant: Restaurant;
+	MenuID: number;
+    RestaurantId: number;
+    NameOfItem: string;
+    Price: number;
+    IsAvailable: boolean;
+    Category: Category;
+    ImageUrl: string;
+    Description: string;
+    Restaurant: Restaurant;
 }
 
 export interface Rating {
@@ -122,18 +122,6 @@ export interface Restaurant {
 	ImageURL?: string;
 	AverageRating?: number;
 	ReviewCount?: number;
-}
-
-export interface MenuItem {
-	Category: string;
-	Description: string;
-	ImageURL: string;
-	IsAvailable: boolean;
-	MenuID: number;
-	NameOfItem: string;
-	Price: number;
-	Restaurant: RestaurantSummary;
-	RestaurantID: number;
 }
 
 export interface RestaurantSummary {
@@ -278,3 +266,42 @@ export type DarkmodeRequest = boolean
 export interface MenuItemResponse {
 	MenuItem: MenuItem;
 };
+
+export type Staff = {
+    id: string;
+    name: string;
+    role: string;
+    status: string;
+    totalTips: number;
+    };
+
+export type Table = {
+	tableId?: number;
+	min: number;
+	max: number;
+	shape: string;
+	x: number;
+	y: number;
+	locationDescription?: string;
+	floorplanId?: number;
+	restaurantId?: number;
+	reservationId?: number;
+	isReserved?: boolean;
+
+};
+
+export type Floorplan = {
+	floorplanId: number;
+	restaurantId: number;
+	floorplanName: string;
+	tableCount: number;
+	tables: Table[];
+	
+}
+
+export type TableProps = {
+	id: number;
+	onSelect: (id: number) => void;
+	x: number;
+	y: number;
+  };

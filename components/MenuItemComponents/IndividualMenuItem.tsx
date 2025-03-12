@@ -44,9 +44,9 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 			updateOrderItem({
 				itemName: menuItem.NameOfItem,
 				quantity: quantity,
-				price: Number((quantity * menuItem.Price).toFixed(2)),
+				price: Number((quantity * menuItem?.Price)?.toFixed(2)),
 				restaurant: singleRestaurant!,
-				imageUrl: menuItem.ImageURL || placeholderImage,
+				imageUrl: menuItem?.ImageUrl || placeholderImage,
 			})
 		);
 		toast.show('Added to Order!', {
@@ -69,19 +69,19 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 		<>
 			<ScrollView>
 				<View style={styles.cardContainer}>
-					{menuItem.ImageURL ? (
+					{menuItem?.ImageUrl ? (
 						<Image
 							source={{
-								uri: menuItem.ImageURL,
+								uri: menuItem?.ImageUrl,
 							}}
 							style={[styles.image, { width: screenWidth, height: screenWidth / 1.8 }]}
 						/>
 					) : null}
 					<View style={styles.textContainer}>
-						<Text style={styles.itemName}>{menuItem.NameOfItem}</Text>
-						<Text style={styles.itemPrice}>${menuItem.Price}</Text>
+						<Text style={styles.itemName}>{menuItem?.NameOfItem}</Text>
+						<Text style={styles.itemPrice}>${menuItem?.Price}</Text>
 					</View>
-					<Text style={styles.itemDescription}>{menuItem.Description}</Text>
+					<Text style={styles.itemDescription}>{menuItem?.Description}</Text>
 					<View style={styles.quantityContainer}>
 						<Text style={{ marginTop: 12, fontSize: 15, paddingLeft: 10 }}>How many would you like?</Text>
 						<View style={{ paddingRight: 10 }}>
@@ -105,7 +105,7 @@ const IndividualMenuItem = ({ menuItem }: { menuItem: MenuItem }): React.JSX.Ele
 				<TouchableOpacity onPress={handleAddToOrder}>
 					<View style={styles.addToBagButton}>
 						<Text style={styles.addToBagText}>Add to Order</Text>
-						<Text style={styles.addToBagTotal}>{`${quantity}x $${(quantity * menuItem.Price).toFixed(2)}`}</Text>
+						<Text style={styles.addToBagTotal}>{`${quantity}x $${(quantity * menuItem.Price)?.toFixed(2)}`}</Text>
 					</View>
 				</TouchableOpacity>
 			</Animated.View>

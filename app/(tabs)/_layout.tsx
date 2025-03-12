@@ -6,7 +6,7 @@ import { Tabs, useRouter } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { setLastTab } from '../../redux/authSlice';
 import { COLORS } from '../../constants';
-import { setShowAccountTabBackButton } from '../../redux/routesSlice';
+import { setShowAccountTabBackButton, setShowAdminTabBackButton } from '../../redux/routesSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useAppSelector } from 'redux/hooks';
@@ -19,6 +19,7 @@ const TabLayout = () => {
 	const [isAdmin, setIsAdmin] = useState<boolean>(authType === 'admin' || authType === 'manager' || authType === 'owner' || authType === 'dev');
 	const [fadeAnim] = useState<Animated.Value>(new Animated.Value(0));
 	const setTabHeaderButtonAccountScreen = useAppSelector((state) => state?.routes?.showAccountTabBackButton);
+	const setAdminTabHeaderButton = useAppSelector((state) => state?.routes?.showAdminTabBackButton);
 
 	useEffect(() => {
 		if (setTabHeaderButtonAccountScreen) {
@@ -31,6 +32,18 @@ const TabLayout = () => {
 			fadeAnim.setValue(0);
 		}
 	}, [setTabHeaderButtonAccountScreen]);
+
+	useEffect(() => {
+		if (setAdminTabHeaderButton) {
+			Animated.timing(fadeAnim, {
+				toValue: 1,
+				duration: 500,
+				useNativeDriver: true,
+			}).start();
+		} else {
+			fadeAnim.setValue(0);
+		}
+	}, [setAdminTabHeaderButton]);
 
 	return (
 		<Tabs
@@ -121,14 +134,31 @@ const TabLayout = () => {
 			/>
 			{isAdmin && (
 				<Tabs.Screen
-					name="admin/AdminTab"
+					name="admin"
 					options={{
 						headerStyle: {
 							backgroundColor: COLORS.primary,
 						},
-						title: 'Admin',
+						title: 'Admin Dashboard',
 						headerTitleStyle: {
 							color: globalDarkmode ? COLORS.lightModeText : COLORS.black,
+						},
+						headerLeft: () => {
+							if (setAdminTabHeaderButton) {
+								return (
+									<Animated.View style={{ opacity: fadeAnim }}>
+										<TouchableOpacity
+											onPress={() => {
+												dispatch(setShowAdminTabBackButton(false));
+												router.back();
+											}}>
+											<FontAwesomeIcon style={{ marginLeft: 15, padding: 10 }} size={29} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} icon={faArrowLeft} />
+										</TouchableOpacity>
+									</Animated.View>
+								);
+							} else {
+								return null;
+							}
 						},
 						tabBarLabel: ({ focused, color }) => (
 							<Text
