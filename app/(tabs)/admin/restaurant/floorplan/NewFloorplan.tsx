@@ -1,3 +1,9 @@
+/* 
+
+THIS PAGE IS DEPRICATED
+
+*/
+
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   View,
