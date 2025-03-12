@@ -82,15 +82,15 @@ export interface Reservation {
 }
 
 export interface MenuItem {
-	menuItemId: number;
-    restaurantId: number;
-    nameOfItem: string;
-    price: number;
-    isAvailable: boolean;
-    category: Category;
-    imageUrl: string;
-    description: string;
-    restaurant: Restaurant;
+	MenuID: number;
+    RestaurantId: number;
+    NameOfItem: string;
+    Price: number;
+    IsAvailable: boolean;
+    Category: Category;
+    ImageUrl: string;
+    Description: string;
+    Restaurant: Restaurant;
 }
 
 export interface Rating {
