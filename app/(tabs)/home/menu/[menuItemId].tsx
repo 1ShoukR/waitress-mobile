@@ -36,7 +36,7 @@ const MenuItemDetails = (): React.JSX.Element => {
 			<>
 				<Stack.Screen
 					options={{
-						title: `${menuItem?.nameOfItem ? menuItem.nameOfItem : 'Loading'}`,
+						title: `${menuItem?.NameOfItem ? menuItem.NameOfItem : 'Loading'}`,
 						headerStyle: {
 							backgroundColor: COLORS.primary,
 						},
@@ -73,7 +73,7 @@ const MenuItemDetails = (): React.JSX.Element => {
 	return (
 		<>
 		<Stack.Screen  options={{
-			title: `${menuItem.nameOfItem}`,
+			title: `${menuItem.NameOfItem}`,
 			headerStyle: {
 				backgroundColor: COLORS.primary,
 			},
