@@ -25,8 +25,8 @@ export const FloorplanManagement = ({ restaurant }: { restaurant: Restaurant }) 
     </Link>
   );
 
-  const addNewFloorplan = () => {
-    router.push({pathname:'/admin/restaurant/floorplan/NewFloorplan', params: {restaurantId: restaurant.RestaurantId}}, );
+  const goToFloorplan = () => {
+    router.push({pathname:'/admin/restaurant/floorplan/ManageFloorplan', params: {restaurantId: restaurant.RestaurantId}}, );
   };
 
   return (
@@ -38,8 +38,8 @@ export const FloorplanManagement = ({ restaurant }: { restaurant: Restaurant }) 
         keyExtractor={(item) => item.id}
         style={styles.floorplanList}
       />
-      <TouchableOpacity style={styles.addButton} onPress={addNewFloorplan}>
-        <Text style={styles.addButtonText}>+ Add New Floorplan</Text>
+      <TouchableOpacity style={styles.addButton} onPress={goToFloorplan}>
+        <Text style={styles.addButtonText}>Manage Floorplans</Text>
       </TouchableOpacity>
     </View>
   );
