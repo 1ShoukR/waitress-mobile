@@ -7,8 +7,9 @@ import { COLORS } from '../../constants';
 import { router } from 'expo-router';
 import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import { MenuItem } from 'types/types';
+import client from 'api/client';
 
-const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[] | undefined }): React.JSX.Element => {
+const IndividualRestaurant = ({ restaurantId }: { restaurantId: string  }): React.JSX.Element => {
 	const dispatch = useAppDispatch();
 	const singleRestaurant = useAppSelector((state) => state?.restaurant?.singleRestaurant);
 	const placeholderImage = 'https://via.placeholder.com/150';
@@ -45,6 +46,14 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 		return categories;
 	};
 
+	const addToFavorites = () => {
+		const payload = {
+			restaurantId: restaurantId,
+			apiToken: apiToken,
+		}
+		// POST to addToFavortise route
+	}
+
 	const categorizedMenuItems: {[key: string]: MenuItem[]} = singleRestaurant ? categorizeMenuItems(singleRestaurant.MenuItems!) : {};
 	const categoryOrder: string[] = ['Appetizers', 'Mains', 'Desserts', 'Other'];
 
@@ -77,9 +86,14 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string | string[
 									<View style={styles.separator} />
 									<View style={styles.tablesContainer}>
 										<Text style={styles.tableNumber}>{`Available Tables: ${singleRestaurant.NumberOfTables}`}</Text>
-										<TouchableOpacity onPress={() => router.push(`/home/reserve/ReserveScreen`)} style={styles.reserveButton}>
-											<Text style={styles.reserveButtonText}>Reserve Now</Text>
-										</TouchableOpacity>
+											<View style={styles.reserveButtonContent}>
+												<TouchableOpacity onPress={addToFavorites} >
+													<FontAwesome name="star-o" size={24}  style={styles.reserveButtonIcon} />
+												</TouchableOpacity>
+												<TouchableOpacity onPress={() => router.push(`/home/reserve/ReserveScreen`)} style={styles.reserveButton}>
+														<Text style={styles.reserveButtonText}>Reserve Now</Text>
+												</TouchableOpacity>
+											</View>
 									</View>
 									<View style={styles.separator} />
 									<View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -220,10 +234,18 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		borderRadius: 5,
 	},
+	reserveButtonContent: {
+		flexDirection: 'row',
+		alignItems: 'center',
+	},
 	reserveButtonText: {
 		color: COLORS.lightModeText,
 		fontSize: 14,
 		fontWeight: 'bold',
+		marginRight: 5,
+	},
+	reserveButtonIcon: {
+		marginRight: 10,
 	},
 	loadingText: {
 		color: COLORS.lightModeText,
