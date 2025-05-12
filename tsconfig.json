@@ -23,7 +23,8 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedIndexedAccess": true,
 		"resolveJsonModule": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"useUnknownInCatchVariables": false,
 	},
 	"include": ["app/**/*", "api/**/*", "assets/**/*", "components/**/*", "constants/**/*", "patches/**/*", "redux/**/*", "styles/**/*", "types/**/*", "lib/**/*", "svg.d.ts", "env.d.ts"],
 	"exclude": ["node_modules", "android", ".expo", ".expo-shared"],
