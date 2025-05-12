@@ -53,13 +53,13 @@ const handleAddressSubmit = async () => {
 		if (results.length > 0) {
 			dispatch(
 				updateUserLocation({
-					latitude: results[0].latitude,
-					longitude: results[0].longitude,
+					latitude: results[0]!.latitude,
+					longitude: results[0]!.longitude,
 					address: userAddress,
 					userId: user.userId, // Ensure userId is available
 				})
 			);
-			setUserLocation({ latitude: results[0].latitude, longitude: results[0].longitude, address: userAddress });
+			setUserLocation({ latitude: results[0]!.latitude, longitude: results[0]!.longitude, address: userAddress });
 			setUserAddress(userAddress);
 			setShowAddressInput(false);
 		} else {
