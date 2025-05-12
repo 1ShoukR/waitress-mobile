@@ -41,6 +41,24 @@ const HomeLayout = (): React.JSX.Element => {
                                 )
                             }
                             }} />
+					<Stack.Screen name="FavoriteScreen" options={{ 
+                        headerStyle: {
+                            backgroundColor: COLORS.primary
+                            }, 
+                            headerTitleStyle: {
+                                color: globalDarkmode ? COLORS.lightModeText : COLORS.black
+                                },
+                            headerShown: true, title: 'Favorites', 
+                            headerLeft: () => {
+                                return (
+                                    <TouchableOpacity onPress={() => {
+                                        router.back();
+                                    }}>
+                                            <FontAwesomeIcon style={ Platform.OS == "android" ? {marginRight: 10} : {marginRight: 0}} icon={faArrowLeft} color={globalDarkmode ? COLORS.lightModeText : COLORS.black} />
+                                    </TouchableOpacity>
+                                )
+                            }
+                            }} />
                     <Stack.Screen name="restaurant/[restaurantId]" options={{ 
                         headerStyle: {
                             backgroundColor: COLORS.primary

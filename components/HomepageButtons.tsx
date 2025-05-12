@@ -17,7 +17,7 @@ const HomepageButtons = (): React.JSX.Element => {
 						<Platter style={{ left: 15,  }} height={26} width={26} />
 					</View>
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.button}>
+				<TouchableOpacity style={styles.button} onPress={() => router.push('/home/FavoriteScreen')}>
 					<View style={styles.buttonContent}>
 						<Text style={[styles.buttonText, { fontSize: 14, marginRight: 20 }]}>Favorites</Text>
 						<Fontisto style={{ left: 15, color: COLORS.lightModeText }} name="favorite" size={24} color="black" />
