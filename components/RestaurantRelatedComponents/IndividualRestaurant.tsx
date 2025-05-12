@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, View, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons';
 import { getSingleRestaurant } from '../../redux/thunk';
@@ -11,16 +11,41 @@ import client from 'api/client';
 
 const IndividualRestaurant = ({ restaurantId }: { restaurantId: string  }): React.JSX.Element => {
 	const dispatch = useAppDispatch();
+	const [loading, setLoading] = useState<boolean>(false);
+	const [isFavorite, setIsFavorite] = useState<boolean>(false);
 	const singleRestaurant = useAppSelector((state) => state?.restaurant?.singleRestaurant);
 	const placeholderImage = 'https://via.placeholder.com/150';
 	const apiToken = useAppSelector((state) => state.auth.apiToken);
-
+	const user = useAppSelector((state) => state.auth);
 	useEffect(() => {
 		if (restaurantId) {
 			let stringId: string = restaurantId?.toString();
 			dispatch(getSingleRestaurant({ restaurantId: stringId, apiToken: apiToken }));
 		}
 	}, [restaurantId]);
+
+	useEffect(() => {
+		// Check if restaurant is already a favorite
+		// NOTE: This is a temporary solution, we should use the backend to check if the restaurant is a favorite
+		// and then set the isFavorite state accordingly
+		// TODO: Remove this useEffect when we have a backend endpoint for checking if a restaurant is a favorite from getSingleRestaurant
+		const checkFavoriteStatus = async () => {
+			try {
+				const response = await client.get(`/api/restaurant/favorites/${user.userId}/check/${restaurantId}`);
+				if (response && typeof response === 'object' && 'data' in response) {
+					const data = response.data as { isFavorite: boolean };
+					setIsFavorite(data.isFavorite || false);
+				}
+			} catch (error) {
+				console.error('Error checking favorite status:', error);
+			}
+		};
+		
+		if (user.userId) {
+			checkFavoriteStatus();
+		}
+	}, [restaurantId, user.userId]);
+
 	// Render stars based on rating
 	const renderStars = (rating: number) => {
 		const stars = [];
@@ -46,13 +71,40 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string  }): Reac
 		return categories;
 	};
 
-	const addToFavorites = () => {
-		const payload = {
-			restaurantId: restaurantId,
-			apiToken: apiToken,
+	const addToFavorites = async () => {
+		setLoading(true);
+		try {
+			const response = await client.post(`/api/restaurant/favorites/${user.userId}/add/${restaurantId}`, null);
+			setIsFavorite(true);
+			// Handle success if needed
+		} catch (error) {
+			console.error('Error adding to favorites:', error);
+			// Handle error if needed
+		} finally {
+			setLoading(false);
 		}
-		// POST to addToFavortise route
 	}
+
+	const removeFromFavorites = async () => {
+		setLoading(true);
+		try {
+			const response = await client.post(`/api/restaurant/favorites/${user.userId}/remove/${restaurantId}`, null);
+		} catch (error) {
+			console.error('Error removing from favorites:', error);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	// Handle toggling favorite status
+	const toggleFavorite = async () => {
+		if (isFavorite) {
+			await removeFromFavorites();
+			setIsFavorite(false);
+		} else {
+			await addToFavorites();
+		}
+	};
 
 	const categorizedMenuItems: {[key: string]: MenuItem[]} = singleRestaurant ? categorizeMenuItems(singleRestaurant.MenuItems!) : {};
 	const categoryOrder: string[] = ['Appetizers', 'Mains', 'Desserts', 'Other'];
@@ -87,8 +139,17 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string  }): Reac
 									<View style={styles.tablesContainer}>
 										<Text style={styles.tableNumber}>{`Available Tables: ${singleRestaurant.NumberOfTables}`}</Text>
 											<View style={styles.reserveButtonContent}>
-												<TouchableOpacity onPress={addToFavorites} >
-													<FontAwesome name="star-o" size={24}  style={styles.reserveButtonIcon} />
+												<TouchableOpacity onPress={toggleFavorite} disabled={loading}>
+													{loading ? (
+														<ActivityIndicator size="small" color={COLORS.secondary} />
+													) : (
+														<FontAwesome 
+															name={isFavorite ? "star" : "star-o"} 
+															size={24}  
+															color={isFavorite ? COLORS.secondary : COLORS.gray600}
+															style={styles.reserveButtonIcon} 
+														/>
+													)}
 												</TouchableOpacity>
 												<TouchableOpacity onPress={() => router.push(`/home/reserve/ReserveScreen`)} style={styles.reserveButton}>
 														<Text style={styles.reserveButtonText}>Reserve Now</Text>
