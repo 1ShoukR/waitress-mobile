@@ -11,6 +11,8 @@ const TopRestaurantsComponent = ({
 	topRestaurants: Restaurant[], 
 	isLoading: boolean  
 }) => {
+	const restaurantsData = topRestaurants || [];
+
 	const renderStars = (rating: number): React.JSX.Element[] => {
 		const stars = [];
 		for (let i = 1; i <= 5; i++) {
@@ -30,8 +32,14 @@ const TopRestaurantsComponent = ({
 				<View style={styles.cardContent}>
 					<Text style={styles.restaurantName}>{item?.Name}</Text>
 					<View style={styles.ratingContainer}>
-						{renderStars(item?.Ratings!.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings!.length)}
-						<Text style={styles.ratingText}>{item?.Ratings!.length > 0 ? item?.Ratings!.length + ' Reviews' : item?.Ratings!.length + ' Review'}</Text>
+						{item?.Ratings && item.Ratings.length > 0 ? (
+							<>
+								{renderStars(item.Ratings.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings.length)}
+								<Text style={styles.ratingText}>{item.Ratings.length} {item.Ratings.length === 1 ? 'Review' : 'Reviews'}</Text>
+							</>
+						) : (
+							<Text style={styles.ratingText}>No reviews yet</Text>
+						)}
 					</View>
 					<Text style={styles.restaurantTags}>Tags</Text>
 					<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7, paddingBottom: 10 }}>
@@ -53,14 +61,18 @@ const TopRestaurantsComponent = ({
 			<Text style={styles.headerText}>Top Restaurants</Text>
 			{isLoading ? (
 				<ActivityIndicator size="large" />
-			) : (
+			) : restaurantsData.length > 0 ? (
 				<FlatList
-					data={topRestaurants}
+					data={restaurantsData}
 					renderItem={renderItem}
 					keyExtractor={(item) => item?.RestaurantId?.toString()}
 					horizontal
 					showsHorizontalScrollIndicator={false}
 				/>
+			) : (
+				<View style={styles.noDataContainer}>
+					<Text style={styles.noDataText}>No top restaurants found</Text>
+				</View>
 			)}
 		</>
 	);
@@ -135,5 +147,13 @@ const styles = StyleSheet.create({
 	restaurantDetails: {
 		fontSize: 12,
 		color: COLORS.secondary,
+	},
+	noDataContainer: {
+		alignItems: 'center',
+		paddingVertical: 20,
+	},
+	noDataText: {
+		fontSize: 16,
+		color: COLORS.gray,
 	},
 });

@@ -41,28 +41,35 @@ export const getLocalRestaurants = createAsyncThunk<Restaurant[], LocationData>(
 	const body = {
 		latitude: locationData.latitude,
 		longitude: locationData.longitude,
-		apiToken: locationData.apiToken,
 	};
-	const data = await client.post<Restaurant[]>('/api/restaurant/local', JSON.stringify(body), null, { headers: { 'Content-Type': 'application/json' } });
-	return data;
+	console.log('🔍 Fetching local restaurants with body:', body);
+	console.log('🔑 Using JWT token:', locationData.apiToken);
+	const data = await client.post<{restaurants: Restaurant[]}>('/api/restaurant/local', JSON.stringify(body), locationData.apiToken, { headers: { 'Content-Type': 'application/json' } });
+	console.log('📡 API Response for local restaurants:', data);
+	console.log('📊 Data type:', typeof data, 'Has restaurants array:', Array.isArray(data.restaurants));
+	// Extract the restaurants array from the response object
+	return data.restaurants || [];
 });
 
 export const getTopRestaurants = createAsyncThunk<Restaurant[], ApiKey>('restaurant/getTopRestaurants', async (requestData) => {
-	const body = {
-		apiToken: requestData.apiToken,
-	};
-	const data = await client.post<Restaurant[]>('/api/restaurant/top10restaurants/', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	return data;
+	const body = {};
+	console.log('🔍 Fetching top restaurants');
+	console.log('🔑 Using JWT token:', requestData.apiToken);
+	const data = await client.post<{restaurants: Restaurant[]}>('/api/restaurant/top10restaurants/', JSON.stringify(body), requestData.apiToken, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	console.log('📡 API Response for top restaurants:', data);
+	console.log('📊 Data type:', typeof data, 'Has restaurants array:', Array.isArray(data.restaurants));
+	// Extract the restaurants array from the response object
+	return data.restaurants || [];
 });
 
 export const getAllCategories = createAsyncThunk<Category[], ApiKey>('restaurant/getAllCategories', async (requestData) => {
-	const body = {
-		apiToken: requestData.apiToken,
-	};
-	const data = await client.post<Category[]>('/api/restaurant/categories/get-all', JSON.stringify(body), null, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	console.log(data);
+	const body = {};
+	console.log('🔍 Fetching categories');
+	console.log('🔑 Using JWT token:', requestData.apiToken);
+	const data = await client.post<Category[]>('/api/restaurant/categories/get-all', JSON.stringify(body), requestData.apiToken, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	console.log('📡 API Response for categories:', data);
 	return data;
-})
+});
 
 export const updateUserLocation = createAsyncThunk<UserLocation, UpdateUserLocationRequest>('user/updateUserLocation', async (requestData) => {
 	const body = {

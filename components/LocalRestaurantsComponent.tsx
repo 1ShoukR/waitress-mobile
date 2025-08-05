@@ -3,15 +3,25 @@ import { COLORS } from '../constants';
 import React, { memo } from 'react';
 import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { LocalRestaurantsResponse } from 'types/types';
+import { Restaurant } from 'types/types';
 
 const LocalRestaurantsComponent = ({ 
 	localRestaurants, isLoading 
 }: { 
-	localRestaurants: LocalRestaurantsResponse, 
+	localRestaurants: Restaurant[], 
 	isLoading: boolean
 }) => {
-	const localRestaurantsData = localRestaurants?.localRestaurants;
+	// Add fallback to ensure we always have an array to map over
+	const localRestaurantsData = localRestaurants || [];
+	
+	console.log('🏠 LocalRestaurantsComponent received:', {
+		'received type': typeof localRestaurants,
+		'is array': Array.isArray(localRestaurants),
+		'data length': localRestaurantsData.length,
+		'isLoading': isLoading,
+		'first restaurant name': localRestaurantsData[0]?.Name,
+		'sample data': localRestaurantsData.slice(0, 2)
+	});
 
 	const handlePress = (restaurantId: number): void => {
 		router.push(`/home/restaurant/${restaurantId}`);
@@ -32,15 +42,21 @@ const LocalRestaurantsComponent = ({
 				<ActivityIndicator size="large" />
 			) : (
 				<ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollViewContentContainer}>
-					{localRestaurantsData?.map((item) => (
+					{localRestaurantsData.length > 0 ? localRestaurantsData.map((item) => (
 						<TouchableOpacity key={item.RestaurantId} onPress={(): void => handlePress(item.RestaurantId)} style={styles.cardContainer}>
 							<View style={styles.card}>
 								<Image source={{ uri: item?.ImageURL }} style={styles.cardImage} />
 								<View style={styles.cardContent}>
 									<Text style={styles.restaurantName}>{item?.Name}</Text>
 									<View style={styles.ratingContainer}>
-										{renderStars(item?.Ratings!.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings!.length)}
-										<Text style={styles.ratingText}>{item?.Ratings!.length > 0 ? item?.Ratings!.length + ' Reviews' : item?.Ratings!.length + ' Review'}</Text>
+										{item?.Ratings && item.Ratings.length > 0 ? (
+											<>
+												{renderStars(item.Ratings.reduce((sum, review) => sum + review.Rating, 0) / item.Ratings.length)}
+												<Text style={styles.ratingText}>{item.Ratings.length} {item.Ratings.length === 1 ? 'Review' : 'Reviews'}</Text>
+											</>
+										) : (
+											<Text style={styles.ratingText}>No reviews yet</Text>
+										)}
 									</View>
 									<Text style={styles.restaurantTags}>Tags</Text>
 									<View style={{ flexDirection: 'row', gap: 7, paddingTop: 7, paddingBottom: 10 }}>
@@ -53,7 +69,11 @@ const LocalRestaurantsComponent = ({
 								</View>
 							</View>
 						</TouchableOpacity>
-					))}
+					)) : (
+						<View style={styles.noDataContainer}>
+							<Text style={styles.noDataText}>No local restaurants found</Text>
+						</View>
+					)}
 				</ScrollView>
 			)}
 		</>
@@ -129,5 +149,15 @@ const styles = StyleSheet.create({
 	restaurantDetails: {
 		fontSize: 12,
 		color: COLORS.secondary,
+	},
+	noDataContainer: {
+		alignItems: 'center',
+		paddingVertical: 20,
+		paddingHorizontal: 20,
+	},
+	noDataText: {
+		fontSize: 16,
+		color: COLORS.gray,
+		textAlign: 'center',
 	},
 });

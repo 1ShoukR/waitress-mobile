@@ -1,43 +1,126 @@
 import { View, Text,  StyleSheet } from 'react-native';
-import React, {useState} from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllCategories, getLocalRestaurants, getTopRestaurants } from '../redux/thunk';
+import React, { useState } from 'react';
+import { getAllCategories, getLocalRestaurants, getTopRestaurants, updateUserLocation } from '../redux/thunk';
+import * as Location from 'expo-location';
 import HomepageButtons from './HomepageButtons';
 import CategoriesComponent from './CategoriesComponent';
 import TopRestaurantsComponent from './TopRestaurantsComponent';
 import LocalRestaurantsComponent from './LocalRestaurantsComponent';
 import { COLORS } from '../constants';
-import { useAppDispatch, useAppSelector } from 'redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 
 const HomePageComponent = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const dispatch = useAppDispatch()
 	const user = useAppSelector((state) => state?.auth);
-	const localRestaurants = useAppSelector((state) => state?.restaurant)
+	const restaurantState = useAppSelector((state) => state?.restaurant);
+	const localRestaurants = useAppSelector((state) => state?.restaurant?.localRestaurants)
 	const topRestaurants = useAppSelector((state) => state?.restaurant?.topRestaurants)
 	const apiToken = useAppSelector((state) => state?.auth?.apiToken);
 	const foodCategories = useAppSelector((state) => state?.restaurant?.categories);
 
+	console.log('🏠 HomePageComponent Redux state:', {
+		'restaurant status': restaurantState?.status,
+		'restaurant error': restaurantState?.error,
+		'localRestaurants type': typeof localRestaurants,
+		'localRestaurants isArray': Array.isArray(localRestaurants),
+		'localRestaurants length': localRestaurants?.length,
+		'topRestaurants type': typeof topRestaurants,
+		'topRestaurants isArray': Array.isArray(topRestaurants),
+		'topRestaurants length': topRestaurants?.length,
+		'isLoading': isLoading,
+		'first local restaurant': localRestaurants?.[0]?.Name,
+		'first top restaurant': topRestaurants?.[0]?.Name
+	});
+
 	React.useEffect((): (() => void) => {
 		let isMounted: boolean = true;
-		const fetchData = async (): Promise<void> => {
+		
+		const requestLocationAndFetchData = async (): Promise<void> => {
 			setIsLoading(true);
+			
 			try {
-				const promises = [
-					dispatch(getLocalRestaurants({ latitude: user.latitude!, longitude: user.longitude!, apiToken: user.apiToken! })),
-					dispatch(getTopRestaurants({ apiToken: user.apiToken! })),
-					dispatch(getAllCategories({ apiToken: user.apiToken! })),
-				] as const;
-				await Promise.all(promises);
-			} catch (error: unknown) {
-				console.error('Error fetching data:', error);
+				// Step 1: Check if user already has location in Redux
+				if (!user.latitude || !user.longitude) {
+					console.log('🗺️ No location found in Redux, requesting location permission...');
+					
+					// Request location permission
+					const { status } = await Location.requestForegroundPermissionsAsync();
+					if (status !== 'granted') {
+						console.log('❌ Location permission denied');
+						// Continue with just top restaurants and categories (no local restaurants)
+						await fetchDataWithoutLocation();
+						return;
+					}
+					
+					console.log('✅ Location permission granted, getting current location...');
+					
+					// Get current location
+					const location = await Location.getCurrentPositionAsync({
+						accuracy: Location.Accuracy.Balanced,
+						timeInterval: 5000,
+					});
+					
+					console.log('📍 Current location obtained:', {
+						latitude: location.coords.latitude,
+						longitude: location.coords.longitude
+					});
+					
+					// Update Redux with current location
+					await dispatch(updateUserLocation({
+						latitude: location.coords.latitude,
+						longitude: location.coords.longitude,
+						address: user.address || 'Current Location',
+						userId: user.userId!
+					}));
+					
+					console.log('✅ Location saved to Redux, now fetching all data...');
+					
+					// Now fetch all data with location
+					await fetchAllData(location.coords.latitude, location.coords.longitude);
+				} else {
+					console.log('✅ User already has location, fetching data with existing coords');
+					await fetchAllData(user.latitude, user.longitude);
+				}
+			} catch (error) {
+				console.error('❌ Error getting location:', error);
+				// Fallback: fetch data without location (only top restaurants and categories)
+				await fetchDataWithoutLocation();
 			} finally {
 				if (isMounted) {
 					setIsLoading(false);
 				}
 			}
 		};
-		fetchData();
+		
+		const fetchAllData = async (latitude: number, longitude: number): Promise<void> => {
+			const promises = [
+				dispatch(getLocalRestaurants({ latitude, longitude, apiToken: user.apiToken! })),
+				dispatch(getTopRestaurants({ apiToken: user.apiToken! })),
+				dispatch(getAllCategories({ apiToken: user.apiToken! })),
+			] as const;
+			await Promise.all(promises);
+		};
+		
+		const fetchDataWithoutLocation = async (): Promise<void> => {
+			console.log('⚠️ Fetching data without location (no local restaurants)');
+			const promises = [
+				dispatch(getTopRestaurants({ apiToken: user.apiToken! })),
+				dispatch(getAllCategories({ apiToken: user.apiToken! })),
+			] as const;
+			await Promise.all(promises);
+		};
+
+		// Debug: Check user location data
+		console.log('🗺️ User location data:', {
+			hasLatitude: !!user.latitude,
+			hasLongitude: !!user.longitude,
+			latitude: user.latitude,
+			longitude: user.longitude,
+			hasApiToken: !!user.apiToken
+		});
+
+		requestLocationAndFetchData();
 		return (): void => {
 			isMounted = false;
 		};
