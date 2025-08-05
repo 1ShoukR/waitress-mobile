@@ -4,6 +4,7 @@ import restaurantSlice from './restaurantSlice';
 import routesSlice from './routesSlice';
 import orderSlice from './orderSlice';
 import miscSlice from './miscSlice';
+import tableSlice from './tableSlice';
 
 
 const store = configureStore({
@@ -13,6 +14,7 @@ const store = configureStore({
 		routes: routesSlice,
 		orders: orderSlice,
 		misc: miscSlice,
+		tables: tableSlice,
 	},
 });
 

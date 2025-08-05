@@ -63,4 +63,12 @@ client.post = function <T>(endpoint: string, body: BodyInit | null | undefined, 
 	return client<T>(endpoint, { ...customConfig, body, method: 'POST' }, token);
 };
 
+client.put = function <T>(endpoint: string, body: BodyInit | null | undefined, token: string | null = null, customConfig: CustomConfig = {}): Promise<T> {
+	return client<T>(endpoint, { ...customConfig, body, method: 'PUT' }, token);
+};
+
+client.delete = function <T>(endpoint: string, token: string | null = null, customConfig: CustomConfig = {}): Promise<T> {
+	return client<T>(endpoint, { ...customConfig, method: 'DELETE' }, token);
+};
+
 export default client;

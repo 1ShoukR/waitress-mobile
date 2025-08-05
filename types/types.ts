@@ -305,3 +305,65 @@ export type TableProps = {
 	x: number;
 	y: number;
   };
+
+// Enhanced Table Selection Types for Backend API Integration
+export interface EnhancedTable {
+	tableId: number;
+	tableNumber: string;
+	restaurantId: number;
+	capacity: number;
+	locationZone: string;
+	locationDescription: string;
+	viewDescription: string;
+	tableType: string;
+	isAvailable: boolean;
+	visualCoordX?: number;
+	visualCoordY?: number;
+	visualWidth?: number;
+	visualHeight?: number;
+	visualRotation?: number;
+	isActive: boolean;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface TableFilterParams {
+	zone?: string;
+	tableType?: string;
+	view?: string;
+	minCapacity?: number;
+	maxCapacity?: number;
+}
+
+export interface TableLockState {
+	status: 'unlocked' | 'locking' | 'locked' | 'expired' | 'extending';
+	timeRemaining?: number;
+	lockExpiration?: string;
+	lockId?: string;
+}
+
+export interface TableAvailabilityRequest {
+	restaurantId: number;
+	filters?: TableFilterParams;
+	requestedTime?: string;
+}
+
+export interface TableLockRequest {
+	restaurantId: number;
+	tableId: number;
+	lockDurationMinutes?: number;
+}
+
+export interface TableLockResponse {
+	lockId: string;
+	tableId: number;
+	expiresAt: string;
+	timeRemaining: number;
+}
+
+export interface AvailableTablesResponse {
+	tables: EnhancedTable[];
+	totalCount: number;
+	availableCount: number;
+	filters: TableFilterParams;
+}
