@@ -83,8 +83,13 @@ export const updateUserLocation = createAsyncThunk<UserLocation, UpdateUserLocat
 });
 
 export const getSingleRestaurant = createAsyncThunk<Restaurant, SingleRestaurantRequest>('restaurant/getSingleRestaurant', async (requestData) => {
-	const data = await client.post<Restaurant>(`/api/restaurant/${requestData.restaurantId}/get`, null, requestData.apiToken, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
-	return data;
+	console.log('🔍 Fetching single restaurant with ID:', requestData.restaurantId);
+	console.log('🔑 Using JWT token:', requestData.apiToken);
+	const data = await client.post<{restaurant: Restaurant}>(`/api/restaurant/${requestData.restaurantId}/get`, null, requestData.apiToken, { headers: { redirect: 'follow', referrerPolicy: 'no-referrer' } });
+	console.log('📡 API Response for single restaurant:', data);
+	console.log('📊 Data type:', typeof data, 'Has restaurant object:', !!data.restaurant);
+	// Extract the restaurant object from the response
+	return data.restaurant;
 });
 
 export const setDarkMode = createAsyncThunk<Darkmoderesponse, Darkmoderesponse>('auth/setDarkMode', async (darkMode) => {

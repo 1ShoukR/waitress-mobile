@@ -31,21 +31,32 @@ const RestaurantPage = (): React.JSX.Element => {
 	const dispatch = useAppDispatch();
   const singleRestaurant = useAppSelector((state) => state?.restaurant?.singleRestaurant);
 
-  useEffect(() => {
-    if (restaurantId) {
-      console.log(`Fetching restaurant with ID: ${restaurantId}`);
-    	dispatch(getSingleRestaurant({ restaurantId: restaurantId, apiToken: apiToken }));
-    } else {
-      console.log('Restaurant ID is undefined');
-    }
-  }, [restaurantId]);
+	// Fix type issue - ensure restaurantId is a string
+	const restaurantIdString = Array.isArray(restaurantId) ? restaurantId[0] : restaurantId;
+	
+	console.log('🔗 Route received restaurantId:', {
+		rawRestaurantId: restaurantId,
+		type: typeof restaurantId,
+		isArray: Array.isArray(restaurantId),
+		finalId: restaurantIdString
+	});
+
+	// Early return if no restaurantId
+	if (!restaurantIdString) {
+		console.log('❌ No restaurant ID provided to route');
+		return (
+			<SafeAreaView>
+				<Stack.Screen options={{ title: 'Restaurant Not Found' }} />
+			</SafeAreaView>
+		);
+	}
 
 	return (
 		<>
 			<Stack.Screen options={{ title: `${singleRestaurant?.Name}`, contentStyle: { backgroundColor: COLORS.primary } }} />
 			<SafeAreaView>
 				<ScrollView>
-					<IndividualRestaurant restaurantId={restaurantId} />
+					<IndividualRestaurant restaurantId={restaurantIdString} />
 				</ScrollView>
 				{singleRestaurant ? <ViewOrderButton /> : null}
 			</SafeAreaView>

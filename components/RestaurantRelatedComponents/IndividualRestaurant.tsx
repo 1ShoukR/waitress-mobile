@@ -17,6 +17,17 @@ const IndividualRestaurant = ({ restaurantId }: { restaurantId: string  }): Reac
 	const placeholderImage = 'https://via.placeholder.com/150';
 	const apiToken = useAppSelector((state) => state.auth.apiToken);
 	const user = useAppSelector((state) => state.auth);
+	
+	// Debug logging
+	console.log('🏨 IndividualRestaurant received:', {
+		restaurantId,
+		'singleRestaurant type': typeof singleRestaurant,
+		'singleRestaurant keys': singleRestaurant ? Object.keys(singleRestaurant) : 'null',
+		'restaurant name': singleRestaurant?.Name,
+		'restaurant id': singleRestaurant?.RestaurantId,
+		'has apiToken': !!apiToken
+	});
+
 	useEffect(() => {
 		if (restaurantId) {
 			let stringId: string = restaurantId?.toString();
